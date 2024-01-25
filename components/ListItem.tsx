@@ -153,7 +153,6 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         justifyContent: 'center',
         borderRadius: 10,
-
     },
     tasktitle: {
         fontSize: 40,

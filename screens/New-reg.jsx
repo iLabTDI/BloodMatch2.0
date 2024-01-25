@@ -39,15 +39,44 @@ const NewReg = (props) => {
     const [type, setType] = useState(t('slctype'));
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState('');
+<<<<<<< HEAD
     const [errorType, setErrorType] = useState('');
     const [errorGen, setErrorGen] = useState('');
     const [errorDate, setErrorDate] = useState('');
+=======
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState("")
+    const [phone, setPhone] = useState("")
+    const [user, setUser] = useState("")
+    const [password, setPassword] = useState("")
+    const [passcon, setPasscon] = useState("")
+    const [email, setEmail] = useState("")
+    const [state, setState] = useState("")
+    const [city, setCity] = useState("")
+
+    const [errorType, setErrorType] = useState('');
+    const [errorGen, setErrorGen] = useState('');
+    const [errorDate, setErrorDate] = useState('');
+    const [errorFirstName, setErrorFirstName] = useState("")
+    const [errorLastname, setErrorLastName] = useState("")
+    const [errorPhone, setErrorPhone] = useState("")
+    const [errorUser, setErrorUser] = useState("")
+    const [errorPassword, setErrorPassword] = useState("")
+    const [errorPasscon, setErrorPasscon] = useState("")
+    const [errorEmail, setErrorEmail] = useState("")
+    const [errorState, setErrorState] = useState("")
+    const [errorCity, setErrorCity] = useState("")
+>>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
   
     const [isModalVisible, setisModalVisible] = useState(false);
     const [isModalVisibleg, setisModalVisibleg] = useState(false);
   
     const [currentView, setCurrentView] = useState(0);
+<<<<<<< HEAD
     const totalViews = 3; // Número total de vistas
+=======
+    const totalViews = 12; // Número total de vistas
+>>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
   
     const handleNextView = () => {
       if (currentView < totalViews - 1) {
@@ -56,8 +85,16 @@ const NewReg = (props) => {
     };
 
     const handlePrevView = () => {
+<<<<<<< HEAD
         if (currentView < totalViews && currentView !=totalViews-2) {
             setCurrentView(currentView -1);
+=======
+        if (currentView < totalViews && currentView != totalViews-12) {
+            setCurrentView(currentView -1);
+            if (currentView == totalViews-12){
+              setCurrentView(navigation.navigate("Login"));
+            }
+>>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
         }
     };
   
@@ -84,6 +121,47 @@ const NewReg = (props) => {
     const renderView = () => {
       switch (currentView) {
         case 0:
+<<<<<<< HEAD
+=======
+          return(
+            <>
+            <View style={[styles.container, {backgroundColor: teme.background}]}>
+              <TextInput style={[styles.textInput, , {backgroundColor: teme.bla}, {color: teme.color}]}
+                    placeholder=        {t("wname")}
+                    value={firstName}
+                    onChangeText={val => setFirstName(val)}
+                    error={errorFirstName}
+                    defaultValue={firstName}
+
+                />
+                <TouchableOpacity style={styles.calendar} onPress={handleNextView}>
+                <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+              </TouchableOpacity>
+            </View>
+            </>
+          );
+        case 1:
+          return(
+            <>
+            <View style={[styles.container, {backgroundColor: teme.background}]}>
+              <TextInput style={[styles.textInput, , {backgroundColor: teme.bla}, {color: teme.color}]}
+                  placeholder= {t("wlaname")}
+                  value={lastName}
+                  onChangeText={val => setLastName(val)}
+                  error={errorLastname}
+                  defaultValue={lastName}
+                />
+                <TouchableOpacity style={styles.calendar} onPress={handleNextView}>
+                <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                </TouchableOpacity>
+            </View>
+            </>
+          );
+        case 2:
+>>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
           return (
             <>
               <View style={[styles.container, { backgroundColor: teme.background }]}>
@@ -129,7 +207,11 @@ const NewReg = (props) => {
                 </TouchableOpacity>
             </>
           );
+<<<<<<< HEAD
         case 1:
+=======
+        case 3:
+>>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
           return (
             <>
               <View style={[styles.container, { backgroundColor: teme.background }]}>
@@ -155,7 +237,11 @@ const NewReg = (props) => {
               </View>
             </>
           );
+<<<<<<< HEAD
         case 2:
+=======
+        case 4:
+>>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
           return (
             <>
               <View style={[styles.container, { backgroundColor: teme.background }]}>
@@ -182,6 +268,144 @@ const NewReg = (props) => {
               </View>
             </>
           );
+<<<<<<< HEAD
+=======
+          case 5: //email
+            return (
+              <View style={[styles.container, { backgroundColor: teme.background }]}>
+              <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
+                placeholder= {t("wemail")}
+                value={email}
+                onChangeText={val => setEmail(val)}
+                error={errorEmail}
+                defaultValue={email}
+            />
+            <TouchableOpacity style={styles.calendar} onPress={
+                handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                </TouchableOpacity>
+            </View>
+            )
+          case 6: //estado
+            return(
+              <View style={[styles.container, { backgroundColor: teme.background }]}>
+              <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
+                placeholder= {t("wstate")}
+                value={state}
+                onChangeText={val => setState(val)}
+                error={errorState}
+                defaultValue={state}
+            />
+            <TouchableOpacity style={styles.calendar} onPress={
+                handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                </TouchableOpacity>
+            </View>
+            )
+          case 7: //ciudad-municipio
+            return(
+              <View style={[styles.container, { backgroundColor: teme.background }]}>
+              <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
+                placeholder= {t("wcity")}
+                value={city}
+                onChangeText={val => setCity(val)}
+                error={errorCity}
+                defaultValue={city}
+            />
+            <TouchableOpacity style={styles.calendar} onPress={
+                handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                </TouchableOpacity>
+            </View>
+            )
+          case 8: //telefono(celular)
+            return (
+              <View style={[styles.container, { backgroundColor: teme.background }]}>
+              <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
+              placeholder= {t("wcelp")}
+              value={phone}
+              onChangeText={val => setPhone(val)}
+              error={errorPhone}
+              defaultValue={phone}
+          />  
+          <TouchableOpacity style={styles.calendar} onPress={
+                handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                </TouchableOpacity>
+          </View>
+              )
+          case 9: //Usuario
+              return (
+                <View style={[styles.container, { backgroundColor: teme.background }]}>
+                <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
+                placeholder= {t("wuser")}
+                value={user}
+                onChangeText={val => setUser(val)}
+                error={errorUser}
+                defaultValue={user}
+            /> 
+            <TouchableOpacity style={styles.calendar} onPress={
+                handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                </TouchableOpacity>
+            </View>
+              )
+          case 10: //contraseña
+            return (
+              <View style={[styles.container, { backgroundColor: teme.background }]}>
+              <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
+                placeholder= {t("wpass")}
+                value={password}
+                secureTextEntry= {true}
+                onChangeText={val => setPassword(val)}
+                error={errorPassword}
+                defaultValue={password}
+            />
+            <TouchableOpacity style={styles.calendar} onPress={
+                handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                </TouchableOpacity>
+            </View>
+            )
+          case 11: //confirmacion-contraseña
+            return(
+              <View style={[styles.container, { backgroundColor: teme.background }]}>
+              <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
+                placeholder= {t("passconf")}
+                value={passcon}
+                secureTextEntry= {true}
+                onChangeText={val => setPasscon(val)}    
+                error={errorPasscon}
+                defaultValue={passcon}
+            />
+            <TouchableOpacity style={styles.calendar} onPress={
+                handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                </TouchableOpacity>
+            </View>
+            )
+>>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
         default:
           return null;
       }
