@@ -1,0 +1,15 @@
+link chat:
+https://www.figma.com/file/M6XeGKoq1HaySheXbIFtzK/Untitled?type=design&node-id=0%3A1&mode=design&t=sfuUyNtMnEqhGiiz-1
+
+expo-splash-screen 
+link mensajes: 
+https://www.figma.com/file/Nvy21jIlTNHvn8vUxJiLod/Untitled?type=design&node-id=1%3A2&mode=design&t=tlIX6yZsHzt5MSK8-1
+
+link perfil:
+https://www.figma.com/file/YXZxNHrzlbUbLkSTgBi9rk/Untitled?type=design&node-id=0%3A1&mode=design&t=FqpRBZxriSpiF8hk-1
+
+link mapa:
+https://www.figma.com/file/nLruSjV2XUnBxxTvSiRYtB/mapa?type=design&node-id=0%3A1&mode=design&t=0izh15UMuJf1TpYZ-1
+
+link doc privacidad:
+https://docs.google.com/document/d/1hhMhFtmrFcS5zUSb8oZhbesvMyiQ5yqlqp5cdDeehso/edit?usp=sharing

@@ -1,0 +1,11 @@
+
+{
+    "len_esp": {
+        "name": "español",
+        "nativeName": "Español(MX)"
+    },
+    "len_en": {
+        "name": "ingles",
+        "nativeName": "English(US)"
+    }
+}

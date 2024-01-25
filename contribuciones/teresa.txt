@@ -1,0 +1,79 @@
+Aportaciones - Front-end
+
+() => nombres de los estilos
+
+--------------------------------------------------------------------------
+Pantallas
+--------------------------------------------------------------------------
+
+1. Customer 
+Proposito: Pantalla para observar los datos de la cuenta del usuario
+Estructura: Principalmente se administran los contenedores views en forma de columna, dentro se admnistran los espacios de los espacios correspondientes de los campos para el json del usuario. 
+
+		El primer contenedor es el de imagen de perfil del usuario, (contImage), con un image mostramos la imagen estilo image, despues de imagen se coloca un contenedor para el icono de editar, (editimage). 
+		Se crea un segundo contenedor que representa el sector 1 donde los objetos se manejan en forma de columna (column), el primer view dentro de este se asignara al campo de username (nameUSer). El contenedor sector 2 hace referencia a los contenedores donde los objetos se asignan por filas, el primer sector 2 (row); contiene los campos de Sexo y tipo de sangre (sect21).
+		El tercer y cuarto contenedor hacen referencia al campo del nombre del usuario y municipio respectivamente (sctgrande)-
+		Por ultimo se crea un boton para permitie que el usuario pueda hacer modificaciones a su perfil
+		** Para pantallas mayores a 800 pixeles se cambian los estilos, los estilos que cambian usan el estilo con terminacion Gnde.
+
+2. Messenger
+Proposito: Ver la lista de contactos que tengan una conversion activa con el usuario
+Estuctuctura: Dentro del contenedor principal (container) se asigna dos espacios, el primero para el contenedor de tipo Searchbar para el campo de buscar (buscador) de la libreria react-native-paper, el segundo contenedor es para lista de conversaciones (lista), dentro de aqui se utiliza un flatlist para enlistar las conversaciones, en cada item se va a mostrar como a funcion del componente ItemView, el item esta conformado por la siguiente estructura
+Touchable -> View -> Image -> View -> Text -> View -> Text 
+				        				   -> View -> Text
+Touchable (button): nos permite redirige a la conversacion privada
+1. View (messagecontainer): contenedor del item principal
+Image (messageimage): Contenedor para visualizar la imagen de perfil del contacto
+2. View (messageConttext): Contenedor de los textos
+1. Text (messageTitle): Texto para el nombre del contacto
+3. View (message): Contenedor los texto del mensaje y del tiempo
+2. Text (messagetext): Texto previsualización del mensaje
+4. View (conttime): Contenedor para el texto del tiempo
+3. Text (messagehour): Texto de la hora del mensaje recibido
+
+Para Separar los items usamos la funcion ItemSeparatorView, el cual regresa un componente view que nos permite separar los items con un espacio.
+
+3. Chat
+Proposito: Visualiar la conversacion de un contacto previamente seleccionado en mensajes
+Estructura: Para esta pantalla se utiliza Principalmente una la libreria react-native-gifted-chat, donde se implementan las siguientes funciones 
+GiftedChat funcion princiapal para llamar y visualizar los mensajes, se hacen pequeños ajustes de diseño como el cambios de estilo de fuente de texto y tamaño de letra 
+
+4. Privacidad y Terminos y condiciones
+Proposito: Las pantallas permiten visualizar la informacion correspondiente sobre la aplicacion 
+Estructura: Se utiliza un contenedor principal, text de titulos y un scrollview para contener todo el cuerpo de la informacion
+Ambas pantallas utilizan las mismos estilos.
+**Solo agruege el texto de privacidad en español, el de Terminos lo hizo jose juan con las traducciones 
+
+5. Settings
+Proposito: Mostrar el menu de configuraciones
+Estructura: Dentro del componente principal, si inicializa un scrollview para visualizar las opciones views en dentro de componentes touchables,  
+**De mi parte solo fue estilizar la pantalla
+
+6. Locate
+Proposito: Visualizar un mapa con los hospiatles mas cercanos
+Estructura: Se hace uso de la funcion de react-native-aps y mapStyle de assets
+**Solo se configura la vista del mapa de gpogle por falta de API'S
+
+
+
+
+Aportaciones - Back-end
+--------------------------------------------------------------------------
+Funciones
+--------------------------------------------------------------------------
+
+1. Conexion con supabase
+Para la conexion con supabase se sigue las intucciones de supabase
+https://supabase.com/docs/guides/getting-started/tutorials/with-expo-react-native
+Se crearon los siguientes archivos
+app.config.textos
+.env
+services/core.ts
+services/supabase.ts
+lib/AuthContext.tsx
+lib/supabase.ts
+
+
+2. login y supabase
+Se implementa el codigo sql de supabse para coincidir los datos ingresados y la base de datos data_user dentro de la funcion DoSigIn en Login.jsx
+
