@@ -10,7 +10,6 @@ import {
     MaterialCommunityIcons,
     Feather, 
   } from "@expo/vector-icons";
-
 import { Icon } from '@rneui/base';
 import { red100 } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
@@ -25,7 +24,8 @@ interface ListItemProps extends Pick<PanGestureHandlerProps, 'simultaneousHandle
     task: TaskInterface;
     onDimiss?: (task: TaskInterface) => void;
 }
-const LIST_ITEM_HEIGHT = height*.70;
+const LIST_ITEM_HEIGHT = height*.60;
+const LIST_ICON_HEIGHT = height*.30;
 const LIST_ITEM_W = 70;
 const {width: SCREEN_WIDTH} = Dimensions.get('window')
 const TRANSLATE_X_THRESHOLD = -SCREEN_WIDTH * .1
@@ -92,23 +92,24 @@ const ListItem: React.FC<ListItemProps> = ({task, onDimiss, simultaneousHandlers
 
     return (
         <Animated.View style={[styles.taskcontainer, rTaskContainerStyle]}>
+             <Animated.View style={styles.task}>
+            <ImageBackground source={{uri:imagenes[1]}}  style={styles.image} imageStyle={{ borderRadius: 10}}></ImageBackground>
+            </Animated.View>
             <Animated.View style={[styles.iconContainerL, lIconContainerStyle]}>
                 <MaterialCommunityIcons name="water-check" size={LIST_ITEM_HEIGHT*0.4} color={'#dc143c'}  />
             </Animated.View>
             <Animated.View style={[styles.iconContainerR, rIconContainerStyle]}>
                 <MaterialCommunityIcons name="water-remove" size={LIST_ITEM_HEIGHT*0.4} color={'#dc143c'}  />
             </Animated.View>
-            <PanGestureHandler simultaneousHandlers={simultaneousHandlers} onGestureEvent={panGesture}>
-                <Animated.View style={[styles.task, rStyle]}>
-                    <ImageBackground source={{uri:imagenes[1]}}  style={styles.image} imageStyle={{ borderRadius: 10}}>
-                        <Animated.View style={styles.textContainer}>
+           
+            <PanGestureHandler simultaneousHandlers={simultaneousHandlers} onGestureEvent={panGesture}>   
+                        <Animated.View style={[styles.textContainer, rStyle]}>
                         <Text style={styles.tasktitle}>{task.user}</Text>
                             <Animated.View>
                                 <Text style={styles.tasktext}>Tipo: {task.tipo}</Text>
                                 <Text style={styles.tasktext}>Municipio: {task.municipio}</Text>
+                                <Text style={styles.tasktext}>Descripción:  </Text>
                             </Animated.View>
-                        </Animated.View>
-                    </ImageBackground>    
                 </Animated.View>
             </PanGestureHandler>
             
@@ -133,23 +134,26 @@ const styles = StyleSheet.create({
         
       },
     textContainer:{
-        width: '90%',
-        backgroundColor: 'rgba(255,255,255,0.5)',
+        width: '85%',
+        marginTop: '65%',
+        height: '35%',
+        position: 'absolute',
+        //backgroundColor: 'rgba(255,255,255,0.5)',
+        backgroundColor: 'white',
         flexDirection: 'column',
         borderRadius: 10,
-        padding: 19,
+        padding: 30,
+        elevation: 20,
+        shadowColor: '#171717',
     },
     task:{
-        width: '90%',
+        width: '60%',
         height: LIST_ITEM_HEIGHT,
         backgroundColor: 'white',
         marginVertical: 10,
         justifyContent: 'center',
         borderRadius: 10,
-        //Andriod Shadow
-        elevation: 5,
-        borderColor: 'white',
-        borderWidth: 10,
+
     },
     tasktitle: {
         fontSize: 40,
@@ -160,20 +164,22 @@ const styles = StyleSheet.create({
         fontFamily: 'Quicksand-Bold',
     },
     iconContainerR:{
-        height:LIST_ITEM_HEIGHT,
+        height:LIST_ICON_HEIGHT,
         width:LIST_ITEM_W+width*0.20,
         position: 'absolute',
         right: '5%',
         justifyContent: 'center',
         alignItems: 'center',
+        top: '65%',
     },
     iconContainerL:{
-        height:LIST_ITEM_HEIGHT,
+        height:LIST_ICON_HEIGHT,
         width:LIST_ITEM_W-width*0.20,
         position: 'absolute',
         left: '5%',
         justifyContent: 'center',
         alignItems: 'center',
+        top: '65%',
     }
 
 

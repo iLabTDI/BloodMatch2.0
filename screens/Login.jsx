@@ -22,27 +22,6 @@ const LogIn= (props) => {
     const [errorEmail, setErrorEmail] = useState("")
     const [errorPassword, setErrorPassword] = useState("")
 
-<<<<<<< HEAD
-    const DoSigIn = async() =>{
-        if (!validateData()) {
-          return;
-      }
-      //Validacion del correo y la contraseñan con la base de datos data_user
-    { let { data, error } = await supabase
-      .from('data_user')
-      .select('user')  
-      .eq('email', email)
-      .eq('passw', password)
-      console.log(error)
-      if(data.length > 0){
-          console.log('Entro')
-          navigation.navigate('Home')    
-      }
-      else{
-          console.log('no entro')
-      }
-=======
->>>>>>> 7ddcb9dc525063b3166fa5b87c573a651d3ee21b
 
     useEffect(() => {
       supabase.auth.onAuthStateChange(async (event, session) => {
@@ -117,7 +96,7 @@ const LogIn= (props) => {
                 onPress = {() => DoSigIn(email,password) 
                 } 
             />
-            <TouchableOpacity style={styles.regisButton} onPress = {() => { navigation.navigate('new-reg') } } > 
+            <TouchableOpacity style={styles.regisButton} onPress = {() => { navigation.navigate('SignIn') } } > 
                 <Text style={{...styles.textLink, marginStart:'40%'}}>{t("rgst")}</Text>
             </TouchableOpacity> 
             <StatusBar style="auto" />        

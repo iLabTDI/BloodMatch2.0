@@ -11,7 +11,8 @@ import darkMode from './helper/DarkMode';
 import { defaultTheme } from '@rneui/base';
 import { useTransition } from 'react-i18next';
 import i18next from 'i18next';
-import { supabase } from './lib/supabase'
+import { supabase } from './lib/supabase';
+
 export default function App () {
   // isAuthenticated = is...
   const [fontsLoaded] = useFonts({
