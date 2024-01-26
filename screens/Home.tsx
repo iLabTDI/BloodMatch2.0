@@ -28,7 +28,7 @@ const ESPACIO = 10;
 const ALTURA_BACKDROP = height * 0.5;
 
 const TITLES = [
-  {'user':'Juan', 'tipo':'O+', 'municipio':'Guadalajara'},
+  {'user':'Juan', 'tipo':'O+', 'municipio':'Guadalajara'}
 ];
 
 interface TaskInterface {
@@ -99,7 +99,7 @@ function Home () {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
-      <Text style={styles.title}>Matches</Text>
+      <Text style={styles.title}>Ayuda a: </Text>
       <Animated.View style={styles.Scrollcont}>
         {tasks.map((task) => 
         (<ListItem  key={task.index} task={task} onDimiss={onDismiss}/>))}

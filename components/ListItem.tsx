@@ -25,10 +25,11 @@ interface ListItemProps extends Pick<PanGestureHandlerProps, 'simultaneousHandle
     onDimiss?: (task: TaskInterface) => void;
 }
 const LIST_ITEM_HEIGHT = height*.60;
-const LIST_ICON_HEIGHT = height*.30;
+const LIST_ICON_HEIGHT = height*.45;
 const LIST_ITEM_W = 70;
 const {width: SCREEN_WIDTH} = Dimensions.get('window')
 const TRANSLATE_X_THRESHOLD = -SCREEN_WIDTH * .1
+const TRANSLATE_X_ACCEPT = SCREEN_WIDTH * .1
 
 
 
@@ -46,6 +47,9 @@ const ListItem: React.FC<ListItemProps> = ({task, onDimiss, simultaneousHandlers
         },
         onEnd: (event) => {
             const shouldBeDismissed = translateX.value < TRANSLATE_X_THRESHOLD;
+            const shouldBeAccepted = translateX.value > TRANSLATE_X_ACCEPT;
+            //console.log("Dissmissed: "+shouldBeDismissed+" "+TRANSLATE_X_THRESHOLD)
+            //console.log("Accepted: "+shouldBeAccepted+" "+TRANSLATE_X_ACCEPT)
             if(shouldBeDismissed) {
                 translateX.value = withTiming(-SCREEN_WIDTH);
                 itemHeight.value = withTiming(0);
@@ -57,7 +61,18 @@ const ListItem: React.FC<ListItemProps> = ({task, onDimiss, simultaneousHandlers
                 })
                 console.log(translateX.value);
                 
-            } else {
+            }if(shouldBeAccepted){
+                translateX.value = withTiming(SCREEN_WIDTH);
+                itemHeight.value = withTiming(0);
+                marginVertical.value = withTiming(0); 
+                opacity.value = withTiming(0, undefined, (isFinished) => {
+                   if(isFinished && onDimiss) {
+                    runOnJS(onDimiss)(task);
+                   }
+                })
+                console.log(translateX.value);
+            } 
+            else {
                 translateX.value = withTiming(0);
                 console.log(translateX.value);
             }
@@ -78,7 +93,7 @@ const ListItem: React.FC<ListItemProps> = ({task, onDimiss, simultaneousHandlers
     })
 
     const lIconContainerStyle = useAnimatedStyle(() => {
-        const opacity = withTiming( translateX.value > TRANSLATE_X_THRESHOLD ? 1 : 0);
+        const opacity = withTiming( translateX.value > TRANSLATE_X_ACCEPT ? 1 : 0);
         return {opacity};
     })
     
@@ -164,18 +179,18 @@ const styles = StyleSheet.create({
     },
     iconContainerR:{
         height:LIST_ICON_HEIGHT,
-        width:LIST_ITEM_W+width*0.20,
+        width:LIST_ICON_HEIGHT,
         position: 'absolute',
-        right: '5%',
+        left: '49%',
         justifyContent: 'center',
         alignItems: 'center',
         top: '65%',
     },
     iconContainerL:{
         height:LIST_ICON_HEIGHT,
-        width:LIST_ITEM_W-width*0.20,
+        width:LIST_ICON_HEIGHT,
         position: 'absolute',
-        left: '5%',
+        right: '49%',
         justifyContent: 'center',
         alignItems: 'center',
         top: '65%',

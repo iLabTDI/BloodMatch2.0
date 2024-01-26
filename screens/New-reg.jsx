@@ -39,11 +39,6 @@ const NewReg = (props) => {
     const [type, setType] = useState(t('slctype'));
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState('');
-<<<<<<< HEAD
-    const [errorType, setErrorType] = useState('');
-    const [errorGen, setErrorGen] = useState('');
-    const [errorDate, setErrorDate] = useState('');
-=======
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState("")
     const [phone, setPhone] = useState("")
@@ -66,17 +61,12 @@ const NewReg = (props) => {
     const [errorEmail, setErrorEmail] = useState("")
     const [errorState, setErrorState] = useState("")
     const [errorCity, setErrorCity] = useState("")
->>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
   
     const [isModalVisible, setisModalVisible] = useState(false);
     const [isModalVisibleg, setisModalVisibleg] = useState(false);
   
     const [currentView, setCurrentView] = useState(0);
-<<<<<<< HEAD
-    const totalViews = 3; // Número total de vistas
-=======
     const totalViews = 12; // Número total de vistas
->>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
   
     const handleNextView = () => {
       if (currentView < totalViews - 1) {
@@ -85,16 +75,11 @@ const NewReg = (props) => {
     };
 
     const handlePrevView = () => {
-<<<<<<< HEAD
-        if (currentView < totalViews && currentView !=totalViews-2) {
-            setCurrentView(currentView -1);
-=======
         if (currentView < totalViews && currentView != totalViews-12) {
             setCurrentView(currentView -1);
             if (currentView == totalViews-12){
               setCurrentView(navigation.navigate("Login"));
             }
->>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
         }
     };
   
@@ -121,8 +106,6 @@ const NewReg = (props) => {
     const renderView = () => {
       switch (currentView) {
         case 0:
-<<<<<<< HEAD
-=======
           return(
             <>
             <View style={[styles.container, {backgroundColor: teme.background}]}>
@@ -161,7 +144,6 @@ const NewReg = (props) => {
             </>
           );
         case 2:
->>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
           return (
             <>
               <View style={[styles.container, { backgroundColor: teme.background }]}>
@@ -207,11 +189,7 @@ const NewReg = (props) => {
                 </TouchableOpacity>
             </>
           );
-<<<<<<< HEAD
-        case 1:
-=======
         case 3:
->>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
           return (
             <>
               <View style={[styles.container, { backgroundColor: teme.background }]}>
@@ -237,11 +215,7 @@ const NewReg = (props) => {
               </View>
             </>
           );
-<<<<<<< HEAD
-        case 2:
-=======
         case 4:
->>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
           return (
             <>
               <View style={[styles.container, { backgroundColor: teme.background }]}>
@@ -268,8 +242,6 @@ const NewReg = (props) => {
               </View>
             </>
           );
-<<<<<<< HEAD
-=======
           case 5: //email
             return (
               <View style={[styles.container, { backgroundColor: teme.background }]}>
@@ -405,7 +377,6 @@ const NewReg = (props) => {
                 </TouchableOpacity>
             </View>
             )
->>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
         default:
           return null;
       }
