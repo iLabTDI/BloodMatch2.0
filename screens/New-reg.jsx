@@ -28,7 +28,7 @@ import { useIsFocused } from "@react-navigation/core";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { supabase } from "../lib/supabase";
-
+import New_User from "../backend/querys/inserts/New_User";
 
 const NewReg = (props) => {
     const { t } = useTranslation();
@@ -39,11 +39,6 @@ const NewReg = (props) => {
     const [type, setType] = useState(t('slctype'));
     const [open, setOpen] = useState(false);
     const [date, setDate] = useState('');
-<<<<<<< HEAD
-    const [errorType, setErrorType] = useState('');
-    const [errorGen, setErrorGen] = useState('');
-    const [errorDate, setErrorDate] = useState('');
-=======
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState("")
     const [phone, setPhone] = useState("")
@@ -66,38 +61,31 @@ const NewReg = (props) => {
     const [errorEmail, setErrorEmail] = useState("")
     const [errorState, setErrorState] = useState("")
     const [errorCity, setErrorCity] = useState("")
->>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
   
     const [isModalVisible, setisModalVisible] = useState(false);
     const [isModalVisibleg, setisModalVisibleg] = useState(false);
   
     const [currentView, setCurrentView] = useState(0);
-<<<<<<< HEAD
-    const totalViews = 3; // Número total de vistas
-=======
-    const totalViews = 12; // Número total de vistas
->>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
+    const totalViews = 13; // Número total de vistas de nuestra app
   
+  //funcion creada para manejar la vista, esta nos permite ir hacia el frente hayamos ingresado o no datos (de momento)
     const handleNextView = () => {
       if (currentView < totalViews - 1) {
         setCurrentView(currentView + 1);
       }
     };
 
+ //Con esta funcion controlamos la regresion de las vistas se modifica totalViwes dependiendo del numero de vistas que existan la app
     const handlePrevView = () => {
-<<<<<<< HEAD
-        if (currentView < totalViews && currentView !=totalViews-2) {
+        if (currentView < totalViews && currentView != totalViews-13) {
             setCurrentView(currentView -1);
-=======
-        if (currentView < totalViews && currentView != totalViews-12) {
-            setCurrentView(currentView -1);
-            if (currentView == totalViews-12){
+            if (currentView == totalViews-13){
               setCurrentView(navigation.navigate("Login"));
             }
->>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
         }
     };
-  
+
+  //Funcion creada para controlar los picker (fecha, genero y tipo de sangre)
     const handleInputChange = (text, field) => {
       switch (field) {
         case 'type':
@@ -117,12 +105,49 @@ const NewReg = (props) => {
     const handleOnChange = () => {
       setOpen(true);
     };
+
+    const subida = async (email,password,usuario,lastName,firstName,date,type,state,city,phone) => {
+      try {
+          console.log("Datos recibidos: ", password, email,usuario,lastName,firstName,date,type,state,city,phone);
+          const { user, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+          });
+          if (error) {
+            console.log(error);
+          } else {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                  email: email,
+                  password: password,
+            })
+            const UID =  data.user.id;
+            console.log("New user data:", UID);
+            New_User(UID,email,usuario,lastName,firstName,date,type,state,city,phone);
+            navigation.navigate('Home');
+
+                      }
+        } catch (error) {
+          console.error("Error en handleLogin:", error);
+        }
+  };     
+
+  //Funcion creada para validar que los datos ingresados sean correctos y pasar a la subida del usuario a la base de datos
+  const registerUser = async(email, password,user,lastName,firstName,date,type,state,city,phone) =>{
+//        if (!validateData()) {
+//         return;
+//         }
+        try {
+          await subida(email,password,user,lastName,firstName,date,type,state,city,phone);
+          console.log("Registro exitoso")
+        } catch (error) {
+          console.error("Error al registrar al usuario, intentar de nuevo", error)
+        }
+        console.log('okey')
+    }
   
-    const renderView = () => {
+    const renderView = ({firstName, lastName, email, date, type, gen, password, passcon, state, city, user, phone}) => {
       switch (currentView) {
         case 0:
-<<<<<<< HEAD
-=======
           return(
             <>
             <View style={[styles.container, {backgroundColor: teme.background}]}>
@@ -161,7 +186,6 @@ const NewReg = (props) => {
             </>
           );
         case 2:
->>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
           return (
             <>
               <View style={[styles.container, { backgroundColor: teme.background }]}>
@@ -207,11 +231,7 @@ const NewReg = (props) => {
                 </TouchableOpacity>
             </>
           );
-<<<<<<< HEAD
-        case 1:
-=======
         case 3:
->>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
           return (
             <>
               <View style={[styles.container, { backgroundColor: teme.background }]}>
@@ -237,11 +257,7 @@ const NewReg = (props) => {
               </View>
             </>
           );
-<<<<<<< HEAD
-        case 2:
-=======
         case 4:
->>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
           return (
             <>
               <View style={[styles.container, { backgroundColor: teme.background }]}>
@@ -268,8 +284,6 @@ const NewReg = (props) => {
               </View>
             </>
           );
-<<<<<<< HEAD
-=======
           case 5: //email
             return (
               <View style={[styles.container, { backgroundColor: teme.background }]}>
@@ -403,9 +417,23 @@ const NewReg = (props) => {
                 <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
                   <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
                 </TouchableOpacity>
+                <ButtonGeneric text= {t("confr")}
+                    title='Logear'
+                    onPress={() => registerUser(email,password,user,lastName,firstName,date,type,state,city,phone)}
+                />
             </View>
             )
->>>>>>> 552fb8efc9cf193c6de1f7c81dd0d1431629f108
+            case 12: 
+              return(
+                <View>
+                  <Text>
+                    
+                  </Text>
+                  <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
+                    <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                  </TouchableOpacity> 
+                </View>
+              )
         default:
           return null;
       }
@@ -415,7 +443,7 @@ const NewReg = (props) => {
       <View style={[styles.container, { backgroundColor: teme.background }]}>
         <ScrollView style={{ width: '100%' }}>
           <Text style={styles.title}>{t('register')}</Text>
-          {renderView()}
+          {renderView({firstName, lastName, email, date, type, gen, password, passcon, state, city, user, phone})}
         </ScrollView>
       </View>
     );
