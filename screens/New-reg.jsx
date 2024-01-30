@@ -410,10 +410,6 @@ const NewReg = (props) => {
                 error={errorPasscon}
                 defaultValue={passcon}
             />
-            <TouchableOpacity style={styles.calendar} onPress={
-                handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
-                </TouchableOpacity>
                 <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
                   <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
                 </TouchableOpacity>
@@ -456,7 +452,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#a3a3ff",
     },
     textInput: {
-        marginTop:'40%',
+        marginTop:'60%',
         width:'83%',
         height: 80,
         borderRadius: 25,
@@ -469,12 +465,13 @@ const styles = StyleSheet.create({
         borderColor: '#161238',
         alignSelf: 'center',
         backgroundColor: 'white',
+        alignItems: 'center',
     },
     title: {
-        fontSize:22, 
+        fontSize:28, 
         fontWeight: 'bold', 
         fontStyle: 'italic',
-        marginTop:'4%', 
+        marginTop:'12%', 
         textAlign:"center"
     },
     calendar:{

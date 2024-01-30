@@ -96,7 +96,7 @@ const LogIn= (props) => {
                 onPress = {() => DoSigIn(email,password) 
                 } 
             />
-            <TouchableOpacity style={styles.regisButton} onPress = {() => { navigation.navigate('SignIn') } } > 
+            <TouchableOpacity style={styles.regisButton} onPress = {() => { navigation.navigate('new-reg') } } > 
                 <Text style={{...styles.textLink, marginStart:'40%'}}>{t("rgst")}</Text>
             </TouchableOpacity> 
             <StatusBar style="auto" />        
