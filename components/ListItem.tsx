@@ -26,6 +26,7 @@ interface ListItemProps extends Pick<PanGestureHandlerProps, 'simultaneousHandle
 }
 const LIST_ITEM_HEIGHT = height*.60;
 const LIST_ICON_HEIGHT = height*.45;
+const TEXT_DESCRIPTION = 18;
 const LIST_ITEM_W = 70;
 const {width: SCREEN_WIDTH} = Dimensions.get('window')
 const TRANSLATE_X_THRESHOLD = -SCREEN_WIDTH * .1
@@ -107,7 +108,7 @@ const ListItem: React.FC<ListItemProps> = ({task, onDimiss, simultaneousHandlers
 
     return (
         <Animated.View style={[styles.taskcontainer, rTaskContainerStyle]}>
-             <Animated.View style={styles.task}>
+             <Animated.View style={[width >= 800 ? styles.task: styles.tasksmall]}>
             <ImageBackground source={{uri:imagenes[1]}}  style={styles.image} imageStyle={{ borderRadius: 10}}></ImageBackground>
             </Animated.View>
             <Animated.View style={[styles.iconContainerL, lIconContainerStyle]}>
@@ -119,11 +120,11 @@ const ListItem: React.FC<ListItemProps> = ({task, onDimiss, simultaneousHandlers
            
             <PanGestureHandler simultaneousHandlers={simultaneousHandlers} onGestureEvent={panGesture}>   
                         <Animated.View style={[styles.textContainer, rStyle]}>
-                        <Text style={styles.tasktitle}>{task.user}</Text>
+                        <Text style={[width >= 800 ? styles.tasktitle : styles.tasktitlesmall]}>{task.user}</Text>
                             <Animated.View>
-                                <Text style={styles.tasktext}>Tipo: {task.tipo}</Text>
-                                <Text style={styles.tasktext}>Municipio: {task.municipio}</Text>
-                                <Text style={styles.tasktext}>Descripción:  </Text>
+                                <Text style={[width >= 800 ? styles.tasktext : styles.tasktextsmall]}>Tipo: {task.tipo}</Text>
+                                <Text style={[width >= 800 ? styles.tasktext : styles.tasktextsmall]}>Municipio: {task.municipio}</Text>
+                                <Text style={[width >= 800 ? styles.taskdescpsmall : styles.taskdescpsmall]}>Descripción: {task.descripcion} </Text>
                             </Animated.View>
                 </Animated.View>
             </PanGestureHandler>
@@ -161,13 +162,35 @@ const styles = StyleSheet.create({
         elevation: 20,
         shadowColor: '#171717',
     },
-    task:{
+    tasksmall:{
         width: '60%',
-        height: LIST_ITEM_HEIGHT,
+        height: '60%',
         backgroundColor: 'white',
         marginVertical: 10,
         justifyContent: 'center',
         borderRadius: 10,
+    },
+    task:{
+        width: '60%',
+        height: 'auto',
+        backgroundColor: 'white',
+        marginVertical: 10,
+        justifyContent: 'center',
+        borderRadius: 10,
+    },
+    tasktitlesmall: {
+        fontSize: 25,
+        fontFamily: 'Quicksand-Bold',
+    },
+    tasktextsmall: {
+        fontSize: 18,
+        fontFamily: 'Quicksand-Bold',
+        textAlign: 'auto',
+    },
+    taskdescpsmall: {
+        fontSize: TEXT_DESCRIPTION,
+        fontFamily: 'Quicksand-Bold',
+        textAlign: 'auto',
     },
     tasktitle: {
         fontSize: 40,
