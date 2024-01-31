@@ -159,8 +159,8 @@ const NewReg = (props) => {
                     defaultValue={firstName}
 
                 />
-                <TouchableOpacity style={styles.calendar} onPress={handleNextView}>
-                <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
               </TouchableOpacity>
             </View>
             </>
@@ -176,11 +176,11 @@ const NewReg = (props) => {
                   error={errorLastname}
                   defaultValue={lastName}
                 />
-                <TouchableOpacity style={styles.calendar} onPress={handleNextView}>
-                <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
-                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+              <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
             </View>
             </>
@@ -223,11 +223,11 @@ const NewReg = (props) => {
                   </View>
                 </Modal>
               </View>
-              <TouchableOpacity style={styles.calendar} onPress={handleNextView}>
-                <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+              <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
-                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+              <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
             </>
           );
@@ -248,11 +248,11 @@ const NewReg = (props) => {
                 >
                   <ModalPicker changeModalVisibility={() => setisModalVisible(false)} setType={setType} />
                 </Modal>
-                <TouchableOpacity style={styles.calendar} onPress={handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
-                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
               </View>
             </>
@@ -274,12 +274,12 @@ const NewReg = (props) => {
                 >
                   <ModalPickerg changeModalVisibilitygen={() => setisModalVisibleg(false)} setGen={setGen} />
                 </Modal>
-                <TouchableOpacity style={styles.calendar} onPress={
+                <TouchableOpacity style={styles.arrowright} onPress={
                 handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
-                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
               </View>
             </>
@@ -294,12 +294,12 @@ const NewReg = (props) => {
                 error={errorEmail}
                 defaultValue={email}
             />
-            <TouchableOpacity style={styles.calendar} onPress={
+            <TouchableOpacity style={styles.arrowright} onPress={
                 handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
-                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
             </View>
             )
@@ -313,12 +313,12 @@ const NewReg = (props) => {
                 error={errorState}
                 defaultValue={state}
             />
-            <TouchableOpacity style={styles.calendar} onPress={
+            <TouchableOpacity style={styles.arrowright} onPress={
                 handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
-                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
             </View>
             )
@@ -332,12 +332,12 @@ const NewReg = (props) => {
                 error={errorCity}
                 defaultValue={city}
             />
-            <TouchableOpacity style={styles.calendar} onPress={
+            <TouchableOpacity style={styles.arrowright} onPress={
                 handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
-                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
             </View>
             )
@@ -351,12 +351,11 @@ const NewReg = (props) => {
               error={errorPhone}
               defaultValue={phone}
           />  
-          <TouchableOpacity style={styles.calendar} onPress={
-                handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
-                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
           </View>
               )
@@ -370,12 +369,11 @@ const NewReg = (props) => {
                 error={errorUser}
                 defaultValue={user}
             /> 
-            <TouchableOpacity style={styles.calendar} onPress={
-                handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
-                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
             </View>
               )
@@ -390,12 +388,11 @@ const NewReg = (props) => {
                 error={errorPassword}
                 defaultValue={password}
             />
-            <TouchableOpacity style={styles.calendar} onPress={
-                handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right" color="#000000" size={30} />
+                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
-                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
             </View>
             )
@@ -411,7 +408,7 @@ const NewReg = (props) => {
                 defaultValue={passcon}
             />
                 <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
-                  <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
+                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
                 <ButtonGeneric text= {t("confr")}
                     title='Logear'
@@ -423,7 +420,7 @@ const NewReg = (props) => {
               return(
                 <View>
                   <Text>
-                    
+
                   </Text>
                   <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
                     <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
@@ -477,6 +474,14 @@ const styles = StyleSheet.create({
     calendar:{
         alignItems: 'center'
     },
+    arrowright:{
+      paddingRight: 50,
+      alignItems: 'flex-end'
+    },
+    arrowleft:{
+      paddingLeft: 50,
+      alignItems: 'flex-start'
+  },
     centeredView:{
         flex: 1,
         justifyContent: 'center',
