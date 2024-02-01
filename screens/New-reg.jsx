@@ -1,5 +1,5 @@
 import React, {useState, useContext} from "react";
-import { StyleSheet, View, TextInput, Text, Button, TouchableOpacity, Modal, ScrollView} from "react-native";
+import { StyleSheet, View, TextInput, Text, Button, TouchableOpacity, Modal, ScrollView, Image} from "react-native";
 import DatePicker from "react-native-modern-datepicker"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -29,6 +29,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { supabase } from "../lib/supabase";
 import New_User from "../backend/querys/inserts/New_User";
+const PlaceImage = require('../assets/logotipo.png');
 
 const NewReg = (props) => {
     const { t } = useTranslation();
@@ -416,17 +417,6 @@ const NewReg = (props) => {
                 />
             </View>
             )
-            case 12: 
-              return(
-                <View>
-                  <Text>
-
-                  </Text>
-                  <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
-                    <MaterialCommunityIcons name="arrow-left" color="#000000" size={30} />
-                  </TouchableOpacity> 
-                </View>
-              )
         default:
           return null;
       }
@@ -436,6 +426,10 @@ const NewReg = (props) => {
       <View style={[styles.container, { backgroundColor: teme.background }]}>
         <ScrollView style={{ width: '100%' }}>
           <Text style={styles.title}>{t('register')}</Text>
+          {/*Aqui es donde voy a agregar la imagen (logo) de la aplicacion, sin quirarle funcionalidad*/}
+          <Image
+            source={PlaceImage} style={styles.image}
+          />
           {renderView({firstName, lastName, email, date, type, gen, password, passcon, state, city, user, phone})}
         </ScrollView>
       </View>
@@ -448,8 +442,16 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#a3a3ff",
     },
+    image: {
+      marginTop: 10,
+      marginVertical: 10,
+      width: 180,
+      height: 210,
+      alignItems: 'center',
+      alignSelf: 'center'
+  },
     textInput: {
-        marginTop:'60%',
+        marginTop:'35%',
         width:'83%',
         height: 80,
         borderRadius: 25,
