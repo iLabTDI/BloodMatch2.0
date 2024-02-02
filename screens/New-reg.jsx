@@ -152,6 +152,7 @@ const NewReg = (props) => {
           return(
             <>
             <View style={[styles.container, {backgroundColor: teme.background}]}>
+              <Text style={styles.text}>¿Cuál es su nombre?</Text>
               <TextInput style={[styles.textInput, , {backgroundColor: teme.bla}, {color: teme.color}]}
                     placeholder=        {t("wname")}
                     value={firstName}
@@ -170,6 +171,7 @@ const NewReg = (props) => {
           return(
             <>
             <View style={[styles.container, {backgroundColor: teme.background}]}>
+            <Text style={styles.text}>¿Cuáles son sus apellidos?</Text>
               <TextInput style={[styles.textInput, , {backgroundColor: teme.bla}, {color: teme.color}]}
                   placeholder= {t("wlaname")}
                   value={lastName}
@@ -190,8 +192,9 @@ const NewReg = (props) => {
           return (
             <>
               <View style={[styles.container, { backgroundColor: teme.background }]}>
+              <Text style={styles.text}>¿Cuál es su fecha de nacimiento?</Text>
                 <TextInput
-                  style={[styles.textInput, { backgroundColor: teme.bla }, { color: teme.color }]}
+                  style={[styles.dateSelect, { backgroundColor: teme.bla }, { color: teme.color }]}
                   placeholder={t('slcdate')}
                   value={date}
                   onChangeText={(val) => handleInputChange(val, 'date')}
@@ -236,6 +239,7 @@ const NewReg = (props) => {
           return (
             <>
               <View style={[styles.container, { backgroundColor: teme.background }]}>
+                <Text style={styles.text}>¿Cuál es su tipo de sangre?</Text>
                 <TouchableOpacity onPress={() => setisModalVisible(true)}>
                   <Text style={[styles.textInput, { backgroundColor: teme.bla }, { color: teme.color }]}>
                     {type}
@@ -262,6 +266,7 @@ const NewReg = (props) => {
           return (
             <>
               <View style={[styles.container, { backgroundColor: teme.background }]}>
+                <Text style={styles.text}>¿Cuál es su género?</Text>
                 <TouchableOpacity onPress={() => setisModalVisibleg(true)}>
                   <Text style={[styles.textInput, { backgroundColor: teme.bla }, { color: teme.color }]}>
                     {gen}
@@ -288,6 +293,7 @@ const NewReg = (props) => {
           case 5: //email
             return (
               <View style={[styles.container, { backgroundColor: teme.background }]}>
+              <Text style={styles.text}>¿Cuál es su correo electronico?</Text>
               <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
                 placeholder= {t("wemail")}
                 value={email}
@@ -307,6 +313,7 @@ const NewReg = (props) => {
           case 6: //estado
             return(
               <View style={[styles.container, { backgroundColor: teme.background }]}>
+              <Text style={styles.text}>¿En que estado reside actualmente?</Text>
               <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
                 placeholder= {t("wstate")}
                 value={state}
@@ -326,6 +333,7 @@ const NewReg = (props) => {
           case 7: //ciudad-municipio
             return(
               <View style={[styles.container, { backgroundColor: teme.background }]}>
+                <Text style={styles.text}>¿En qué municipio reside actualmente?</Text>
               <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
                 placeholder= {t("wcity")}
                 value={city}
@@ -345,6 +353,7 @@ const NewReg = (props) => {
           case 8: //telefono(celular)
             return (
               <View style={[styles.container, { backgroundColor: teme.background }]}>
+                <Text style={styles.text}>¿Cuál es su número de telefono celular?</Text>
               <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
               placeholder= {t("wcelp")}
               value={phone}
@@ -363,6 +372,7 @@ const NewReg = (props) => {
           case 9: //Usuario
               return (
                 <View style={[styles.container, { backgroundColor: teme.background }]}>
+                  <Text style={styles.text}>¿Cuál será su nombre de usuario?</Text>
                 <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
                 placeholder= {t("wuser")}
                 value={user}
@@ -381,6 +391,7 @@ const NewReg = (props) => {
           case 10: //contraseña
             return (
               <View style={[styles.container, { backgroundColor: teme.background }]}>
+                <Text style={styles.text}>¿Cuál será su contraseña?</Text>
               <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
                 placeholder= {t("wpass")}
                 value={password}
@@ -400,6 +411,7 @@ const NewReg = (props) => {
           case 11: //confirmacion-contraseña
             return(
               <View style={[styles.container, { backgroundColor: teme.background }]}>
+                <Text style={styles.text}>Si desea continuar, favor de ingresar la misma contraseña</Text>
               <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
                 placeholder= {t("passconf")}
                 value={passcon}
@@ -408,7 +420,7 @@ const NewReg = (props) => {
                 error={errorPasscon}
                 defaultValue={passcon}
             />
-                <TouchableOpacity style={styles.calendar} onPress={handlePrevView}>
+                <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
                   <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
                 <ButtonGeneric text= {t("confr")}
@@ -442,6 +454,13 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#a3a3ff",
     },
+    text: {
+      marginTop: '15%',
+      fontStyle: 'italic',
+      fontWeight: 'bold',
+      fontSize: 20,
+      alignSelf: 'center'
+    },
     image: {
       marginTop: 10,
       marginVertical: 10,
@@ -450,8 +469,24 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       alignSelf: 'center'
   },
+  dateSelect: {
+        marginTop:'05%',
+        width:'83%',
+        height: 80,
+        borderRadius: 25,
+        marginVertical: 10,
+        fontWeight: 'bold',
+        fontStyle: 'italic',
+        fontSize: 18,
+        borderWidth:1,
+        textAlign: 'center',
+        borderColor: '#161238',
+        alignSelf: 'center',
+        backgroundColor: 'white',
+        alignItems: 'center',
+  },
     textInput: {
-        marginTop:'35%',
+        marginTop:'10%',
         width:'83%',
         height: 80,
         borderRadius: 25,
@@ -476,13 +511,18 @@ const styles = StyleSheet.create({
     calendar:{
         alignItems: 'center'
     },
+    calendar:{
+      alignItems: 'center'
+  },
     arrowright:{
       paddingRight: 50,
-      alignItems: 'flex-end'
+      alignItems: 'flex-end',
+      backgroundColor: 'red'
     },
     arrowleft:{
       paddingLeft: 50,
-      alignItems: 'flex-start'
+      alignItems: 'flex-start',
+      backgroundColor: 'green'
   },
     centeredView:{
         flex: 1,
