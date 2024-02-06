@@ -161,9 +161,11 @@ const NewReg = (props) => {
                     defaultValue={firstName}
 
                 />
+              <View style={styles.primeraView}>
                 <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
-                <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
-              </TouchableOpacity>
+                    <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
+                </TouchableOpacity>
+              </View>
             </View>
             </>
           );
@@ -179,12 +181,14 @@ const NewReg = (props) => {
                   error={errorLastname}
                   defaultValue={lastName}
                 />
-                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
-                <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
-                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
-                </TouchableOpacity>
+                <View style={styles.controlBoton}>
+                <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                    <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                    <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
+                  </TouchableOpacity>
+                </View>
             </View>
             </>
           );
@@ -227,12 +231,14 @@ const NewReg = (props) => {
                   </View>
                 </Modal>
               </View>
-              <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
-                <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+              <View style={styles.controlBoton}>
+                <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
                   <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
+                </TouchableOpacity>
+              </View>
             </>
           );
         case 3:
@@ -253,12 +259,14 @@ const NewReg = (props) => {
                 >
                   <ModalPicker changeModalVisibility={() => setisModalVisible(false)} setType={setType} />
                 </Modal>
-                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
-                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
-                </TouchableOpacity>
+                <View style={styles.controlBoton}>
+                  <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                    <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                    <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
+                  </TouchableOpacity>
+                </View>
               </View>
             </>
           );
@@ -280,13 +288,14 @@ const NewReg = (props) => {
                 >
                   <ModalPickerg changeModalVisibilitygen={() => setisModalVisibleg(false)} setGen={setGen} />
                 </Modal>
-                <TouchableOpacity style={styles.arrowright} onPress={
-                handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
-                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
-                </TouchableOpacity>
+                <View style={styles.controlBoton}>
+                  <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                    <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                    <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
+                  </TouchableOpacity>
+                </View>
               </View>
             </>
           );
@@ -301,13 +310,14 @@ const NewReg = (props) => {
                 error={errorEmail}
                 defaultValue={email}
             />
-            <TouchableOpacity style={styles.arrowright} onPress={
-                handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
-                </TouchableOpacity>
+              <View style={styles.controlBoton}>
                 <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
                   <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
+                </TouchableOpacity>
+              </View>
             </View>
             )
           case 6: //estado
@@ -321,13 +331,14 @@ const NewReg = (props) => {
                 error={errorState}
                 defaultValue={state}
             />
-            <TouchableOpacity style={styles.arrowright} onPress={
-                handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
-                </TouchableOpacity>
+              <View style={styles.controlBoton}>
                 <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
                   <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
+                </TouchableOpacity>
+              </View>
             </View>
             )
           case 7: //ciudad-municipio
@@ -341,13 +352,14 @@ const NewReg = (props) => {
                 error={errorCity}
                 defaultValue={city}
             />
-            <TouchableOpacity style={styles.arrowright} onPress={
-                handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
-                </TouchableOpacity>
+              <View style={styles.controlBoton}>
                 <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
                   <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
+                </TouchableOpacity>
+              </View>
             </View>
             )
           case 8: //telefono(celular)
@@ -361,12 +373,14 @@ const NewReg = (props) => {
               error={errorPhone}
               defaultValue={phone}
           />  
-                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
-                </TouchableOpacity>
+            <View style={styles.controlBoton}>
                 <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
                   <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
+                </TouchableOpacity>
+            </View>
           </View>
               )
           case 9: //Usuario
@@ -379,13 +393,15 @@ const NewReg = (props) => {
                 onChangeText={val => setUser(val)}
                 error={errorUser}
                 defaultValue={user}
-            /> 
-                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
-                </TouchableOpacity>
+            />
+              <View style={styles.controlBoton}>
                 <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
                   <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
+                </TouchableOpacity>
+              </View>
             </View>
               )
           case 10: //contraseña
@@ -400,12 +416,14 @@ const NewReg = (props) => {
                 error={errorPassword}
                 defaultValue={password}
             />
-                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
-                </TouchableOpacity>
+              <View style={styles.controlBoton}>
                 <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
                   <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
+                </TouchableOpacity>
+              </View>
             </View>
             )
           case 11: //confirmacion-contraseña
@@ -420,9 +438,11 @@ const NewReg = (props) => {
                 error={errorPasscon}
                 defaultValue={passcon}
             />
+              <View style={styles.controlBoton}>
                 <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
                   <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
+              </View>
                 <ButtonGeneric text= {t("confr")}
                     title='Logear'
                     onPress={() => registerUser(email,password,user,lastName,firstName,date,type,state,city,phone)}
@@ -509,20 +529,17 @@ const styles = StyleSheet.create({
         textAlign:"center"
     },
     calendar:{
-        alignItems: 'center'
-    },
-    calendar:{
-      alignItems: 'center'
+      alignItems: 'center',
   },
     arrowright:{
       paddingRight: 50,
       alignItems: 'flex-end',
-      backgroundColor: 'red'
+      justifyContent: 'center',
     },
     arrowleft:{
       paddingLeft: 50,
       alignItems: 'flex-start',
-      backgroundColor: 'green'
+      justifyContent: 'center'
   },
     centeredView:{
         flex: 1,
@@ -545,6 +562,16 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5
+    },
+    controlBoton:{
+      justifyContent: 'space-between',
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    primeraView: {
+      justifyContent: 'flex-end',
+      flexDirection: 'row',
+      alignItems: 'center'
     },
 });
 
