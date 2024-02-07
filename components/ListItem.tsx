@@ -1,7 +1,7 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import { StyleSheet, View, Text, Dimensions, ImageBackground } from 'react-native'
 import { TaskInterface } from '../screens/Home';
-import { PanGestureHandler, PanGestureHandlerGestureEvent, PanGestureHandlerProps } from 'react-native-gesture-handler';
+import { PanGestureHandler, PanGestureHandlerGestureEvent, PanGestureHandlerProps, ScrollView } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedGestureHandler,  useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import {
     FontAwesome5,
@@ -106,26 +106,32 @@ const ListItem: React.FC<ListItemProps> = ({task, onDimiss, simultaneousHandlers
         };
     })
 
+    const scrollRef = useRef(null);
+
     return (
         <Animated.View style={[styles.taskcontainer, rTaskContainerStyle]}>
              <Animated.View style={[width >= 800 ? styles.task: styles.tasksmall]}>
             <ImageBackground source={{uri:imagenes[1]}}  style={styles.image} imageStyle={{ borderRadius: 10}}></ImageBackground>
             </Animated.View>
-            <Animated.View style={[styles.iconContainerL, lIconContainerStyle]}>
+            <Animated.View style={[width >= 800 ? styles.iconContainerL : styles.iconContainerLsmall , lIconContainerStyle]}>
                 <MaterialCommunityIcons name="water-check" size={LIST_ITEM_HEIGHT*0.4} color={'#dc143c'}  />
             </Animated.View>
-            <Animated.View style={[styles.iconContainerR, rIconContainerStyle]}>
+            <Animated.View style={[width >= 800 ? styles.iconContainerR : styles.iconContainerRsmall, rIconContainerStyle]}>
                 <MaterialCommunityIcons name="water-remove" size={LIST_ITEM_HEIGHT*0.4} color={'#dc143c'}  />
             </Animated.View>
            
             <PanGestureHandler simultaneousHandlers={simultaneousHandlers} onGestureEvent={panGesture}>   
-                        <Animated.View style={[styles.textContainer, rStyle]}>
+                        <Animated.View style={[width >= 800 ? styles.textContainer :styles.textContainersmall , rStyle]}>
                         <Text style={[width >= 800 ? styles.tasktitle : styles.tasktitlesmall]}>{task.user}</Text>
                             <Animated.View>
                                 <Text style={[width >= 800 ? styles.tasktext : styles.tasktextsmall]}>Tipo: {task.tipo}</Text>
                                 <Text style={[width >= 800 ? styles.tasktext : styles.tasktextsmall]}>Municipio: {task.municipio}</Text>
-                                <Text style={[width >= 800 ? styles.taskdescpsmall : styles.taskdescpsmall]}>Descripción: {task.descripcion} </Text>
+                                <Text style={[width >= 800 ? styles.tasktext : styles.tasktextsmall]}>Descripción:</Text>
+                                <ScrollView ref={scrollRef} style={styles.ScrollView}>
+                                <Text style={styles.taskdescpsmall}>{task.descripcion} </Text>
+                                </ScrollView>
                             </Animated.View>
+
                 </Animated.View>
             </PanGestureHandler>
             
@@ -142,6 +148,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
 
     },
+    ScrollView:{
+        height: '50%',
+    },
     image: {
         flex: 1,
         justifyContent: 'flex-end',
@@ -152,7 +161,7 @@ const styles = StyleSheet.create({
     textContainer:{
         width: '85%',
         marginTop: '65%',
-        height: '35%',
+        height: '45%',
         position: 'absolute',
         //backgroundColor: 'rgba(255,255,255,0.5)',
         backgroundColor: 'white',
@@ -162,24 +171,37 @@ const styles = StyleSheet.create({
         elevation: 20,
         shadowColor: '#171717',
     },
+    textContainersmall:{
+        width: '85%',
+        marginTop: height*.3,
+        height: '50%',
+        position: 'absolute',
+        //backgroundColor: 'rgba(255,255,255,0.5)',
+        backgroundColor: 'white',
+        flexDirection: 'column',
+        borderRadius: 10,
+        padding: 20,
+        elevation: 20,
+        shadowColor: '#171717',
+    },
     tasksmall:{
         width: '60%',
-        height: '60%',
+        height: '70%',
         backgroundColor: 'white',
-        marginVertical: 10,
+        marginVertical: 5,
         justifyContent: 'center',
         borderRadius: 10,
     },
     task:{
         width: '60%',
-        height: 'auto',
+        height: '90%',
         backgroundColor: 'white',
         marginVertical: 10,
         justifyContent: 'center',
         borderRadius: 10,
     },
     tasktitlesmall: {
-        fontSize: 25,
+        fontSize: 20,
         fontFamily: 'Quicksand-Bold',
     },
     tasktextsmall: {
@@ -217,6 +239,26 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         top: '65%',
+    },
+    //Estilos del icono derecho
+    iconContainerRsmall:{
+        height:LIST_ICON_HEIGHT,
+        width:LIST_ICON_HEIGHT,
+        position: 'absolute',
+        left: width*.37,
+        justifyContent: 'center',
+        alignItems: 'center',
+        top: '45%',
+    },
+    //Estilos del icono izquierdo
+    iconContainerLsmall:{
+        height:LIST_ICON_HEIGHT,
+        width:LIST_ICON_HEIGHT,
+        position: 'absolute',
+        right: width*.37,
+        justifyContent: 'center',
+        alignItems: 'center',
+        top: '45%',
     }
 
 
