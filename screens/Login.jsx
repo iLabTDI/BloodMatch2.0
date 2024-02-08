@@ -68,7 +68,7 @@ const LogIn= (props) => {
         }
     
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, {backgroundColor: teme.background}]}>
             <Image source={PlaceImage} style={styles.image}/>
             <TextInput style = {[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]} 
                 placeholder="  Email"

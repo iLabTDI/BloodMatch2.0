@@ -429,7 +429,7 @@ const NewReg = (props) => {
           case 11: //confirmacion-contraseña
             return(
               <View style={[styles.container, { backgroundColor: teme.background }]}>
-                <Text style={styles.text}>Si desea continuar, favor de ingresar la misma contraseña</Text>
+                <Text style={styles.text}>Ingrese la misma contraseña</Text>
               <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
                 placeholder= {t("passconf")}
                 value={passcon}
