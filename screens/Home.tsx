@@ -27,6 +27,7 @@ const ESPACIO_LATERAL = (width - ANCHO_CONTENEDOR) / 2;
 const ESPACIO = 10;
 const ALTURA_BACKDROP = height * 0.5;
 
+
 const TITLES = [
   {'user':'Juan', 'tipo':'O+', 'municipio':'Guadalajara', 'descripcion':'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'}
 ];
@@ -98,14 +99,14 @@ function Home () {
   const teme = useContext(themeContext)
   const scrollRef = useRef(null)
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" />
-      <Text style={styles.title}>Ayuda a: </Text>
-      <Animated.View style={styles.Scrollcont}>
-        {tasks.map((task) => 
-        (<ListItem  key={task.index} task={task} onDimiss={onDismiss}/>))}
-      </Animated.View>
-    </SafeAreaView>
+      <View style = {[styles.container, , {backgroundColor: teme.background}]}> 
+        <StatusBar style="auto" />
+        <Text style={styles.title}>Ayuda a: </Text>
+        <Animated.View style={styles.Scrollcont}>
+          {tasks.map((task) => 
+          (<ListItem  key={task.index} task={task} onDimiss={onDismiss}/>))}
+        </Animated.View>
+      </View>
   );
   {/*
   ref={scrollRef} style={styles.Scrollcont}

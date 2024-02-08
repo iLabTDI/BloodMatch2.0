@@ -8,7 +8,7 @@ const darkMode = StyleSheet.create({
     light: {
       tema: 'light',
       color: "black",
-      background: '#a3a3ff',
+      background: '#C1121F',
       bla: 'white',
     },
     dark: {
