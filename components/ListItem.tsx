@@ -1,5 +1,5 @@
 import React, {useRef} from 'react'
-import { StyleSheet, View, Text, Dimensions, ImageBackground } from 'react-native'
+import { StyleSheet, View, Text, Dimensions, ImageBackground , Image} from 'react-native'
 import { TaskInterface } from '../screens/Home';
 import { PanGestureHandler, PanGestureHandlerGestureEvent, PanGestureHandlerProps, ScrollView } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedGestureHandler,  useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -114,10 +114,12 @@ const ListItem: React.FC<ListItemProps> = ({task, onDimiss, simultaneousHandlers
             <ImageBackground source={{uri:imagenes[1]}}  style={styles.image} imageStyle={{ borderRadius: 10}}></ImageBackground>
             </Animated.View>
             <Animated.View style={[width >= 800 ? styles.iconContainerL : styles.iconContainerLsmall , lIconContainerStyle]}>
-                <MaterialCommunityIcons name="water-check" size={LIST_ITEM_HEIGHT*0.4} color={'#dc143c'}  />
+                {/*<MaterialCommunityIcons name="water-check" size={LIST_ITEM_HEIGHT*0.4} color={'#dc143c'}  />*/}
+                <Image source={require('../images/donate.gif')}/>
             </Animated.View>
             <Animated.View style={[width >= 800 ? styles.iconContainerR : styles.iconContainerRsmall, rIconContainerStyle]}>
-                <MaterialCommunityIcons name="water-remove" size={LIST_ITEM_HEIGHT*0.4} color={'#dc143c'}  />
+                {/*<MaterialCommunityIcons name="water-remove" size={LIST_ITEM_HEIGHT*0.4} color={'#dc143c'}  />*/}
+                <Image source={require('../images/next.gif')}/>
             </Animated.View>
            
             <PanGestureHandler simultaneousHandlers={simultaneousHandlers} onGestureEvent={panGesture}>   
@@ -173,8 +175,8 @@ const styles = StyleSheet.create({
     },
     textContainersmall:{
         width: '85%',
-        marginTop: height*.3,
-        height: '50%',
+        marginTop: height*.35,
+        height: '55%',
         position: 'absolute',
         //backgroundColor: 'rgba(255,255,255,0.5)',
         backgroundColor: 'white',
@@ -248,7 +250,7 @@ const styles = StyleSheet.create({
         left: width*.37,
         justifyContent: 'center',
         alignItems: 'center',
-        top: '45%',
+        top: '49%',
     },
     //Estilos del icono izquierdo
     iconContainerLsmall:{
@@ -258,7 +260,7 @@ const styles = StyleSheet.create({
         right: width*.37,
         justifyContent: 'center',
         alignItems: 'center',
-        top: '45%',
+        top: '49%',
     }
 
 
