@@ -3,12 +3,23 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 
+{/*POSIBLES COLORES PARA EL FONDO DE LA APLICACION
+  #C1121F
+  #890620
+  #003049
+  #415A77
+  #598392
+  #B3C5D7
+  #735751
+  #C09891
+*/}
+
 // estilos para el darkMode y para el lightMode
 const darkMode = StyleSheet.create({
     light: {
       tema: 'light',
       color: "black",
-      background: '#C1121F',
+      background: '#C09891',
       bla: 'white',
     },
     dark: {

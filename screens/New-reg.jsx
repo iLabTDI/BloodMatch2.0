@@ -71,8 +71,12 @@ const NewReg = (props) => {
   
   //funcion creada para manejar la vista, esta nos permite ir hacia el frente hayamos ingresado o no datos (de momento)
     const handleNextView = () => {
-      if (currentView < totalViews - 1) {
-        setCurrentView(currentView + 1);
+      const isValid = ValidateInf()
+
+      if(isValid){
+        if (currentView < totalViews - 1) {
+          setCurrentView(currentView + 1);
+        }
       }
     };
 
@@ -145,6 +149,85 @@ const NewReg = (props) => {
         }
         console.log('okey')
     }
+
+  const ValidateInf = () => {
+      isValid = true;
+
+    //Validacion del nombre
+      if(!validateName(firstName)) {
+        setErrorFirstName("Debe de ingresar sus nombres válidos.")
+        isValid = isValid && false;
+        console.log(isValid)
+      }
+    //Validacion del apellido 
+      if(!validateName(lastName)) {
+        setErrorLastName("Debe de ingresar sus nombres válidos.")
+        isValid = false;
+        console.log(isValid)
+      }
+    //validacion fecha-nacimiento
+      if(!validateDate(date)) {
+        setErrorDate("Solo mayores de 18.")
+        isValid = false;
+        console.log(isValid)
+      }
+    //Validacion del email
+      if(!validateEmail(email)) {
+        setErrorEmail("Debe de ingresar un correo válido.")
+        isValid = false;
+        console.log(isValid)
+      }
+    //Validacion de genero 
+      if(!validateGender(gen)) {
+        setErrorGen("Favor de ingresar, masculino o femenino")
+        isValid = false;
+        console.log(isValid)
+      }
+    //validacion de estado
+      if(!StateVal(state)) {
+        setErrorState("Debe de ingresar un estado válido.")
+        isValid = false;
+        console.log(isValid)
+      }
+    //Validacion de municipio
+      if(!ValidateJalisco(city)) {
+        setErrorCity("Debe de ingresar una ciudad válido.")
+        isValid = false;
+        console.log(isValid)
+      }
+    //Validacion de telefono (celular)
+      if(!validatePhone(phone)) {
+        setErrorPhone("Debe de ingresar un numero celular válido.")
+        isValid = false;
+        console.log(isValid)
+      }
+    //Validacion del tipo de sangre
+      if(!Bloodtype(type)) {
+        setErrorType("Debe de ingresar un tipo de sangre válido.")
+        isValid = false;
+        console.log(isValid)
+      }
+    //Validacion nombre de usuario
+      if(!validateUser(user) || user.length<8) {
+        setErrorUser("Usuario ya existente.")
+        isValid = false;
+        console.log(isValid)
+      }
+    //Validacion de la contraseña
+      if(!validatePassword(password)) {
+        setErrorPassword("Debe de ingresar una contraseña válido.")
+        isValid = false;
+        console.log(isValid)
+      }
+    //Validacion de la confirmacion para la contraseña
+      if(ConfirmPass(passcon) && passcon !== password) {
+        setErrorPasscon("Debe de ingresar la misma contraseña.")
+        isValid = false;
+        console.log(isValid)
+      }
+
+      return isValid;
+  } 
   
     const renderView = ({firstName, lastName, email, date, type, gen, password, passcon, state, city, user, phone}) => {
       switch (currentView) {
@@ -154,13 +237,12 @@ const NewReg = (props) => {
             <View style={[styles.container, {backgroundColor: teme.background}]}>
               <Text style={styles.text}>¿Cuál es su nombre?</Text>
               <TextInput style={[styles.textInput, , {backgroundColor: teme.bla}, {color: teme.color}]}
-                    placeholder=        {t("wname")}
-                    value={firstName}
-                    onChangeText={val => setFirstName(val)}
-                    error={errorFirstName}
-                    defaultValue={firstName}
-
-                />
+                  placeholder= {t("wname")}
+                  value={firstName}
+                  onChangeText={val => setFirstName(val)}
+                  error={errorFirstName}
+                  defaultValue={firstName}
+              />
               <View style={styles.primeraView}>
                 <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
                     <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
@@ -173,16 +255,16 @@ const NewReg = (props) => {
           return(
             <>
             <View style={[styles.container, {backgroundColor: teme.background}]}>
-            <Text style={styles.text}>¿Cuáles son sus apellidos?</Text>
+              <Text style={styles.text}>¿Cuáles son sus apellidos?</Text>
               <TextInput style={[styles.textInput, , {backgroundColor: teme.bla}, {color: teme.color}]}
                   placeholder= {t("wlaname")}
                   value={lastName}
                   onChangeText={val => setLastName(val)}
                   error={errorLastname}
                   defaultValue={lastName}
-                />
+              />
                 <View style={styles.controlBoton}>
-                <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                  <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
                     <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
@@ -196,7 +278,7 @@ const NewReg = (props) => {
           return (
             <>
               <View style={[styles.container, { backgroundColor: teme.background }]}>
-              <Text style={styles.text}>¿Cuál es su fecha de nacimiento?</Text>
+                <Text style={styles.text}>¿Cuál es su fecha de nacimiento?</Text>
                 <TextInput
                   style={[styles.dateSelect, { backgroundColor: teme.bla }, { color: teme.color }]}
                   placeholder={t('slcdate')}
@@ -275,11 +357,11 @@ const NewReg = (props) => {
             <>
               <View style={[styles.container, { backgroundColor: teme.background }]}>
                 <Text style={styles.text}>¿Cuál es su género?</Text>
-                <TouchableOpacity onPress={() => setisModalVisibleg(true)}>
-                  <Text style={[styles.textInput, { backgroundColor: teme.bla }, { color: teme.color }]}>
-                    {gen}
-                  </Text>
-                </TouchableOpacity>
+                  <TouchableOpacity onPress={() => setisModalVisibleg(true)}>
+                    <Text style={[styles.textInput, { backgroundColor: teme.bla }, { color: teme.color }]}>
+                      {gen}
+                    </Text>
+                  </TouchableOpacity>
                 <Modal
                   transparent={true}
                   animationType="fade"
@@ -302,43 +384,43 @@ const NewReg = (props) => {
           case 5: //email
             return (
               <View style={[styles.container, { backgroundColor: teme.background }]}>
-              <Text style={styles.text}>¿Cuál es su correo electronico?</Text>
-              <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
-                placeholder= {t("wemail")}
-                value={email}
-                onChangeText={val => setEmail(val)}
-                error={errorEmail}
-                defaultValue={email}
-            />
-              <View style={styles.controlBoton}>
-                <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
-                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
-                </TouchableOpacity>
-              </View>
+                <Text style={styles.text}>¿Cuál es su correo electronico?</Text>
+                <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
+                  placeholder= {t("wemail")}
+                  value={email}
+                  onChangeText={val => setEmail(val)}
+                  error={errorEmail}
+                  defaultValue={email}
+                />
+                <View style={styles.controlBoton}>
+                  <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                    <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                    <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
+                  </TouchableOpacity>
+                </View>
             </View>
             )
           case 6: //estado
             return(
               <View style={[styles.container, { backgroundColor: teme.background }]}>
-              <Text style={styles.text}>¿En que estado reside actualmente?</Text>
-              <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
-                placeholder= {t("wstate")}
-                value={state}
-                onChangeText={val => setState(val)}
-                error={errorState}
-                defaultValue={state}
-            />
-              <View style={styles.controlBoton}>
-                <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
-                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
-                </TouchableOpacity>
-              </View>
+                <Text style={styles.text}>¿En que estado reside actualmente?</Text>
+                <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
+                  placeholder= {t("wstate")}
+                  value={state}
+                  onChangeText={val => setState(val)}
+                  error={errorState}
+                  defaultValue={state}
+                />
+                <View style={styles.controlBoton}>
+                  <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                    <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                    <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
+                  </TouchableOpacity>
+                </View>
             </View>
             )
           case 7: //ciudad-municipio
