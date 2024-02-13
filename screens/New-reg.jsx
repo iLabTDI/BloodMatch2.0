@@ -236,7 +236,7 @@ const NewReg = (props) => {
             <>
             <View style={[styles.container, {backgroundColor: teme.background}]}>
               <Text style={styles.text}>¿Cuál es su nombre?</Text>
-              <TextInput style={[styles.textInput, , {backgroundColor: teme.bla}, {color: teme.color}]}
+              <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
                   placeholder= {t("wname")}
                   value={firstName}
                   onChangeText={val => setFirstName(val)}
@@ -256,7 +256,7 @@ const NewReg = (props) => {
             <>
             <View style={[styles.container, {backgroundColor: teme.background}]}>
               <Text style={styles.text}>¿Cuáles son sus apellidos?</Text>
-              <TextInput style={[styles.textInput, , {backgroundColor: teme.bla}, {color: teme.color}]}
+              <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}
                   placeholder= {t("wlaname")}
                   value={lastName}
                   onChangeText={val => setLastName(val)}
@@ -535,7 +535,77 @@ const NewReg = (props) => {
           return null;
       }
     };
-  
+    
+    const handleView = () => {
+      switch(currentView){
+        case 0:
+          if(!validateName(firstName)){
+            setErrorFirstName("Debes de ingresar un nuevo nombre nuevamente")
+            return false;
+          }
+          break;
+        case 1:
+          if(!validateName(lastName)){
+            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+            return false;
+          }
+          break;
+        case 2:
+          if(!validateName(lastName)){
+            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+            return false;
+          }
+          break; 
+        case 3:
+          if(!validateName(lastName)){
+            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+            return false;
+          }
+          break;
+        case 4:
+          if(!validateName(lastName)){
+            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+            return false;
+          }
+          break;
+        case 5:
+          if(!validateName(lastName)){
+            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+            return false;
+          }
+          break;
+        case 6:
+          if(!validateName(lastName)){
+            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+            return false;
+          }
+          break;
+        case 7:
+          if(!validateName(lastName)){
+            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+            return false;
+          }
+          break;
+        case 8:
+          if(!validateName(lastName)){
+            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+            return false;
+          }
+          break;
+        case 9:
+          if(!validateName(lastName)){
+            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+            return false;
+          }
+          break;
+        case 10:
+          if(!validateName(lastName)){
+            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+            return false;
+          }
+          break;     
+      }
+    }
     return (
       <View style={[styles.container, { backgroundColor: teme.background }]}>
         <ScrollView style={{ width: '100%' }}>
@@ -550,7 +620,6 @@ const NewReg = (props) => {
     );
   };
   
-
 const styles = StyleSheet.create({
     container:{
         flex: 1,

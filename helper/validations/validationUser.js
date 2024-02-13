@@ -3,6 +3,7 @@ import {size} from "lodash";
 export function validateUser(user){
     if(user==''){
         console.error('campo vacio')
+        alert("Su nombre de usuario no es valido, ingregen¿ ")
         return null;
     }
     else if (size(user)<8) {

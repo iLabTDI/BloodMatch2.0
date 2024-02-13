@@ -13,10 +13,12 @@ export function ValidateJalisco(city){
 
     if(city==''){
       console.error('campo vacio')
+      alert("Ingresar una ciudad valida")
       return null
     }
     else if (!Jal.includes(city)){
         console.error('Ingresar una ciudad dentro del rango')
+        alert("Ingresar una ciudad valida")
         return null
     }
     return (city)
