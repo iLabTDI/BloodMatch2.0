@@ -71,13 +71,15 @@ const NewReg = (props) => {
   
   //funcion creada para manejar la vista, esta nos permite ir hacia el frente hayamos ingresado o no datos (de momento)
     const handleNextView = () => {
-      const isValid = ValidateInf()
+      //const isValid = ValidateInf()
 
-      if(isValid){
+      //if(isValid){
+      if(handleView()){
         if (currentView < totalViews - 1) {
           setCurrentView(currentView + 1);
         }
       }
+      //}
     };
 
  //Con esta funcion controlamos la regresion de las vistas se modifica totalViwes dependiendo del numero de vistas que existan la app
@@ -150,85 +152,6 @@ const NewReg = (props) => {
         console.log('okey')
     }
 
-  const ValidateInf = () => {
-      isValid = true;
-
-    //Validacion del nombre
-      if(!validateName(firstName)) {
-        setErrorFirstName("Debe de ingresar sus nombres válidos.")
-        isValid = isValid && false;
-        console.log(isValid)
-      }
-    //Validacion del apellido 
-      if(!validateName(lastName)) {
-        setErrorLastName("Debe de ingresar sus nombres válidos.")
-        isValid = false;
-        console.log(isValid)
-      }
-    //validacion fecha-nacimiento
-      if(!validateDate(date)) {
-        setErrorDate("Solo mayores de 18.")
-        isValid = false;
-        console.log(isValid)
-      }
-    //Validacion del email
-      if(!validateEmail(email)) {
-        setErrorEmail("Debe de ingresar un correo válido.")
-        isValid = false;
-        console.log(isValid)
-      }
-    //Validacion de genero 
-      if(!validateGender(gen)) {
-        setErrorGen("Favor de ingresar, masculino o femenino")
-        isValid = false;
-        console.log(isValid)
-      }
-    //validacion de estado
-      if(!StateVal(state)) {
-        setErrorState("Debe de ingresar un estado válido.")
-        isValid = false;
-        console.log(isValid)
-      }
-    //Validacion de municipio
-      if(!ValidateJalisco(city)) {
-        setErrorCity("Debe de ingresar una ciudad válido.")
-        isValid = false;
-        console.log(isValid)
-      }
-    //Validacion de telefono (celular)
-      if(!validatePhone(phone)) {
-        setErrorPhone("Debe de ingresar un numero celular válido.")
-        isValid = false;
-        console.log(isValid)
-      }
-    //Validacion del tipo de sangre
-      if(!Bloodtype(type)) {
-        setErrorType("Debe de ingresar un tipo de sangre válido.")
-        isValid = false;
-        console.log(isValid)
-      }
-    //Validacion nombre de usuario
-      if(!validateUser(user) || user.length<8) {
-        setErrorUser("Usuario ya existente.")
-        isValid = false;
-        console.log(isValid)
-      }
-    //Validacion de la contraseña
-      if(!validatePassword(password)) {
-        setErrorPassword("Debe de ingresar una contraseña válido.")
-        isValid = false;
-        console.log(isValid)
-      }
-    //Validacion de la confirmacion para la contraseña
-      if(ConfirmPass(passcon) && passcon !== password) {
-        setErrorPasscon("Debe de ingresar la misma contraseña.")
-        isValid = false;
-        console.log(isValid)
-      }
-
-      return isValid;
-  } 
-  
     const renderView = ({firstName, lastName, email, date, type, gen, password, passcon, state, city, user, phone}) => {
       switch (currentView) {
         case 0:
@@ -551,61 +474,68 @@ const NewReg = (props) => {
           }
           break;
         case 2:
-          if(!validateName(lastName)){
-            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+          if(!validateDate(date)){
+            setErrorDate("Debes de ingresar tus apellidos correctamente")
             return false;
           }
           break; 
         case 3:
-          if(!validateName(lastName)){
-            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+          if(!Bloodtype(type)){
+            setErrorType("Debes de ingresar tus apellidos correctamente")
             return false;
           }
           break;
         case 4:
-          if(!validateName(lastName)){
-            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+          if(!validateGender(gen)){
+            setErrorGen("Debes de ingresar tus apellidos correctamente")
             return false;
           }
           break;
         case 5:
-          if(!validateName(lastName)){
-            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+          if(!validateEmail(email)){
+            setErrorEmail("Debes de ingresar tus apellidos correctamente")
             return false;
           }
           break;
         case 6:
-          if(!validateName(lastName)){
-            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+          if(!StateVal(state)){
+            setErrorState("Debes de ingresar tus apellidos correctamente")
             return false;
           }
           break;
         case 7:
-          if(!validateName(lastName)){
-            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+          if(!ValidateJalisco(city)){
+            setErrorCity("Debes de ingresar tus apellidos correctamente")
             return false;
           }
           break;
         case 8:
-          if(!validateName(lastName)){
-            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+          if(!validatePhone(phone)){
+            setErrorPhone("Debes de ingresar tus apellidos correctamente")
             return false;
           }
           break;
         case 9:
-          if(!validateName(lastName)){
-            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+          if(!validateUser(user)){
+            setErrorUser("Debes de ingresar tus apellidos correctamente")
             return false;
           }
           break;
         case 10:
-          if(!validateName(lastName)){
-            setErrorLastName("Debes de ingresar tus apellidos correctamente")
+          if(!validatePassword(password)){
+            setErrorPassword("Debes de ingresar tus apellidos correctamente")
             return false;
           }
-          break;     
+          break;   
+        case 11:
+          if(!ConfirmPass(passcon)){
+            setErrorPasscon("Debes de ingresar tus apellidos correctamente")
+            return false;
+          }
+          break;   
       }
-    }
+      return true;
+    };
     return (
       <View style={[styles.container, { backgroundColor: teme.background }]}>
         <ScrollView style={{ width: '100%' }}>
