@@ -5,6 +5,9 @@ import { StyleSheet, SafeAreaView } from 'react-native';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import AuthNavigator from './navigation/AuthNavigator';
 import { useFonts } from 'expo-font';
+import {
+  GestureHandlerRootView,
+} from 'react-native-gesture-handler';
 import {EventRegister} from 'react-native-event-listeners';
 import themeContext from './helper/ThemeCon';
 import darkMode from './helper/DarkMode';
@@ -37,11 +40,13 @@ export default function App () {
     return null;
   }
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <themeContext.Provider value = {theme === true ? darkMode.dark : darkMode.light}>
       <NavigationContainer >
       {/*{isAuthenticated ? AuthNavigator : DrawerNavigation} */}
         <AuthNavigator/>
       </NavigationContainer>
     </themeContext.Provider>
+    </GestureHandlerRootView>
   );
 }

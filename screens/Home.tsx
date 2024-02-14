@@ -1,13 +1,11 @@
 import React, {useState, useContext, useCallback, useRef} from "react";
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Text, Image, 
-  TouchableOpacity, FlatList, Dimensions, SafeAreaView, Animated, Appearance } from 'react-native';
+import { StyleSheet, View, Text, Image, FlatList, Dimensions, SafeAreaView, Animated, Appearance } from 'react-native';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { LinearGradient } from "expo-linear-gradient";
 import themeContext from "../helper/ThemeCon";
 import ListItem from "../components/ListItem";
 import {
-  ScrollView,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 import { Item } from "react-native-paper/lib/typescript/components/Drawer/Drawer";
@@ -99,14 +97,19 @@ function Home () {
   const teme = useContext(themeContext)
   const scrollRef = useRef(null)
   return (
-      <View style = {[styles.container, , {backgroundColor: teme.background}]}> 
+    <LinearGradient
+          colors={['white', teme.background]}
+          style={styles.container}
+        >
+      {/*<View style = {[styles.container, , {backgroundColor: teme.background}]}>*/}
         <StatusBar style="auto" />
         <Text style={styles.title}>Ayuda a: </Text>
         <Animated.View style={styles.Scrollcont}>
           {tasks.map((task) => 
           (<ListItem  key={task.index} task={task} onDimiss={onDismiss}/>))}
         </Animated.View>
-      </View>
+      {/*</View>*/}
+      </LinearGradient>
   );
   {/*
   ref={scrollRef} style={styles.Scrollcont}
@@ -180,9 +183,8 @@ function Home () {
 
 export default ({ navigation }) => {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    
       <Home />
-    </GestureHandlerRootView>
   );
 };
 

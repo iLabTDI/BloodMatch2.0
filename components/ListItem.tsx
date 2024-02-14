@@ -109,17 +109,17 @@ const ListItem: React.FC<ListItemProps> = ({task, onDimiss, simultaneousHandlers
     const scrollRef = useRef(null);
 
     return (
-        <Animated.View style={[styles.taskcontainer, rTaskContainerStyle]}>
+    <Animated.View style={[styles.taskcontainer, rTaskContainerStyle]}>
              <Animated.View style={[width >= 800 ? styles.task: styles.tasksmall]}>
             <ImageBackground source={{uri:imagenes[1]}}  style={styles.image} imageStyle={{ borderRadius: 10}}></ImageBackground>
             </Animated.View>
             <Animated.View style={[width >= 800 ? styles.iconContainerL : styles.iconContainerLsmall , lIconContainerStyle]}>
                 {/*<MaterialCommunityIcons name="water-check" size={LIST_ITEM_HEIGHT*0.4} color={'#dc143c'}  />*/}
-                <Image source={require('../images/donate.gif')}/>
+                <Image source={require('../images/donate.png')} />
             </Animated.View>
             <Animated.View style={[width >= 800 ? styles.iconContainerR : styles.iconContainerRsmall, rIconContainerStyle]}>
                 {/*<MaterialCommunityIcons name="water-remove" size={LIST_ITEM_HEIGHT*0.4} color={'#dc143c'}  />*/}
-                <Image source={require('../images/next.gif')}/>
+                <Image source={require('../images/next.png')} />
             </Animated.View>
            
             <PanGestureHandler simultaneousHandlers={simultaneousHandlers} onGestureEvent={panGesture}>   
@@ -129,9 +129,9 @@ const ListItem: React.FC<ListItemProps> = ({task, onDimiss, simultaneousHandlers
                                 <Text style={[width >= 800 ? styles.tasktext : styles.tasktextsmall]}>Tipo: {task.tipo}</Text>
                                 <Text style={[width >= 800 ? styles.tasktext : styles.tasktextsmall]}>Municipio: {task.municipio}</Text>
                                 <Text style={[width >= 800 ? styles.tasktext : styles.tasktextsmall]}>Descripción:</Text>
-                                <ScrollView ref={scrollRef} style={styles.ScrollView}>
-                                <Text style={styles.taskdescpsmall}>{task.descripcion} </Text>
-                                </ScrollView>
+                                    <ScrollView ref={scrollRef} style={styles.ScrollView}>
+                                        <Text style={styles.taskdescpsmall}>{task.descripcion} </Text>
+                                    </ScrollView>
                             </Animated.View>
 
                 </Animated.View>
@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
         padding: 30,
         elevation: 20,
         shadowColor: '#171717',
+
     },
     textContainersmall:{
         width: '85%',
@@ -185,6 +186,7 @@ const styles = StyleSheet.create({
         padding: 20,
         elevation: 20,
         shadowColor: '#171717',
+        
     },
     tasksmall:{
         width: '60%',
@@ -261,9 +263,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         top: '49%',
-    }
-
-
+    }, 
 });
 
 export default ListItem;
