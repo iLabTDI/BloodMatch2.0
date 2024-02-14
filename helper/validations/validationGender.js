@@ -6,10 +6,12 @@ export function validateGender(gen){
     var genero = ['masculino', 'femenino']
     if(gen==''){
         console.error('campo vacio')
+        alert("Ingresar un genero valido")
         return null
     }
     else if (!genero.includes(gen)){
         console.error('Genero no valido, ingresar masculino o femenino')
+        alert("Ingresar un genero valido")
         return null
     } 
 

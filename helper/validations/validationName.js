@@ -3,9 +3,11 @@ import { size } from "lodash";
 export function validateName(firstName){
     if (firstName=='') {
         console.error('Campo vacio');
+        alert("Ingrese un nombre verdadero");
       }
     else if (size(firstName)<7) {
         console.error('Debee ingresar un nombre mayor a 8 caracteres')
+        alert("Debee ingresar un nombre mayor a 8 caracteres")
       }
       return (firstName)
 }
