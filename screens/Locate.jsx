@@ -16,6 +16,7 @@ const height = Dimensions.get("window").height;
 const Locate = ({ navigation }) => {
   const teme = useContext(themeContext) 
   return (
+    //Cambios Alex Robles
         //contenedor principal
         <View style={[styles.container, {backgroundColor: teme.background}]}>
             {/*Componente de para el mapa*/}
@@ -24,10 +25,10 @@ const Locate = ({ navigation }) => {
               provider={PROVIDER_GOOGLE}
               style={styles.container}
               initialRegion={{
-                latitude: 41.3995345,
-                longitude: 2.1909796,
-                latitudeDelta: 0.003,
-                longitudeDelta: 0.003,
+                latitude: 20.6596988,
+                longitude: -103.3496092,
+                latitudeDelta: 0.03,
+                longitudeDelta: 0.03,
               }}
               mapType="standard"
             > 
