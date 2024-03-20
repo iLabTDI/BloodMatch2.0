@@ -23,8 +23,9 @@ const LogIn = (props) => {
         try {
             const { data, error } = await supabase
                 .from('usuarios')
-                .select('')
-                .eq('UserName', user);
+                .select('*')
+                //.eq('UserName',user)
+                //.eq('UserName', user);
                 
             if (error) {
                 return;
