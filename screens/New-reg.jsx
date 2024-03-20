@@ -1,9 +1,10 @@
-import React, {useState, useContext} from "react";
-import { StyleSheet, View, TextInput, Text, Button, TouchableOpacity, Modal, ScrollView, Image} from "react-native";
+import React, {useState, useContext, useEffect} from "react";
+import { Alert, StyleSheet, View, TextInput, Text, Button, TouchableOpacity, Modal, ScrollView, Image} from "react-native";
 import DatePicker from "react-native-modern-datepicker"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 //Validaciones
+
 import { validateName } from '../helper/validations/validationName';
 import { validatePassword } from "../helper/validations/validationPassw";
 import { validateEmail } from "../helper/validations/validationEmail";
@@ -35,6 +36,8 @@ const NewReg = (props) => {
     const { t } = useTranslation();
     const { navigation } = props;
     const teme = useContext(themeContext);
+
+    const [registroCompleto, setRegistroCompleto] = useState(false);
   
     const [gen, setGen] = useState(t('slcgen'));
     const [type, setType] = useState(t('slctype'));
@@ -70,17 +73,29 @@ const NewReg = (props) => {
     const totalViews = 13; // Número total de vistas de nuestra app
   
   //funcion creada para manejar la vista, esta nos permite ir hacia el frente hayamos ingresado o no datos (de momento)
-    const handleNextView = () => {
-      //const isValid = ValidateInf()
-
-      //if(isValid){
-      if(handleView()){
-        if (currentView < totalViews - 1) {
+  const handleNextView = () => {
+    // Verificar que se hayan ingresado todos los datos antes de pasar a la siguiente vista
+    if (currentView === totalViews - 1) {
+      // Verificar que la contraseña no sea nula antes de registrar al usuario
+      if (password === '') {
+        Alert.alert(
+          "Error",
+          "Debes ingresar una contraseña",
+          [{ text: "OK", onPress: () => {} }]
+        );
+      } else {
+        if(handleView()){
           setCurrentView(currentView + 1);
         }
       }
-      //}
-    };
+    } else {
+      // Si no estamos en la última vista, simplemente pasamos a la siguiente
+      if(handleView()){
+        setCurrentView(currentView + 1);
+      }
+    }
+  };
+  
 
  //Con esta funcion controlamos la regresion de las vistas se modifica totalViwes dependiendo del numero de vistas que existan la app
     const handlePrevView = () => {
@@ -112,51 +127,45 @@ const NewReg = (props) => {
     const handleOnChange = () => {
       setOpen(true);
     };
-
-    const subida = async (email,password,usuario,lastName,firstName,date,type,state,city,phone) => {
-      try {
-          console.log("Datos recibidos: ", password, email,usuario,lastName,firstName,date,type,state,city,phone);
-          const { user, error } = await supabase.auth.signUp({
-            email: email,
-            password: password,
-          });
-          if (error) {
-            console.log(error);
-          } else {
-            const { data, error } = await supabase.auth.signInWithPassword({
-                  email: email,
-                  password: password,
-            })
-            const UID =  data.user.id;
-            console.log("New user data:", UID);
-            New_User(UID,email,usuario,lastName,firstName,date,type,state,city,phone);
-            navigation.navigate('Home');
-
-                      }
-        } catch (error) {
-          console.error("Error en handleLogin:", error);
-        }
-  };     
+  
+  useEffect(() => {
+    verificarRegistroCompleto();
+  }, [firstName, lastName, email, date, type, gen, password, passcon, state, city, user, phone]);
 
   //Funcion creada para validar que los datos ingresados sean correctos y pasar a la subida del usuario a la base de datos
-  const registerUser = async(email, password,user,lastName,firstName,date,type,state,city,phone) =>{
-//        if (!validateData()) {
-//         return;
-//         }
-        try {
-          await subida(email,password,user,lastName,firstName,date,type,state,city,phone);
-          console.log("Registro exitoso")
-        } catch (error) {
-          console.error("Error al registrar al usuario, intentar de nuevo", error)
-        }
-        console.log('okey')
-    }
+  const registerUser = () => {
+    const registroData = {
+      Email: email,
+      FirstName: firstName, 
+      LastName: lastName, 
+      Birthdate: date, 
+      Blood_Type: type, 
+      Sexo: gen, 
+      password, 
+      State: state, 
+      City: city, 
+      Phone: phone,
+      UserName: user
+    };
 
-    const renderView = ({firstName, lastName, email, date, type, gen, password, passcon, state, city, user, phone}) => {
-      switch (currentView) {
-        case 0:
-          return(
-            <>
+    New_User(registroData);
+
+    navigation.push('Login', { registroData });
+  };
+
+  const verificarRegistroCompleto = () => {
+    if (firstName && lastName && email && date && type && gen && password && passcon && state && city && user && phone) {
+      setRegistroCompleto(true);
+    } else {
+      setRegistroCompleto(false);
+    }
+  };
+
+  const renderView = ({firstName, lastName, email, date, type, gen, password, passcon, state, city, user, phone}) => {
+    switch (currentView) {
+      case 0:
+        return(
+          <>
             <View style={[styles.container, {backgroundColor: teme.background}]}>
               <Text style={styles.text}>¿Cuál es su nombre?</Text>
               <TextInput style={[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]}

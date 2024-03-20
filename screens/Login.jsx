@@ -1,112 +1,97 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { StatusBar } from 'expo-status-bar';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, View, Image, TextInput, TouchableOpacity, Text, Alert } from 'react-native';
 import { ButtonGeneric } from '../components/Buttons';
-import {validateEmail} from '../helper/validations/validationEmail';
-import {validatePassword} from '../helper/validations/validationPassw';
+import { validateUser } from '../helper/validations/validationUser';
+import { validatePassword } from '../helper/validations/validationPassw';
 import { size } from "lodash";
 import { useTranslation } from "react-i18next";
 import themeContext from "../helper/ThemeCon";
-import { Session } from '@supabase/supabase-js'
-import { supabase } from '../lib/supabase'
+import { supabase } from '../lib/supabase';
+
 const PlaceImage = require('../assets/logotipo.png');
 
+const LogIn = (props) => {
+    const { navigation } = props;
+    const { t } = useTranslation();
+    const theme = useContext(themeContext);
+    const [user, setUser] = useState("");
+    const [password, setPassword] = useState("");
+    const [errorUserName, setErrorUserName] = useState("");
+    const [errorPassword, setErrorPassword] = useState("");
 
-const LogIn= (props) => {
-    const {t} = useTranslation(); //variable utilizada para traducir el texto de español al ingles y viceversa
-    const {navigation} = props;
-    const teme = useContext(themeContext); // variable utilizada para aplicar los estilos a las pantallas del darkMode
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const DoSignIn = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('usuarios')
+                .select('')
+                .eq('UserName', user);
+                
+            if (error) {
+                return;
+            }
 
-    const [errorEmail, setErrorEmail] = useState("")
-    const [errorPassword, setErrorPassword] = useState("")
+            const usuario = data[0];
 
+            if (usuario && usuario.password === password) {
+                navigation.push('Home');
+            } else {
+                Alert.alert('Error', 'Usuario o contraseña incorrectos.');
+            }
 
-    useEffect(() => {
-      supabase.auth.onAuthStateChange(async (event, session) => {
-        if (session) {
-          try {
-            const data = session.user;
-            const userUserId = data.id;
-            navigation.navigate('Home');
-          } catch (error) {
-            console.error('Error al obtener los códigos:', error);
-          }
+        } catch (error) {
+            console.error("Error en el inicio de sesión:", error);
         }
-      });
-      }, [navigation]);
-    const DoSigIn = async(username, password) =>{
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: username,
-          password: password,
-        })
-      }catch (error){
-        console.error(error);
-      }
-    }
-    //modificar esto para utilizar bien la base de datos
-      const validateData = () => {
-        
-          let isValid = true
-        {
-          if(!validateEmail(email)) {
-              setErrorEmail("Debe de ingresar un correo válido.")
-              isValid = false
-          }
-  
-          if(!validatePassword(password) || size(password)<8) {
-              setErrorPassword("Debe de ingresar una contraseña válido.")
-              isValid = false
-          }
-        }
-         //navigation.navigate('Home')
+    };
 
-          console.log(isValid)
-          return isValid
+    const validateData = () => {
+        let isValid = true;
+
+        if (!validateUser(user)) {
+            setErrorUserName("Debe ingresar un nombre de usuario válido.");
+            isValid = false;
         }
-    
+
+        if (!validatePassword(password) || size(password) < 8) {
+            setErrorPassword("Debe ingresar una contraseña válida.");
+            isValid = false;
+        }
+
+        return isValid;
+    };
+
     return (
-        <View style={[styles.container, {backgroundColor: teme.background}]}>
-            <Image source={PlaceImage} style={styles.image}/>
-            <TextInput style = {[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]} 
-                placeholder="  Email"
-                value={email}
-                onChangeText={val => setEmail(val)}
-                error={errorEmail}
-                defaultValue={email}
-            />{/* Utilizacion del darkmode cambiando el fondo del cuadro de texto y el color de la letra*/} 
-            <TextInput style = {[styles.textInput, {backgroundColor: teme.bla}, {color: teme.color}]} 
-                placeholder= "  Contraseña"
-                password = {true}
+        <View style={[styles.container, { backgroundColor: theme.background }]}>
+            <Image source={PlaceImage} style={styles.image} />
+            <TextInput
+                style={[styles.textInput, { backgroundColor: theme.bla }, { color: theme.color }]}
+                placeholder="Usuario"
+                value={user}
+                onChangeText={val => setUser(val)}
+                error={errorUserName}
+            />
+            <TextInput
+                style={[styles.textInput, { backgroundColor: theme.bla }, { color: theme.color }]}
+                placeholder="Contraseña"
                 secureTextEntry={true}
                 value={password}
                 onChangeText={val => setPassword(val)}
                 error={errorPassword}
-                defaultValue={password}
             />
-
-            <TouchableOpacity style={{marginEnd:'10%', alignSelf:'flex-end'}}
-                onPress={() => registerUser()}>
-                <Text style={styles.textLink}>{t("fpass")}</Text>
+            <ButtonGeneric
+                text={t("log-in")}
+                onPress={() => {
+                    if (validateData()) {
+                        DoSignIn();
+                    }
+                }}
+            />
+            <TouchableOpacity style={styles.regisButton} onPress={() => { navigation.navigate('new-reg') }}>
+                <Text style={{ ...styles.textLink, marginStart: '40%' }}>{t("rgst")}</Text>
             </TouchableOpacity>
-            
-            <ButtonGeneric text= {t("log-in")}
-                onPress = {() => DoSigIn(email,password) 
-                } 
-            />
-            <TouchableOpacity style={styles.regisButton} onPress = {() => { navigation.navigate('new-reg') } } > 
-                <Text style={{...styles.textLink, marginStart:'40%'}}>{t("rgst")}</Text>
-            </TouchableOpacity> 
-            <StatusBar style="auto" />        
         </View>
+    );
+};
 
-      );
-}
-
-// en iniciar sesión se manda llamar la función DoSigIn
-    
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -120,7 +105,7 @@ const styles = StyleSheet.create({
         height: 310,
     },
     textInput: {
-        width:'83%',
+        width: '83%',
         height: 40,
         borderRadius: 10,
         marginVertical: 7,
@@ -146,4 +131,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default LogIn
+export default LogIn;
