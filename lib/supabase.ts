@@ -3,6 +3,7 @@ import Constants from 'expo-constants';
 import 'react-native-url-polyfill/auto'
 import * as SecureStore from 'expo-secure-store'
 import { createClient } from '@supabase/supabase-js'
+const url="https://fvrbxlqmqpxrjrsqtlnw.supabase.co/storage/v1/object/public/prueba/cr7.jpg"
 
 const ExpoSecureStoreAdapter = {
   getItem: (key: string) => {
@@ -28,3 +29,18 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
       detectSessionInUrl: false,
     },
   })
+  //function to update images to storage in sopabase
+ export  async function uploadFile(file) {
+ 
+  console.log(file);
+
+    const { data, error } = await supabase.storage.from('prueba').upload('imageWeb37.jpg', file,{contentType:"image/jpg"})
+    if (error) {
+      console.log("error",error)
+    } else {
+      // Handle success
+      console.log("correct",data)
+    }
+  }
+
+  //uploadFile()

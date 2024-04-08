@@ -1,13 +1,15 @@
-import React, {useState, useContext, useEffect} from "react";
-import { Alert, StyleSheet, View, TextInput, Text, Button, TouchableOpacity, Modal, ScrollView, Image} from "react-native";
+import React, {useState, useContext, useEffect} from "react";import { StatusBar } from 'expo-status-bar';
+import { Alert, StyleSheet, View, TextInput, Text, Button, TouchableOpacity, Modal, ScrollView, Image,Dimensions} from "react-native";
 import DatePicker from "react-native-modern-datepicker"
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+//import * as ImagePicker from 'expo-image-picker';
 
 //Validaciones
-
+import  { setGlobalImage } from "../backend/querys/inserts/New_Image";
+import  { getGlobalImage } from "../backend/querys/inserts/New_Image";
 import { validateName } from '../helper/validations/validationName';
 import { validatePassword } from "../helper/validations/validationPassw";
-import { validateEmail } from "../helper/validations/validationEmail";
+//import { validateEmail } from "../helper/validations/validationEmail";
 import { validatePhone } from "../helper/validations/validationPhone"
 import { ValidateJalisco } from "../helper/validations/validationCity"
 import { validateDate } from "../helper/validations/validationDate"
@@ -22,7 +24,7 @@ import themeContext from "../helper/ThemeCon";
 import 'react-native-url-polyfill/auto';
 
 //Agregar para subir foto
-
+import * as ImagePicker from 'expo-image-picker';
 import { ButtonGeneric } from '../components/Buttons';
 import Picker from "react-native-picker";
 import { useIsFocused } from "@react-navigation/core";
@@ -30,7 +32,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { supabase } from "../lib/supabase";
 import New_User from "../backend/querys/inserts/New_User";
+
+import Customer from "./Customer";
+const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
+
 const PlaceImage = require('../assets/logotipo.png');
+//apartado para seleccionar la imagen
+
 
 const NewReg = (props) => {
     const { t } = useTranslation();
@@ -38,7 +47,7 @@ const NewReg = (props) => {
     const teme = useContext(themeContext);
 
     const [registroCompleto, setRegistroCompleto] = useState(false);
-  
+    const [image, setImage] = useState(require('../images/user.png'));
     const [gen, setGen] = useState(t('slcgen'));
     const [type, setType] = useState(t('slctype'));
     const [open, setOpen] = useState(false);
@@ -52,6 +61,7 @@ const NewReg = (props) => {
     const [email, setEmail] = useState("")
     const [state, setState] = useState("")
     const [city, setCity] = useState("")
+    const[url,setUrl] = useState("")
 
     const [errorType, setErrorType] = useState('');
     const [errorGen, setErrorGen] = useState('');
@@ -65,14 +75,33 @@ const NewReg = (props) => {
     const [errorEmail, setErrorEmail] = useState("")
     const [errorState, setErrorState] = useState("")
     const [errorCity, setErrorCity] = useState("")
+    const imageExtern=getGlobalImage("images");
   
     const [isModalVisible, setisModalVisible] = useState(false);
     const [isModalVisibleg, setisModalVisibleg] = useState(false);
   
     const [currentView, setCurrentView] = useState(0);
-    const totalViews = 13; // Número total de vistas de nuestra app
+  
+    const totalViews = 16; // Número total de vistas de nuestra app
+   
   
   //funcion creada para manejar la vista, esta nos permite ir hacia el frente hayamos ingresado o no datos (de momento)
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+      allowsEditing: true
+    });
+    console.log(" lo que imprime es",result.uri);
+    if (!result.cancelled) {
+      console.log("lo que se va a enviar es=",result.uri);
+      setGlobalImage("images",result.uri);
+      Alert.alert("imagen guardada");
+      
+      
+  
+    }
+  };
   const handleNextView = () => {
     // Verificar que se hayan ingresado todos los datos antes de pasar a la siguiente vista
     if (currentView === totalViews - 1) {
@@ -83,6 +112,7 @@ const NewReg = (props) => {
           "Debes ingresar una contraseña",
           [{ text: "OK", onPress: () => {} }]
         );
+
       } else {
         if(handleView()){
           setCurrentView(currentView + 1);
@@ -141,14 +171,22 @@ const NewReg = (props) => {
       Birthdate: date, 
       Blood_Type: type, 
       Sexo: gen, 
-      password, 
+      password:password, 
       State: state, 
       City: city, 
       Phone: phone,
       UserName: user
     };
+    //console.log(registroData)
+    //New_User(registroData);
+    console.log("la imagen enviada es",imageExtern)
+    New_User(email, firstName, lastName, date, type, gen, password, state, city,phone, user,imageExtern);
+   
+    //Customer(email);
 
-    New_User(registroData);
+    //New_User('raufalfonso@gmail.com', 'A', 'Hehshs', '2024/03/21', 'AB+', 'Masculino', 'password', 'Jalisco', 'Guad', '3320740052', 'Rauf453');
+
+    
 
     navigation.push('Login', { registroData });
   };
@@ -162,6 +200,8 @@ const NewReg = (props) => {
   };
 
   const renderView = ({firstName, lastName, email, date, type, gen, password, passcon, state, city, user, phone}) => {
+  
+    console.log("la imagen tiene",imageExtern);
     switch (currentView) {
       case 0:
         return(
@@ -183,6 +223,7 @@ const NewReg = (props) => {
             </View>
             </>
           );
+       
         case 1:
           return(
             <>
@@ -202,7 +243,7 @@ const NewReg = (props) => {
                   <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
                     <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
                   </TouchableOpacity>
-                </View>
+          </View>
             </View>
             </>
           );
@@ -321,8 +362,8 @@ const NewReg = (props) => {
                   placeholder= {t("wemail")}
                   value={email}
                   onChangeText={val => setEmail(val)}
-                  error={errorEmail}
-                  defaultValue={email}
+                  //error={errorEmail}
+                  //defaultValue={email}
                 />
                 <View style={styles.controlBoton}>
                   <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
@@ -453,16 +494,58 @@ const NewReg = (props) => {
                 defaultValue={passcon}
             />
               <View style={styles.controlBoton}>
+               
+                <View style={styles.controlBoton}>
                 <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
                   <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
+                </TouchableOpacity>
+               
               </View>
-                <ButtonGeneric text= {t("confr")}
-                    title='Logear'
-                    onPress={() => registerUser(email,password,user,lastName,firstName,date,type,state,city,phone)}
-                />
+              </View>
+               
             </View>
             )
+            case 12:// select the image 
+              return(
+                
+          <View style={[styles.contImage, width >= 800 ? styles.contImageGnde : styles.contImage]}>
+          <StatusBar hidden={true} />
+          <Text style={styles.text}>Seleccione una imagen</Text>
+          <TouchableOpacity style={styles.editimage} onPress={pickImage}>
+            <MaterialCommunityIcons name="pencil-plus-outline" color={'#000000'} size={30} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
+                  <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
+                </TouchableOpacity>
+                <ButtonGeneric text= {t("confr")}
+            title='Logear'
+            onPress={() => registerUser(email,password,user,lastName,firstName,date,type,state,city,phone,imageExtern)}
+        />
+                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
+                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
+                </TouchableOpacity>
+              
+   
+        </View>
+        
+        
+          )
+          case 13:
+
+          return(
+            <ButtonGeneric text= {t("confr")}
+            title='Logear'
+            onPress={() => registerUser(email,password,user,lastName,firstName,date,type,state,city,phone,imageExtern)}
+        />
+          );
+
+            
+            
+            
+               
         default:
           return null;
       }
@@ -501,22 +584,22 @@ const NewReg = (props) => {
           }
           break;
         case 5:
-          if(!validateEmail(email)){
-            setErrorEmail("Debes de ingresar tus apellidos correctamente")
-            return false;
-          }
+          //if(!validateEmail(email)){
+           // setErrorEmail("Debes de ingresar tus apellidos correctamente")
+            //return false;
+         // }
           break;
         case 6:
-          if(!StateVal(state)){
+          /*if(!StateVal(state)){
             setErrorState("Debes de ingresar tus apellidos correctamente")
             return false;
-          }
+          }*/
           break;
         case 7:
-          if(!ValidateJalisco(city)){
+          /*if(!ValidateJalisco(city)){
             setErrorCity("Debes de ingresar tus apellidos correctamente")
             return false;
-          }
+          }*/
           break;
         case 8:
           if(!validatePhone(phone)){
@@ -525,16 +608,17 @@ const NewReg = (props) => {
           }
           break;
         case 9:
-          if(!validateUser(user)){
+          /*if(!validateUser(user)){
             setErrorUser("Debes de ingresar tus apellidos correctamente")
             return false;
-          }
+          }*/
           break;
         case 10:
+          /*
           if(!validatePassword(password)){
             setErrorPassword("Debes de ingresar tus apellidos correctamente")
             return false;
-          }
+          }*/
           break;   
         case 11:
           if(!ConfirmPass(passcon)){
@@ -559,6 +643,7 @@ const NewReg = (props) => {
     );
   };
   
+  
 const styles = StyleSheet.create({
     container:{
         flex: 1,
@@ -572,13 +657,15 @@ const styles = StyleSheet.create({
       alignSelf: 'center'
     },
     image: {
-      marginTop: 10,
-      marginVertical: 10,
-      width: 180,
-      height: 210,
-      alignItems: 'center',
-      alignSelf: 'center'
-  },
+      alignSelf: 'center',
+      width: 200, // Define un ancho
+      height: 200, // Define un alto
+      resizeMode: 'contain' // Esto es para asegurar que la imagen se escale correctamente.
+    },
+    editimage: {
+      alignSelf: 'center',
+    },
+    
   dateSelect: {
         marginTop:'05%',
         width:'83%',

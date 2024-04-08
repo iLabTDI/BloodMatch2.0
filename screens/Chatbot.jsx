@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Platform, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import intentsData from '../screens/conversacion.json';
+import intentsData from '../screens/intents.json';
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -23,7 +23,7 @@ const Chat = () => {
         user: {
           _id: 2,
           name: 'Blood Besti',
-          avatar: 'https://www.gaceta.udg.mx/wp-content/uploads/2022/05/tp.cucei_ilg-scaled.jpg',
+          avatar: require('../assets/bot.jpeg'),
         },
       };
       setMessages(previousMessages => GiftedChat.append(previousMessages, [botMessage]));
@@ -36,7 +36,7 @@ const Chat = () => {
         user: {
           _id: 2,
           name: 'Blood Besti',
-          avatar: 'https://www.gaceta.udg.mx/wp-content/uploads/2022/05/tp.cucei_ilg-scaled.jpg',
+          avatar: require('../assets/bot.jpeg'),
         },
       };
       setMessages(previousMessages => GiftedChat.append(previousMessages, [botMessage]));

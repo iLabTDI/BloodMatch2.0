@@ -58,7 +58,7 @@ export default function AuthNavigator() {
             <Stack.Screen
                 name = 'Chat'
                 component = { Chat }
-                //options={{ headerShown: false}} 
+                options={{ headerShown: false}} 
             />
             <Stack.Screen
                 name = {t("termycondi")}

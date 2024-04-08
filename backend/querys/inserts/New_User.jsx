@@ -1,32 +1,37 @@
 // USER INSERT
 import { supabase } from "../../../lib/supabase";
 
-const New_User = async (UID, correo, user, apellidos, nombre, FechaNacimiento, tipoSangre, estado, muni, telefono) => {
+const New_User = async ( Email,firstName,lastName,date,type,gen,password,state,city,phone,user,imageExtern) => {
   try {
+        console.log("el email es",Email)
         const { data, error } = await supabase
-          .from('users')
+          .from('usuarios')
           .insert([
             {
-              id: UID,
-              email: correo,
-              username: user,
-              last_name: apellidos,
-              first_name: nombre,
-              birthdate: FechaNacimiento,
-              blood_type: tipoSangre,
-              state: estado,
-              municipio: muni,
-              telephone: telefono,
+              Email: Email,
+              FirstName: firstName, 
+              LastName: lastName, 
+              Birthdate: date, 
+              Blood_Type: type, 
+              Sexo: gen, 
+              password:password, 
+              State: state, 
+              City: city, 
+              Phone: phone,
+              UserName: user,
+              url: imageExtern,
+
             },
           ])
           .select();
+          //console.log(data)
         if (error) {
           console.error('Error al insertar datos:', error);
         } else {
           console.log('Datos insertados con éxito:', data);
         }
       } catch (error) {
-        console.error('Error al insertar datos:', error.message);
+        console.error('Error al insertar datos 1:', error.message);
       }
     };
 

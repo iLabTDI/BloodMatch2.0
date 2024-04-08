@@ -7,6 +7,10 @@ import { size } from "lodash";
 import { useTranslation } from "react-i18next";
 import themeContext from "../helper/ThemeCon";
 import { supabase } from '../lib/supabase';
+import Customfer from "./Customer";
+import  { setGlobalData } from "../backend/querys/inserts/New_email";
+import { getGlobalData } from '../backend/querys/inserts/New_email';
+
 
 const PlaceImage = require('../assets/logotipo.png');
 
@@ -16,16 +20,20 @@ const LogIn = (props) => {
     const theme = useContext(themeContext);
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
+    const [email,setEmail] = useState("");
     const [errorUserName, setErrorUserName] = useState("");
     const [errorPassword, setErrorPassword] = useState("");
 
     const DoSignIn = async () => {
         try {
+            console.log(user)
+            console.log(password)
             const { data, error } = await supabase
                 .from('usuarios')
                 .select('*')
-                //.eq('UserName',user)
-                //.eq('UserName', user);
+                .eq('UserName',user)
+                .eq('password',password);
+                
                 
             if (error) {
                 return;
@@ -34,6 +42,16 @@ const LogIn = (props) => {
             const usuario = data[0];
 
             if (usuario && usuario.password === password) {
+                
+                
+         
+               console.log("se le pasa este usuario=",user);
+                setGlobalData('usuario', user);// en caso de que la contrasena y el usuario sean validos pasamos los datos para utilizarlos despues
+               
+                
+                
+
+
                 navigation.push('Home');
             } else {
                 Alert.alert('Error', 'Usuario o contraseña incorrectos.');
@@ -43,6 +61,27 @@ const LogIn = (props) => {
             console.error("Error en el inicio de sesión:", error);
         }
     };
+
+    const print = async () => {
+        try {
+            const { data, error } = await supabase.from('usuarios').select('*');
+    
+            if (error) {
+                throw error;
+            }
+    
+            if (!data || data.length === 0) {
+                console.log("No se encontraron datos.");
+                // Podrías mostrar un mensaje aquí si lo deseas.
+            } else {
+                console.log("Datos recibidos:", data);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            // Aquí podrías mostrar un mensaje de error si lo deseas.
+        }
+    }
+    
 
     const validateData = () => {
         let isValid = true;
@@ -81,9 +120,11 @@ const LogIn = (props) => {
             <ButtonGeneric
                 text={t("log-in")}
                 onPress={() => {
-                    if (validateData()) {
+                    //if (validateData()) {
                         DoSignIn();
-                    }
+                        //print();
+
+                   // }
                 }}
             />
             <TouchableOpacity style={styles.regisButton} onPress={() => { navigation.navigate('new-reg') }}>

@@ -1,0 +1,45 @@
+{
+    "intents": [
+      {
+        "tag": "saludo",
+        "patterns": ["Hola", "hola", "¿Cómo estás?", "como estas", "Buenos días", "buenos dias", "¿Qué tal?", "Saludos", "Podrías ayudarme"],
+        "responses": ["Hola como estas"]
+      },
+      {
+        "tag": "preguntar_edad",
+        "patterns": ["Cuántos años tienes", "Edad", "Que edad tienes", "Cuál es tu edad"],
+        "responses": ["Tengo 25 años."]
+      },
+      {
+        "tag": "ubicacion",
+        "patterns": ["Dónde vives", "Ubicación", "Cuál es tu ubicación", "En qué lugar estás"],
+        "responses": ["Vivo en Ciudad de México."]
+      },
+      {
+        "tag": "donacion_anterior",
+        "patterns": ["Has donado antes", "Antecedentes de donación", "Has donado sangre previamente", "Tienes experiencia en donaciones"],
+        "responses": ["Sí, ya he donado anteriormente."]
+      },
+      {
+        "tag": "fecha_donacion",
+        "patterns": ["Cuándo puedes donar", "Fecha para donar", "Disponibilidad para donar", "Que días estás disponible"],
+        "responses": ["Puedo donar el 4 de abril."]
+      },
+      {
+        "tag": "necesidad_sangre",
+        "patterns": ["Para cuándo necesitas la sangre", "Fecha límite para la donación", "Cuándo necesitas la donación", "Cuál es la fecha límite"],
+        "responses": ["Necesito la sangre para el 5 de abril."]
+      },
+      {
+        "tag": "tipo_sangre",
+        "patterns": ["Que tipo de sangre necesitas", "Cuál es tu tipo de sangre", "Necesito saber tu tipo de sangre", "Tipo de sangre"],
+        "responses": ["Soy A+."]
+      },
+      {
+        "tag": "informacion_extra",
+        "patterns": ["Hay algo más que necesite saber", "Algún detalle adicional", "Información extra importante", "Dame más detalles"],
+        "responses": ["No, eso es todo. Gracias por tu ayuda."]
+      }
+    ]
+  }
+  

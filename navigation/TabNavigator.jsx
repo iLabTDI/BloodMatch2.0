@@ -10,6 +10,7 @@ import Customer from '../screens/Customer';
 import Messenger from '../screens/Messenger';
 import Locate from '../screens/Locate';
 import Setting from '../screens/Setting';
+import ChatBot from '../screens/Chatbot';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,6 +33,17 @@ export default function TabNavigator() {
                     headerShown: false
                 }} 
             />
+             <Tab.Screen
+                name = 'ChatBot'
+                component = { ChatBot }
+                options={{ 
+                    tabBarLabel: 'Chatot',
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="robot-love" color={color} size={size} />
+                    ),
+                    headerShown: false
+                }} 
+            />
             <Tab.Screen
                 name = 'Maps'
                 component = { Locate }
@@ -50,8 +62,8 @@ export default function TabNavigator() {
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="facebook-messenger" color={color} size={size} />
                     ),
-                    tabBarBadge: 1,
-                    tabBarBadgeStyle: { backgroundColor: 'blue' }
+                    tabBarBadge: "10",
+                    tabBarBadgeStyle: { backgroundColor: 'red' }
                 }} 
             />
             <Tab.Screen
