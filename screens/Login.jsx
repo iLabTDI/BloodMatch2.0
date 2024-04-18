@@ -13,8 +13,14 @@ import { getGlobalData } from '../backend/querys/inserts/New_email';
 
 
 const PlaceImage = require('../assets/logotipo.png');
+const read=(props)=>{
+
+console.log(props)
+
+}
 
 const LogIn = (props) => {
+    
     const { navigation } = props;
     const { t } = useTranslation();
     const theme = useContext(themeContext);
@@ -45,14 +51,15 @@ const LogIn = (props) => {
                 
                 
          
-               console.log("se le pasa este usuario=",user);
-                setGlobalData('usuario', user);// en caso de que la contrasena y el usuario sean validos pasamos los datos para utilizarlos despues
+              // console.log("se le pasa este usuario=",user);
+                setGlobalData('usuario', user);// en caso de que la contrasena y el usuario sean validos pasamos los datos para utilizarlos despues(rauf)
                
                 
                 
 
-
                 navigation.push('Home');
+                //navigation.push('Chat');
+                
             } else {
                 Alert.alert('Error', 'Usuario o contraseña incorrectos.');
             }
@@ -62,6 +69,8 @@ const LogIn = (props) => {
         }
     };
 
+
+     // function to check  dates form the database (rauf)
     const print = async () => {
         try {
             const { data, error } = await supabase.from('usuarios').select('*');
@@ -72,13 +81,13 @@ const LogIn = (props) => {
     
             if (!data || data.length === 0) {
                 console.log("No se encontraron datos.");
-                // Podrías mostrar un mensaje aquí si lo deseas.
+           
             } else {
                 console.log("Datos recibidos:", data);
             }
         } catch (error) {
             console.error("Error:", error);
-            // Aquí podrías mostrar un mensaje de error si lo deseas.
+           
         }
     }
     

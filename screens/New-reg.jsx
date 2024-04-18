@@ -81,6 +81,7 @@ const NewReg = (props) => {
     const [isModalVisibleg, setisModalVisibleg] = useState(false);
   
     const [currentView, setCurrentView] = useState(0);
+    const [saveImage, setImage2] = useState("")
   
     const totalViews = 16; // Número total de vistas de nuestra app
    
@@ -94,9 +95,11 @@ const NewReg = (props) => {
     });
     console.log(" lo que imprime es",result.uri);
     if (!result.cancelled) {
-      console.log("lo que se va a enviar es=",result.uri);
-      setGlobalImage("images",result.uri);
+      console.log("lo envio a la base de datos=",result.uri);
+     // setGlobalImage("images",result.uri);//  guardo el url de forma local por is lo ocupo en otra funcion(rauf :))
+      setImage2(result.uri);
       Alert.alert("imagen guardada");
+
       
       
   
@@ -179,8 +182,8 @@ const NewReg = (props) => {
     };
     //console.log(registroData)
     //New_User(registroData);
-    console.log("la imagen enviada es",imageExtern)
-    New_User(email, firstName, lastName, date, type, gen, password, state, city,phone, user,imageExtern);
+    console.log("la imagen enviada es",saveImage)
+    New_User(email, firstName, lastName, date, type, gen, password, state, city,phone, user,saveImage);
    
     //Customer(email);
 
@@ -199,7 +202,7 @@ const NewReg = (props) => {
     }
   };
 
-  const renderView = ({firstName, lastName, email, date, type, gen, password, passcon, state, city, user, phone}) => {
+  const renderView = ({firstName, lastName, email, date, type, gen, password, passcon, state, city, user, phone,saveImage}) => {
   
     console.log("la imagen tiene",imageExtern);
     switch (currentView) {
@@ -508,7 +511,7 @@ const NewReg = (props) => {
                
             </View>
             )
-            case 12:// select the image 
+            case 12:// select image 
               return(
                 
           <View style={[styles.contImage, width >= 800 ? styles.contImageGnde : styles.contImage]}>
@@ -522,26 +525,16 @@ const NewReg = (props) => {
                 </TouchableOpacity>
                 <ButtonGeneric text= {t("confr")}
             title='Logear'
-            onPress={() => registerUser(email,password,user,lastName,firstName,date,type,state,city,phone,imageExtern)}
+            onPress={() => registerUser(email,password,user,lastName,firstName,date,type,state,city,phone,saveImage)}
         />
-                <TouchableOpacity style={styles.arrowright} onPress={handleNextView}>
-                  <MaterialCommunityIcons name="arrow-right-circle" color="#000000" size={60} />
-                </TouchableOpacity>
+              
               
    
         </View>
         
         
           )
-          case 13:
-
-          return(
-            <ButtonGeneric text= {t("confr")}
-            title='Logear'
-            onPress={() => registerUser(email,password,user,lastName,firstName,date,type,state,city,phone,imageExtern)}
-        />
-          );
-
+          
             
             
             
@@ -637,7 +630,7 @@ const NewReg = (props) => {
           <Image
             source={PlaceImage} style={styles.image}
           />
-          {renderView({firstName, lastName, email, date, type, gen, password, passcon, state, city, user, phone})}
+          {renderView({firstName, lastName, email, date, type, gen, password, passcon, state, city, user, phone,saveImage})}
         </ScrollView>
       </View>
     );

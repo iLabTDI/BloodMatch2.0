@@ -4,7 +4,7 @@
     "slug": "BloodMatch",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/sangreb.png",
+    "icon": "./assets/logotipo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/logotipo.png",
@@ -21,7 +21,6 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.bloodmatch.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -29,11 +28,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "a2242006-e989-4cd9-94f8-a66ca1935b41"
-      }
     }
   }
 }

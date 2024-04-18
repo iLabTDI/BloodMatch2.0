@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { View, Platform, KeyboardAvoidingView, StyleSheet } from 'react-native';
-import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { View, Platform, KeyboardAvoidingView } from 'react-native';
+import { GiftedChat } from 'react-native-gifted-chat';
 import intentsData from '../screens/intents.json';
+import getApi from './api'
+import axios from 'axios';
+import handleGenericAPIRequest from "./api";
+
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -28,7 +31,7 @@ const Chat = () => {
       };
       setMessages(previousMessages => GiftedChat.append(previousMessages, [botMessage]));
     } else {
-      const errorMessage = "Lo siento, no entendí tu pregunta. Revisa que la pregunta este bien escrita";
+      const errorMessage = "Lo siento, no entendí tu pregunta.";
       const botMessage = {
         _id: Math.round(Math.random() * 1000000),
         text: errorMessage,
@@ -43,60 +46,67 @@ const Chat = () => {
     }
   };
 
+  
+  
+     
   const getRandomResponse = (responses) => {
     const randomIndex = Math.floor(Math.random() * responses.length);
     return responses[randomIndex];
   };
 
+    const fetchData = async(message) => {
+      try{
+
+        const answer = await handleGenericAPIRequest(message)
+        console.log("siiiiuuuu"+answer)
+        const botMessage = {
+          _id: Math.round(Math.random() * 1000000),
+          text: answer,
+          createdAt: new Date(),
+          user: {
+              _id: 2,
+              name: 'Bot',
+              avatar: require('../assets/bot.jpeg'),
+          },
+      };
+        setMessages(previousMessages => GiftedChat.append(previousMessages, [botMessage]));
+    }catch(e){
+      console.log("noooooooooooooooooooooo"+ e)
+
+
+    }
+
+
+
+  };
+
+
   const onSend = (newMessages = []) => {
     const messageText = newMessages[0].text;
+    console.log(messageText)
     setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages));
-    handleChatResponse(messageText);
+   
+    fetchData(messageText)
+   
   };
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1 }}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : null}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
         <GiftedChat
           messages={messages}
-          onSend={(messages) => onSend(messages)}
+          onSend={messages => onSend(messages)}
           user={{
             _id: 1,
           }}
-          renderBubble={(props) => (
-            <Bubble
-              {...props}
-              wrapperStyle={{
-                right: {
-                  backgroundColor: 'red',
-                },
-                left: {
-                  backgroundColor: 'white',
-                },
-              }}
-            />
-          )}
-          renderSend={(props) => (
-            <Send {...props}>
-              <View>
-                <MaterialCommunityIcons name="send-circle" size={45} color="#2e64e5" />
-              </View>
-            </Send>
-          )}
+          
         />
       </KeyboardAvoidingView>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#dec5c1', // Cambia aquí el color de fondo a tu preferencia
-  },
-});
 
 export default Chat;

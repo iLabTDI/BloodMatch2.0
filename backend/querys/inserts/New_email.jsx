@@ -1,12 +1,12 @@
-
+// i've created a function to save the user (rauf)
 
 let globalData = {}; 
 
 export const setGlobalData = (key, value) => {
    
-  globalData[key] = value; // Guardamos los datos
+  globalData[key] = value; //save the dates 
 };
 
 export const getGlobalData = (key) => {
-  return globalData[key]; // retornamos los datos que guardamos 
+  return globalData[key]; // return teh dates 
 };

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Dimensions, View, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Dimensions, View, Text, Image, TouchableOpacity, Alert } from 'react-native';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import * as ImagePicker from 'expo-image-picker';
@@ -13,7 +13,8 @@ import { setGlobalImage } from "../backend/querys/inserts/New_Image";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
-const fileName = 'https://fvrbxlqmqpxrjrsqtlnw.supabase.co/storage/v1/object/public/prueba/user.png';
+
+
 
 const Customer = ({ elpepe }) => {
   const theme = useContext(themeContext);
@@ -29,28 +30,65 @@ const Customer = ({ elpepe }) => {
 
 
   const pickImage = async () => {
-    //console.log(imageExtern);
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+      allowsEditing: true
+    });
+    const usuario = getGlobalData('usuario');
+      console.log(" lo que imprime es",usuario);
+
+    console.log(" lo que imprime es",result.uri);
+    const { data, error } = await supabase
+        .from('usuarios') 
+        .update({ "url": result.uri }) 
+        .eq('UserName',usuario); 
+     
+       
+      
+        setImage({ uri: result.uri});
+         
     
-    
-      //setImage({ uri: imageExtern.uri });
+    if (error) {
+        Alert.alert('Hubo un error al actualizar la imagen del perfil.');
+        console.error(error);
+    } else {
+        // Actualizar el estado local con la nueva URL para reflejar el cambio en la UI
+        //setImage({ uri: newImageUrl });
+        Alert.alert("imagen guardada");
+    }
+
+    if (!result.cancelled) {
+      console.log("lo que se va a enviar es=",result.uri);
+      Alert.alert("imagen guardada");
     
   }
-  async function getImage(fileName) {
+
+  
+}
+  async function getImage() {
     try {
       // Realizar una consulta para obtener la imagen específica por su nombre de archivo
-      const { data, error } = await supabase.storage.from('prueba').getPublicUrl(fileName);
+      const { data, error } = await supabase.storage.from('prueba').getPublicUrl("cr7.jpg");
   
       if (error) {
         throw error;
       }
-  
+      
       // data contendrá la URL de la imagen
-      const imageUrl = data;
+      const imageUrl = data.publicUrl;
+      
+      const test = "https://fvrbxlqmqpxrjrsqtlnw.supabase.co/storage/v1/object/public/prueba/cr7.jpg";
   
       console.log('Imagen url:', imageUrl);
+
+      
   
       // Actualizar el estado de la imagen con la URL obtenida
-      setImage( imageUrl.uri);
+ 
+      setImage( {uri:imageUrl});
+      
+         
   
     } catch (error) {
       console.error('Error al obtener la imagen:', error);
@@ -92,16 +130,17 @@ const Customer = ({ elpepe }) => {
          const urlEncontrado = usuarioEncontrado.url;
          console.log("el url que se encontro es=",urlEncontrado);
          //setGlobalImage("images",urlEncontrado)
-         setImage({ uri: urlEncontrado});
+         //setImage({ uri: urlEncontrado}); //  in this part  i get the url from the the image
+         getImage();
          
-         setGlobalImage("url",urlEncontrado);
+         //setGlobalImage("url",urlEncontrado);
          //console.log(imageExtern)
        
          
         //setImage({ uri: urlEncontrado.uri });
          
         } else {
-          console.error('No user data found');
+          console.error('No user data fousnd');
         }
       }
     };

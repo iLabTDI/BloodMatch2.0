@@ -1,10 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, Dimensions, ImageBackground, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, ImageBackground, Image } from 'react-native';
 import { TaskInterface } from '../screens/Home';
-import { PanGestureHandler, PanGestureHandlerGestureEvent, PanGestureHandlerProps, ScrollView, Directions } from 'react-native-gesture-handler';
+import { PanGestureHandler, PanGestureHandlerGestureEvent, PanGestureHandlerProps, ScrollView } from 'react-native-gesture-handler';
 import Animated, { runOnJS, useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
+import AppNavigator from '../navigation/AppNavigator';
 
+const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
 const imagenes = [
   'https://yt3.googleusercontent.com/w9msOVoNGGNOwFsOu-8xm9f2-DNTXjyNzJSm7pvD-8GcwSsZrQ4MwkEemRBnZWcNDlPJAwBZ=s900-c-k-c0x00ffffff-no-rj',
   'https://media.licdn.com/dms/image/C5603AQGDilRvOoaLPg/profile-displayphoto-shrink_800_800/0/1659575026205?e=2147483647&v=beta&t=QfnL7dHehrGzlsfTxbnmwID_uyHMZafZeH03qe31ZV0',
@@ -12,28 +15,32 @@ const imagenes = [
   'https://portal-jalisco.s3.amazonaws.com/jalisco/original_images/gobernador_enrique_alfaro.jpg',
 ];
 
-const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
-
 interface ListItemProps extends Pick<PanGestureHandlerProps, 'simultaneousHandlers'> {
   task: TaskInterface;
   onDimiss?: (task: TaskInterface) => void;
   moveToNextUser?: () => void;
+  navigation: any;
 }
+const LIST_ITEM_HEIGHT = height * .60;
+const LIST_ICON_HEIGHT = height * .45;
+const TEXT_DESCRIPTION = 18;
+const LIST_ITEM_W = 70;
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+const TRANSLATE_X_THRESHOLD = -SCREEN_WIDTH * .1;
+const TRANSLATE_X_ACCEPT = SCREEN_WIDTH * .1;
 
-const ListItem: React.FC<ListItemProps> = ({ task, onDimiss, simultaneousHandlers, moveToNextUser }) => {
-  const navigation = useNavigation();
+
+const ListItem: React.FC<ListItemProps> = ({ task, onDimiss, simultaneousHandlers, moveToNextUser}) => {
+ // const navigation = useNavigation();
   const translateX = useSharedValue(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const imageUrl = task.image;
-  const itemHeight = useSharedValue(height * .60);
+  const itemHeight = useSharedValue(LIST_ITEM_HEIGHT);
   const marginVertical = useSharedValue(10);
   const opacity = useSharedValue(1);
- 
-  
 
   const changeIndex = () => {
-    setCurrentIndex(prevIndex => (prevIndex + 1) % imagenes.length);
+    setCurrentIndex(prevIndex => (prevIndex +1) % imagenes.length);
   };
 
   const panGesture = useAnimatedGestureHandler<PanGestureHandlerGestureEvent>({
@@ -41,20 +48,22 @@ const ListItem: React.FC<ListItemProps> = ({ task, onDimiss, simultaneousHandler
       translateX.value = event.translationX;
     },
     onEnd: (event) => {
-      const shouldBeDismissed = translateX.value < -width * .1;
-      const shouldBeAccepted = translateX.value > width * .1;
+      const shouldBeDismissed = translateX.value < TRANSLATE_X_THRESHOLD;
+      const shouldBeAccepted = translateX.value > TRANSLATE_X_ACCEPT;
 
       if (shouldBeDismissed) {
-        translateX.value = withTiming(-width);
+        translateX.value = withTiming(-SCREEN_WIDTH);
         itemHeight.value = withTiming(0);
         marginVertical.value = withTiming(0);
         opacity.value = withTiming(0, undefined, (isFinished) => {
           if (isFinished && onDimiss) {
-            runOnJS(onDimiss)(task);}
-           
+            runOnJS(onDimiss)(task);
+          }
+          //navigation.navigate("Login");
+          //navegacion para la parte de chat
         });
       } else if (shouldBeAccepted) {
-        translateX.value = withTiming(width);
+        translateX.value = withTiming(SCREEN_WIDTH);
         itemHeight.value = withTiming(0);
         marginVertical.value = withTiming(0);
         opacity.value = withTiming(0, undefined, (isFinished) => {
@@ -64,8 +73,6 @@ const ListItem: React.FC<ListItemProps> = ({ task, onDimiss, simultaneousHandler
           if (moveToNextUser)
             runOnJS(moveToNextUser)();
           runOnJS(changeIndex)();
-          /* navigation.navigate('Chat') */
-          
         });
       } else {
         translateX.value = withTiming(0);
@@ -79,12 +86,12 @@ const ListItem: React.FC<ListItemProps> = ({ task, onDimiss, simultaneousHandler
   }));
 
   const rIconContainerStyle = useAnimatedStyle(() => {
-    const opacity = withTiming(translateX.value < -width * .1 ? 1 : 0);
+    const opacity = withTiming(translateX.value < TRANSLATE_X_THRESHOLD ? 1 : 0);
     return { opacity };
   });
 
   const lIconContainerStyle = useAnimatedStyle(() => {
-    const opacity = withTiming(translateX.value > width * .1 ? 1 : 0);
+    const opacity = withTiming(translateX.value > TRANSLATE_X_ACCEPT ? 1 : 0);
     return { opacity };
   });
 
@@ -100,7 +107,7 @@ const ListItem: React.FC<ListItemProps> = ({ task, onDimiss, simultaneousHandler
 
   return (
     <Animated.View style={[styles.taskcontainer, rTaskContainerStyle]}>
-      <Animated.View style={[width >= 800 ? styles.iconContainerL : styles.iconContainerLsmall, lIconContainerStyle]}>
+       <Animated.View style={[width >= 800 ? styles.iconContainerL : styles.iconContainerLsmall, lIconContainerStyle]}>
         <Image source={require('../images/donate.png')} />
       </Animated.View>
       <Animated.View style={[width >= 800 ? styles.iconContainerR : styles.iconContainerRsmall, rIconContainerStyle]}>
@@ -171,6 +178,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Quicksand-Bold',
     marginTop: '-35%',
     marginLeft: '3%',
+    
+    
   },
   tasktextsmall: {
     fontSize: height * 0.02,
@@ -192,11 +201,12 @@ const styles = StyleSheet.create({
   image: {
     height: '77%',
     justifyContent: 'flex-end',
+    
     alignItems: 'center',
   },
   iconContainerR: {
-    height: height * 0.45,
-    width: height * 0.45,
+    height: LIST_ICON_HEIGHT,
+    width: LIST_ICON_HEIGHT,
     position: 'absolute',
     left: '49%',
     justifyContent: 'center',
@@ -204,8 +214,8 @@ const styles = StyleSheet.create({
     top: '30%',
   },
   iconContainerL: {
-    height: height * 0.45,
-    width: height * 0.45,
+    height: LIST_ICON_HEIGHT,
+    width: LIST_ICON_HEIGHT,
     position: 'absolute',
     right: '49%',
     justifyContent: 'center',
@@ -213,8 +223,8 @@ const styles = StyleSheet.create({
     top: '30%',
   },
   iconContainerRsmall: {
-    height: height * 0.45,
-    width: height * 0.45,
+    height: LIST_ICON_HEIGHT,
+    width: LIST_ICON_HEIGHT,
     position: 'absolute',
     left: width * .37,
     justifyContent: 'center',
@@ -222,8 +232,8 @@ const styles = StyleSheet.create({
     top: '20%',
   },
   iconContainerLsmall: {
-    height: height * 0.45,
-    width: height * 0.45,
+    height: LIST_ICON_HEIGHT,
+    width: LIST_ICON_HEIGHT,
     position: 'absolute',
     right: width * .37,
     justifyContent: 'center',
@@ -276,14 +286,7 @@ const styles = StyleSheet.create({
     fontSize: height * 0.014,
     marginLeft:'3%'
   },
-  confirmButton:{
-flex: 1,
-backgroundColor:'white'
-  },
-  confirmButtonText:{
-    flex:1,
-    backgroundColor:'white'
-  }
 });
 
 export default ListItem;
+

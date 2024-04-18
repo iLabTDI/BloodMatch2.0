@@ -1,12 +1,15 @@
-import React, { useState, useContext, useCallback } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, Animated } from 'react-native';
+import { StyleSheet, Text, View, Image, Button } from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from '@react-navigation/native';
 import themeContext from "../helper/ThemeCon";
-import ListItem from "../components/ListItem";
+import DeckSwiper from 'react-native-deck-swiper';
+import { AntDesign } from '@expo/vector-icons';
+import Chat from "./Chat.jsx";
 
 const TITLES = [
-  {//leo
+  {
     'id': '4',
     'user': 'Alejandra',
     'sangre': 'AB-',
@@ -14,7 +17,7 @@ const TITLES = [
     'descripcion': 'Me encuentro en una situación desesperada. Mi nombre es Alejandra y estoy embarazada, pero algo ha salido mal. Hay una hemorragia y mi vida, junto con la de mi bebé, está en peligro inminente. Necesito sangre, necesito ayuda. ',
     'image':'https://www.tork.mx/media/f3cjxo4z/500x500.png'
   },
-   {
+  {
     'id': '3',
     'user': 'Marco',
     'sangre': 'O-',
@@ -45,30 +48,40 @@ interface TaskInterface {
   sangre: string;
   municipio: string;
   descripcion: string;
-  Edad: number;
-  masInfo: string;
   index?: number; // make index optional
   image: string;
 }
 
-const TASKS: TaskInterface[] = TITLES.map(({ user, sangre, municipio, Edad, descripcion, masInfo,image }, index) => ({ user, sangre, municipio, Edad, descripcion, masInfo, index,image }));
+const TASKS: TaskInterface[] = TITLES.map(({ user, sangre, municipio, descripcion, image }, index) => ({ user, sangre, municipio, descripcion, index,image }));
 
 function Home() {
-  const [tasks, setTasks] = useState(TASKS);
-  
-  const onDismiss = useCallback((task) => {
-    setTasks((tasks) => tasks.filter((item) => item.user !== task.user));
-  }, []);
-
-  const moveToNextUser = useCallback(() => {
-    // Movemos al siguiente usuario al final del array
-    setTasks((tasks) => {
-      const nextTasks = [...tasks.slice(1), tasks[0]];
-      return nextTasks;
-    });
-  }, []);
-
   const theme = useContext(themeContext);
+  const navigation = useNavigation();
+  const [tasks, setTasks] = useState(TASKS);
+  const swiperRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const swipeRight = () => {
+    console.log('Deslizamiento hacia la derecha detectado');
+    navigation.navigate('Chat');
+  };
+
+  const swipeLeft = () => {
+    console.log('Deslizamiento hacia la izquierda detectado');
+    setCurrentIndex(prevIndex => prevIndex + 1); // Pasar a la siguiente tarjeta
+  };
+
+  const renderCard = (task: TaskInterface) => (
+    <View style={styles.cardContainer}>
+      <View style={styles.card}>
+        <Image source={{ uri: task.image }} style={styles.image} />
+        <Text style={styles.text}>{task.user}</Text>
+        <Text style={styles.text}>{task.sangre}</Text>
+        <Text style={styles.text}>{task.municipio}</Text>
+        <Text style={styles.text}>{task.descripcion}</Text>
+      </View>
+    </View>
+  );
 
   return (
     <LinearGradient
@@ -77,33 +90,62 @@ function Home() {
     >
       <StatusBar style="auto" />
       <Text style={styles.title}>Ayuda a: </Text>
-      <Animated.View style={styles.Scrollcont}>
-        {tasks.map((task, index) => (
-          <ListItem key={index} task={task} onDismiss={onDismiss} moveToNextUser={moveToNextUser} />
-        ))}
-      </Animated.View>
+      <DeckSwiper
+        ref={swiperRef}
+        cards={tasks}
+        renderCard={renderCard}
+        onSwipedRight={swipeRight}
+        onSwipedLeft={swipeLeft}
+        backgroundColor="transparent"
+        stackSize={2}
+        stackSeparation={15}
+        animateOverlayLabelsOpacity
+        animateCardOpacity
+        disableBottomSwipe
+        disableTopSwipe
+      />
+
     </LinearGradient>
   );
 }
 
-export default Home;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#a3a3ff',
     alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
-    fontSize: 60,
-    marginVertical: 20,
-    paddingLeft: '3%',
-    fontFamily: 'Quicksand-Bold',
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
   },
-  Scrollcont: {
+  cardContainer: {
     flex: 1,
-    width: '100%',
-    height: '100%',
-  }
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  card: {
+    width: '90%', // Reducir el ancho de la tarjeta
+    height: '80%', // Reducir la altura de la tarjeta
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: 'black',
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  image: {
+    width: '80%', // Reducir el tamaño de la imagen
+    height: '40%', // Reducir la altura de la imagen
+    marginBottom: 10,
+    resizeMode: 'cover',
+  },
+  text: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
 });
+
+export default Home;

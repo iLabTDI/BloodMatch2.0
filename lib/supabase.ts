@@ -30,11 +30,12 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     },
   })
   //function to update images to storage in sopabase
+  /*
  export  async function uploadFile(file) {
  
   console.log(file);
 
-    const { data, error } = await supabase.storage.from('prueba').upload('imageWeb37.jpg', file,{contentType:"image/jpg"})
+    const { data, error } = await supabase.storage.from('prueba').upload('newImage.jpg', file,{contentType:"image/jpg"})
     if (error) {
       console.log("error",error)
     } else {
@@ -42,5 +43,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
       console.log("correct",data)
     }
   }
+  
+  */
 
-  //uploadFile()
+

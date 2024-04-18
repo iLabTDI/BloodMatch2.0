@@ -2,111 +2,94 @@
   "intents": [
     {
       "tag": "saludo",
-      "patterns": ["Hola" ,"hola", "¿Cómo estás?","como estas",  "Buenos días", "buenos dias", "¿Qué tal?", "Saludos","Podrías ayudarme" ],
-      "responses": ["¡Hola! mi nombre es Blood bestie 😊🩸 ¿En qué puedo ayudarte?", "Hola mi nombre es Blood bestie😊🩸, ¿cómo puedo ayudarte hoy?", "¡Buen día! Blood buddy ¿En qué puedo asistirte?", "¡Hola! Bienvenido a nuestro chat Blood Buddy"]
+      "patterns": ["Hola", "¿Cómo estás?", "Buenos días", "¿Qué tal?", "Saludos"],
+      "responses": ["¡Hola! ¿En qué puedo ayudarte?", "Hola, ¿cómo puedo ayudarte hoy?", "¡Buenos días! ¿En qué puedo asistirte?", "¡Hola! Bienvenido a nuestro servicio de asistencia."]
     },
     {
-      "tag": "despedida", 
-      "patterns": ["Adiós", "adios", "Hasta luego", "Nos vemos", "Hasta pronto", "Adiós por ahora","Eso fue todo"],
+      "tag": "despedida",
+      "patterns": ["Adiós", "Hasta luego", "Nos vemos", "Hasta pronto", "¡Adiós por ahora!"],
+      
       "responses": ["¡Hasta luego! Si tienes más preguntas, no dudes en volver.", "Nos vemos pronto. ¡Cuídate!", "¡Hasta pronto! Si necesitas ayuda, aquí estaré."]
     },
     {
       "tag": "agradecimiento",
-      "patterns": ["Gracias", "Gracias por tu ayuda", "Te lo agradezco", "Muchas gracias","Fuiste de gran ayuda"],
-      "responses": ["¡De nada! Blood Bestie se hizo para ayudar y facilitar las dudas sobre la donación de sangre.", "¡No hay de qué! Siempre es un placer ayudarte Blood Buddy.", "¡Gracias a ti por confiar en nosotros!"]
+      "patterns": ["Gracias", "¡Gracias por tu ayuda!", "Te lo agradezco", "Muchas gracias"],
+      "responses": ["¡De nada! Estoy aquí para ayudar.", "¡No hay de qué! Siempre a tu servicio.", "¡Gracias a ti por confiar en nosotros!"]
     },
     {
       "tag": "donacion_sangre",
-      "patterns": ["Cómo puedo donar sangre", "Cuales son los requisitos para donar sangre", "Cuales bancos de sangre hay en Guadalajara", "Quiero ser donante de sangre"],
-      "responses": ["Para donar sangre en México, debes tener entre 18 y 65 años, pesar más de 50 kg y estar en buen estado de salud. Te invito a revisar nuestro catalogo de mapa en el que esta la informacion de los bancos de sangre", "Los centros de donación de sangre en México están ubicados en hospitales, clínicas y bancos de sangre. Puedes buscar el más cercano en nuestra ventana de Mapa donde esta la informacion de los bancos de sangre registrados en nuestra App ."]
+      "patterns": ["Cómo puedo donar sangre", "Requisitos para donar sangre", "¿Dónde donar sangre en México?", "¿Puedo donar sangre hoy?", "Quiero ser donante de sangre"],
+      "responses": ["Para donar sangre en México, debes tener entre 18 y 65 años, pesar más de 50 kg y estar en buen estado de salud. Puedes acudir a los centros de donación de sangre autorizados.", "Los centros de donación de sangre en México están ubicados en hospitales, clínicas y bancos de sangre. Puedes buscar el más cercano en línea o consultando en tu centro de salud local."]
     },
     {
       "tag": "proceso_donacion",
-      "patterns": ["Que sucede durante la donación de sangre", "Pasos para donar sangre", "Como es el proceso de donación", "Qué debo esperar durante la donación", "Explicame el procedimiento de donación de sangre"],
+      "patterns": ["¿Qué sucede durante la donación de sangre?", "Pasos para donar sangre", "¿Cómo es el proceso de donación?", "¿Qué debo esperar durante la donación?", "Explícame el procedimiento de donación de sangre"],
       "responses": ["Durante la donación de sangre, se te hará un cuestionario sobre tu historial médico, se tomará una muestra de sangre para análisis, y finalmente se realizará la donación en sí, que dura aproximadamente 10-15 minutos.", "El proceso de donación de sangre implica una serie de pasos, que incluyen el registro, la revisión del historial médico, la extracción de sangre y un breve período de descanso. Todo el proceso es seguro y supervisado por profesionales médicos."]
     },
     {
       "tag": "efectos_donacion",
-      "patterns": ["Que efectos tiene la donación de sangre", "Posibles efectos secundarios de donar sangre", "Me sentiré mal después de donar sangre", "Que debo esperar después de donar sangre", "Cómo me sentiré después de donar sangre"],
+      "patterns": ["¿Qué efectos tiene la donación de sangre?", "Posibles efectos secundarios de donar sangre", "¿Me sentiré mal después de donar sangre?", "¿Qué debo esperar después de donar sangre?", "¿Cómo me sentiré después de donar sangre?"],
       "responses": ["Es común sentirse un poco mareado o débil después de donar sangre. Asegúrate de descansar y beber líquidos. Si los síntomas persisten, consulta a un médico.", "Después de donar sangre, es normal sentirse un poco débil o mareado. Asegúrate de descansar y tomar líquidos para recuperarte rápidamente."]
     },
     {
       "tag": "requisitos_donacion",
-      "patterns": ["Que se necesita para donar sangre", "Requisitos para donar sangre en México", "Cómo puedo saber si soy elegible para donar sangre", "Qué condiciones de salud necesito para donar sangre", "Quién puede ser donante de sangre"],
+      "patterns": ["¿Qué se necesita para donar sangre?", "Requisitos para donar sangre en México", "¿Cómo puedo saber si soy elegible para donar sangre?", "¿Qué condiciones de salud necesito para donar sangre?", "¿Quién puede ser donante de sangre?"],
       "responses": ["Para donar sangre, debes tener entre 18 y 65 años, pesar más de 50 kg, no tener enfermedades transmisibles por la sangre y estar en buen estado de salud."]
     },
     {
       "tag": "ubicacion_centros",
-      "patterns": ["Donde están ubicados los centros de donación de sangre", "Direcciones de los centros de donación en México", "Hay algún centro de donación cercano", "Busco un centro de donación de sangre cerca de mí", "Dónde puedo donar sangre"],
-      "responses": ["Contamos con un apartado de mapa el cual fue hecho para la comodidad de los usuarios en el que busacamos que cada usuario pueda detectar el banco de sangre mas cercado de su ubicaciones, actualmente tenemos 12 bancos de sangre dentro del Area metropolitana de Guadalajara y otros mas a lo largo de México"]
+      "patterns": ["¿Dónde están ubicados los centros de donación de sangre?", "Direcciones de los centros de donación en México", "¿Hay algún centro de donación cercano?", "Busco un centro de donación de sangre cerca de mí", "¿Dónde puedo donar sangre en mi área?"],
+      "responses": ["Puedes encontrar centros de donación de sangre en hospitales, clínicas y bancos de sangre en todo México. Consulta en línea o pregunta en tu centro de salud local para obtener direcciones específicas."]
     },
     {
       "tag": "beneficios_donacion",
-      "patterns": ["Cuales son los beneficios de donar sangre", "Ventajas de donar sangre", "Por qué debería donar sangre ", "Que impacto tiene la donación de sangre en la comunidad?", "Beneficios para la salud de donar sangre"],
+      "patterns": ["¿Cuáles son los beneficios de donar sangre?", "Ventajas de donar sangre", "¿Por qué debería donar sangre?", "¿Qué impacto tiene la donación de sangre en la comunidad?", "Beneficios para la salud de donar sangre"],
       "responses": ["Donar sangre puede salvar vidas, mejorar la salud cardiovascular, y ayudar a identificar posibles problemas de salud. Además, es una forma de contribuir a la comunidad y sentirse bien consigo mismo."]
     },
     {
       "tag": "frecuencia_donacion",
-      "patterns": ["Con qué frecuencia puedo donar sangre", "Intervalo entre donaciones de sangre", "Cuántas veces al año puedo donar sangre", "Puedo donar sangre más de una vez al año", "Tiempo recomendado entre donaciones de sangre"],
+      "patterns": ["¿Con qué frecuencia puedo donar sangre?", "Intervalo entre donaciones de sangre", "¿Cuántas veces al año puedo donar sangre?", "¿Puedo donar sangre más de una vez al año?", "Tiempo recomendado entre donaciones de sangre"],
       "responses": ["En general, puedes donar sangre cada 3 meses, pero asegúrate de seguir las recomendaciones específicas de tu centro de donación de sangre. Es importante permitir que tu cuerpo se recupere completamente entre donaciones."]
     },
     {
       "tag": "grupo_sanguineo",
-      "patterns": ["Por qué es importante conocer mi grupo sanguíneo antes de donar", "Importancia del grupo sanguíneo al donar sangre", "Que grupo sanguíneo es más necesario para donar", "Puedo donar sangre si no sé mi grupo sanguíneo", "Dónde puedo averiguar mi grupo sanguíneo"],
+      "patterns": ["¿Por qué es importante conocer mi grupo sanguíneo antes de donar?", "Importancia del grupo sanguíneo al donar sangre", "¿Qué grupo sanguíneo es más necesario para donar?", "¿Puedo donar sangre si no sé mi grupo sanguíneo?", "¿Dónde puedo averiguar mi grupo sanguíneo?"],
       "responses": ["Conocer tu grupo sanguíneo es importante para garantizar la compatibilidad con el receptor de la sangre. Todos los grupos sanguíneos son necesarios para donar, pero algunos grupos pueden ser más escasos que otros. Puedes averiguar tu grupo sanguíneo en tu centro de salud local o a través de pruebas específicas de laboratorio."]
     },
     {
       "tag": "comida_bebida",
-      "patterns": ["Que debo comer y beber antes de donar sangre", "Recomendaciones de alimentos para donar sangre", "Puedo comer antes de donar sangre", "Qué alimentos son buenos para prepararse para donar", "Debo ayunar antes de donar sangre"],
+      "patterns": ["¿Qué debo comer y beber antes de donar sangre?", "Recomendaciones de alimentos para donar sangre", "¿Puedo comer antes de donar sangre?", "¿Qué alimentos son buenos para prepararse para donar?", "¿Debo ayunar antes de donar sangre?"],
       "responses": ["Antes de donar sangre, es importante comer alimentos ricos en hierro y mantenerse bien hidratado. Evita las comidas pesadas o grasosas y asegúrate de beber suficientes líquidos."]
     },
     {
       "tag": "medicamentos",
-      "patterns": ["Puedo tomar medicamentos antes de donar sangre", "Efecto de los medicamentos en la donación de sangre", "Debo suspender mis medicamentos antes de donar", "Que medicamentos no me permitirían donar sangre?", "Que debo hacer si estoy tomando medicamentos"],
+      "patterns": ["¿Puedo tomar medicamentos antes de donar sangre?", "Efecto de los medicamentos en la donación de sangre", "¿Debo suspender mis medicamentos antes de donar?", "¿Hay medicamentos que impidan donar sangre?", "¿Qué debo hacer si estoy tomando medicamentos?"],
       "responses": ["Algunos medicamentos pueden afectar la elegibilidad para donar sangre, así que asegúrate de informar al personal del centro de donación sobre cualquier medicamento que estés tomando. En general, la mayoría de los medicamentos no son motivo de exclusión para donar sangre, pero siempre es mejor consultar con un médico para obtener orientación."]
     },
     {
       "tag": "duracion_proceso",
-      "patterns": ["Cuánto tiempo dura el proceso de donación de sangre", "Duración de la donación de sangre", "Cuánto tiempo debo reservar para donar sangre", "Cuánto tiempo estaré en el centro de donación", "Tiempo estimado para donar sangre"],
+      "patterns": ["¿Cuánto tiempo dura el proceso de donación de sangre?", "Duración de la donación de sangre", "¿Cuánto tiempo debo reservar para donar sangre?", "¿Cuánto tiempo estaré en el centro de donación?", "Tiempo estimado para donar sangre"],
       "responses": ["El proceso de donación de sangre suele durar entre 30 minutos y 1 hora, que incluye el registro, la revisión médica, la extracción de sangre y un breve período de descanso."]
     },
     {
       "tag": "mitos_donacion",
-      "patterns": ["Donar sangre debilita el sistema inmunológico", "Mitos comunes sobre la donación de sangre"],
+      "patterns": ["¿Es cierto que donar sangre debilita el sistema inmunológico?", "Mitos comunes sobre la donación de sangre", "¿Cuál es la verdad detrás de los mitos sobre donar sangre?"],
       "responses": ["No, donar sangre no debilita el sistema inmunológico. De hecho, puede estimular la producción de células sanguíneas y mejorar la salud cardiovascular. Consulta a un profesional médico para obtener información precisa sobre la donación de sangre."]
     },
     {
       "tag": "donacion_infantil",
-      "patterns": ["Pueden los niños donar sangre", "Cual es la edad mínima para donar sangre", "Los niños pueden donar sangre"],
+      "patterns": ["¿Pueden los niños donar sangre?", "Edad mínima para donar sangre", "¿Los niños pueden ser donantes de sangre?"],
       "responses": ["En general, los niños no pueden donar sangre hasta alcanzar la mayoría de edad y cumplir con los requisitos de peso y salud. Sin embargo, algunos países permiten la donación de sangre en adolescentes bajo supervisión médica."]
     },
     {
       "tag": "dudas_seguridad",
-      "patterns": ["Es seguro donar sangre", "Riesgos de donar sangre", "Puede haber complicaciones al donar sangre"],
+      "patterns": ["¿Es seguro donar sangre?", "Riesgos de donar sangre", "¿Puede haber complicaciones al donar sangre?"],
       "responses": ["Donar sangre es generalmente seguro y no tiene efectos a largo plazo para la mayoría de las personas. Sin embargo, es posible que experimentes efectos secundarios leves, como mareos o debilidad. Si tienes inquietudes, consulta a un profesional médico."]
     },
     {
       "tag": "exclusion_donacion",
-      "patterns": ["Que condiciones médicas pueden impedir la donación de sangre", "Enfermedades que excluyen la donación de sangre", "Que problemas de salud pueden descalificar a alguien como donante"],
+      "patterns": ["¿Qué condiciones médicas pueden impedir la donación de sangre?", "Enfermedades que excluyen la donación de sangre", "¿Qué problemas de salud pueden descalificar a alguien como donante?"],
       "responses": ["Algunas condiciones médicas, como enfermedades infecciosas, enfermedades cardíacas o cáncer, pueden impedir la donación de sangre. Además, ciertos medicamentos o comportamientos de riesgo pueden descalificar a los posibles donantes."]
-    },
-    {
-      "tag": "Compatibilidad_Sangre",
-      "patterns": [
-        "Con que tipos de sangre es compatible mi sangre",
-       "A quien le puedo donar si soy A+",
-       "A quien le puedo donar si soy A-",
-       "A quien le puedo donar si soy AB+",
-       "A quien le puedo donar si soy AB-",
-       "A quien le puedo donar si soy B+",
-       "A quien le puedo donar si soy B-",
-       "A quien le puedo donar si soy O+",
-       "A quien le puedo donar si soy O-"
-      ],
-      "responses": [
-        "Tipo A: Puede donar a receptores de tipo A y AB. Puede recibir de donantes de tipo A y O.\n\nTipo B: Puede donar a receptores de tipo B y AB. Puede recibir de donantes de tipo B y O.\n\nTipo AB: Puede donar solo a receptores de tipo AB. Puede recibir de donantes de tipo A, B, AB y O (receptor universal).\n\nTipo O: Puede donar a receptores de tipo A, B, AB y O (donante universal). Puede recibir solo de donantes de tipo O."
-      ]
     }
-    
   ]
 }

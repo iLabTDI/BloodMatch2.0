@@ -15,6 +15,8 @@ import { useTranslation } from 'react-i18next';
 import Termycon from '../screens/terminos';
 import Privacidad from '../screens/Privacidad';
 import NewReg from '../screens/New-reg';
+//import chat from './screens/Chatbot'
+
 
 export default function AuthNavigator() {
     const {t} = useTranslation();
@@ -58,7 +60,7 @@ export default function AuthNavigator() {
             <Stack.Screen
                 name = 'Chat'
                 component = { Chat }
-                options={{ headerShown: false}} 
+                //options={{ headerShown: false}} 
             />
             <Stack.Screen
                 name = {t("termycondi")}

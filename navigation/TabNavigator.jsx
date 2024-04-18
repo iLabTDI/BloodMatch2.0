@@ -4,13 +4,14 @@ import { View, Text, Settings } from 'react-native';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useTranslation } from "react-i18next";
+
 //Screens
 import Home from '../screens/Home';
 import Customer from '../screens/Customer';
 import Messenger from '../screens/Messenger';
 import Locate from '../screens/Locate';
 import Setting from '../screens/Setting';
-import ChatBot from '../screens/Chatbot';
+import Chatbot from '../screens/Chatbot';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,10 +35,10 @@ export default function TabNavigator() {
                 }} 
             />
              <Tab.Screen
-                name = 'ChatBot'
-                component = { ChatBot }
+                name = 'Chatbot'
+                component = { Chatbot }
                 options={{ 
-                    tabBarLabel: 'Chatot',
+                    tabBarLabel: 'Chatbot',
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="robot-love" color={color} size={size} />
                     ),
@@ -62,8 +63,8 @@ export default function TabNavigator() {
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="facebook-messenger" color={color} size={size} />
                     ),
-                    tabBarBadge: "10",
-                    tabBarBadgeStyle: { backgroundColor: 'red' }
+                    tabBarBadge: 1,
+                    tabBarBadgeStyle: { backgroundColor: 'blue' }
                 }} 
             />
             <Tab.Screen
@@ -87,6 +88,9 @@ export default function TabNavigator() {
                     ),
                 }} 
             />
+             
+          
+
         </Tab.Navigator>
     )
 }

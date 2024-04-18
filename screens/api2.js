@@ -1,38 +1,7 @@
-// Install Axios using: npm install axios
-import axios from 'axios';
 
 /*
-const getApi = async (message) => {
-  try {
-    const response = await axios.post(
-      'https://api.openai.com/v1/chat/completions',
-      {
-        model: 'gpt-3.5-turbo',
-        messages: [
-          { role: 'system', content: 'You are a helpful assistant.' },
-          { role: 'user', content: message },
-        ],
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer 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`,
-        },
-      }
-    );
-
-    // Handle the response here
-    console.log(response.data.choices[0].message.content);
-  } catch (error) {
-    console.error('Error sending chat request:', error);
-  }
-};
-*/
-  
-
-
 import React from 'react';
-//made by Rauf :)
+
 const handleGenericAPIRequest = async (message) => {
     console.log("el mesnaje enviado es"+answer)
     if (!message.trim()) return null; // No hacer nada si el mensaje está vacío
@@ -59,4 +28,4 @@ const handleGenericAPIRequest = async (message) => {
   };
   
   export default handleGenericAPIRequest ;
-  
+  */
