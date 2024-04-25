@@ -22,7 +22,7 @@
     "@react-navigation/stack": "^6.3.17",
     "@rneui/base": "^4.0.0-rc.8",
     "@rneui/themed": "github:react-native-elements/react-native-elements#themed",
-    "@supabase/supabase-js": "^2.39.8",
+    "@supabase/supabase-js": "^2.42.5",
     "aes-js": "^3.1.2",
     "async-storage": "^0.1.0",
     "axios": "^1.6.8",

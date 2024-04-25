@@ -9,7 +9,6 @@ import { useTranslation } from "react-i18next";
 import {supabase,uploadFile }from '../lib/supabase'
 import { getGlobalData } from '../backend/querys/inserts/New_email';
 import { getGlobalImage } from "../backend/querys/inserts/New_Image";
-import { setGlobalImage } from "../backend/querys/inserts/New_Image";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;

@@ -1,3 +1,4 @@
+//Integracion del mapa en tiempo real Alex Robles
 import React, { useContext, useState, useEffect } from "react";
 import { StyleSheet, Image, View, Dimensions, Modal, Text, TouchableOpacity } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";

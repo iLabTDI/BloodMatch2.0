@@ -1,58 +1,94 @@
-import React, { useState } from 'react';
+//Modificaciones del Chat por Alex Robles
+import React, { useState, useEffect } from 'react';
 import { View, Platform, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import intentsData from '../screens/conversacion.json';
+import { supabase } from '../lib/supabase'; // Importa tu cliente de Supabase
 
-const Chat = () => {
+const Chat = ({ route }) => {
+  const { conversation } = route.params; // Obtén la conversación pasada como parámetro de navegación
+
   const [messages, setMessages] = useState([]);
 
-  const handleChatResponse = (userMessage) => {
-    const { intents } = intentsData;
-    
-    const intent = intents.find((intent) =>
-      intent.patterns.some((pattern) => userMessage.toLowerCase().includes(pattern.toLowerCase()))
-    );
+  useEffect(() => {
+    fetchMessages(); // Carga los mensajes al cargar el componente
+  }, []);
 
-    if (intent) {
-      const randomResponse = getRandomResponse(intent.responses);
-      const botMessage = {
-        _id: Math.round(Math.random() * 1000000),
-        text: randomResponse,
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'Blood Besti',
-          avatar: 'https://www.gaceta.udg.mx/wp-content/uploads/2022/05/tp.cucei_ilg-scaled.jpg',
-        },
-      };
-      setMessages(previousMessages => GiftedChat.append(previousMessages, [botMessage]));
-    } else {
-      const errorMessage = "Lo siento, no entendí tu pregunta. Revisa que la pregunta este bien escrita";
-      const botMessage = {
-        _id: Math.round(Math.random() * 1000000),
-        text: errorMessage,
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'Blood Besti',
-          avatar: 'https://www.gaceta.udg.mx/wp-content/uploads/2022/05/tp.cucei_ilg-scaled.jpg',
-        },
-      };
-      setMessages(previousMessages => GiftedChat.append(previousMessages, [botMessage]));
+  const fetchMessages = async () => {
+    try {
+      if (!conversation.id) {
+          console.error('ID de conversación no válido');
+          return;
+      }
+
+      // Realiza una consulta a Supabase para obtener los mensajes de la conversación
+      const { data, error } = await supabase
+          .from('chat')
+          .select('*')
+          .eq('conversacion_id', conversation.id);
+
+      if (error) {
+          throw error;
+      }
+
+      // Transforma los mensajes recibidos al formato esperado por GiftedChat
+      const formattedMessages = data.map((message) => ({
+          _id: message.id_mensaje,
+          text: message.texto_mensaje,
+          createdAt: new Date(message.timestamp),
+          user: {
+              _id: message.sender_id,
+              name: message.sender_name,
+              avatar: message.sender_avatar,
+          },
+      }));
+
+      // Actualiza el estado con los mensajes obtenidos
+      setMessages(formattedMessages);
+    } catch (error) {
+        console.error('Error fetching messages:', error.message);
     }
   };
 
-  const getRandomResponse = (responses) => {
-    const randomIndex = Math.floor(Math.random() * responses.length);
-    return responses[randomIndex];
+  const onSend = async (newMessages = []) => {
+    const messageText = newMessages[0].text;
+    try {
+      // Inserta el nuevo mensaje en la tabla de chat en Supabase
+      const { data, error } = await supabase
+        .from('chat') // Cambiar a 'chat' en lugar de 'messages'
+        .insert([
+          {
+            conversacion_id: conversation.id,
+            sender_id: 1, // Cambia el ID del remitente según tu lógica de autenticación
+            sender_name: 'Nombre del Remitente', // Cambia el nombre del remitente según tu lógica de autenticación
+            texto_mensaje: messageText,
+          },
+        ]);
+
+      if (error) {
+        throw error;
+      }
+
+      // Agrega el nuevo mensaje al estado para actualizar la interfaz
+      setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages));
+    } catch (error) {
+      console.error('Error sending message:', error.message);
+    }
   };
 
-  const onSend = (newMessages = []) => {
-    const messageText = newMessages[0].text;
-    setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages));
-    handleChatResponse(messageText);
-  };
+  // Agrega la conversación de prueba entre Usuario1 y Usuario2 al cargar el componente
+  useEffect(() => {
+    const initialMessage = {
+      _id: 1,
+      text: "Hola, ¿Cómo estás?",
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: "Usuario2",
+      },
+    };
+    setMessages([initialMessage]);
+  }, []);
 
   return (
     <View style={styles.container}>

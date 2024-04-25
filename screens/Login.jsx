@@ -8,8 +8,7 @@ import { useTranslation } from "react-i18next";
 import themeContext from "../helper/ThemeCon";
 import { supabase } from '../lib/supabase';
 import Customfer from "./Customer";
-import  { setGlobalData } from "../backend/querys/inserts/New_email";
-import { getGlobalData } from '../backend/querys/inserts/New_email';
+import { setGlobalData } from "../backend/querys/inserts/New_email";
 
 
 const PlaceImage = require('../assets/logotipo.png');
