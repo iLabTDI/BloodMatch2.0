@@ -1,7 +1,4 @@
-
-
 import React from 'react'
-import { View, Text } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignIn from '../screens/SignIn';
 import Login from '../screens/Login';
@@ -15,7 +12,6 @@ import { useTranslation } from 'react-i18next';
 import Termycon from '../screens/terminos';
 import Privacidad from '../screens/Privacidad';
 import NewReg from '../screens/New-reg';
-//import chat from './screens/Chatbot'
 
 
 export default function AuthNavigator() {

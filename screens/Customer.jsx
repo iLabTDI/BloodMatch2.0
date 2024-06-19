@@ -13,8 +13,6 @@ import { getGlobalImage } from "../backend/querys/inserts/New_Image";
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
-
-
 const Customer = ({ elpepe }) => {
   const theme = useContext(themeContext);
   const { t } = useTranslation();
