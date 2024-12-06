@@ -4,8 +4,13 @@
     "slug": "MyNewProject",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/logotipo.png",
     "scheme": "myapp",
+    "splash": {
+      "image": "./assets/logotipo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

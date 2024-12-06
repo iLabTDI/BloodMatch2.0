@@ -26,10 +26,10 @@ const LogIn = (props) => {
         try {
            const data=await getDates(user, password)
            const usuario = data[0];
-
-            if (usuario&& usuario.password === password) {
+            if (usuario && usuario.password === password) {
                setGlobalData('usuario', user);// en caso de que la contrasena y el usuario sean validos pasamos los datos para utilizarlos despues(rauf)
                Alert.alert("inicio de sesion exitoso")
+                navigation.push('Home');
             } else {
                 Alert.alert('Error', 'Usuario o contraseña incorrectos.');
             }
@@ -65,11 +65,14 @@ const LogIn = (props) => {
             <ButtonGeneric
                 text={t("log-in")}
                 onPress={() => {
-                    
+       
                     DoSignIn();
                     
                 }}
             />
+              <TouchableOpacity style={styles.regisButton} onPress={() => { navigation.navigate('new-reg') }}>
+                <Text style={{ ...styles.textLink, marginStart: '40%' }}>{t("rgst")}</Text>
+            </TouchableOpacity>
            
         
         </View>

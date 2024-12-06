@@ -81,11 +81,19 @@ export const New_User = async ( Email,firstName,lastName,date,type,gen,password,
 
 
 export const updateImages = async(filePath,formData)=>{
-   console.log("el file path es ",filePath,"El forma",formData)
+
+  try{
+    console.log("el file path es ",filePath,"El forma",formData)
     const { error } = await supabase.storage
     .from("prueba")
     .upload(filePath, formData);
     if (error) throw error;
+
+  }catch(error)
+  {
+    console.log(error)
+  }
+   
    
 
 }
@@ -94,7 +102,7 @@ export const updateImages = async(filePath,formData)=>{
 export async function handleSubmit( image) {
     try {
       let publicUrl = "";
-      console.log(image)
+      console.log("se enica",image) 
       if (image) {
         
         const fileExt = image.split(".").pop();
