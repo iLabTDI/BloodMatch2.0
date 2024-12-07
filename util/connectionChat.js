@@ -3,5 +3,5 @@ import { io } from "socket.io-client";
 export const BaseUrl =
   Platform.OS === "android" ? "http://10.214.80.136:3000/" : "http://localhost:3000";
 
-export const socket = io.connect("http://10.214.71.40:8002/");
-//export const socket = io.connect("https://thirty-memes-kick.loca.lt/")
+//export const socket = io.connect("http://192.168.100.20:8001/");
+export const socket = io.connect("https://flat-spiders-build.loca.lt/")
