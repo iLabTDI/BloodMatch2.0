@@ -1,6 +1,7 @@
 import React, {useState, useContext, useEffect} from "react";import { StatusBar } from 'expo-status-bar';
 import { Alert, StyleSheet, View, TextInput, Text, Button, TouchableOpacity, Modal, ScrollView, Image,Dimensions} from "react-native";
-import DatePicker from "react-native-modern-datepicker"
+
+import DateTimePicker from '@react-native-community/datetimepicker';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 //Validaciones
@@ -55,7 +56,8 @@ const NewReg = (props) => {
     const [gen, setGen] = useState(t('slcgen'));
     const [type, setType] = useState(t('slctype'));
     const [open, setOpen] = useState(false);
-    const [date, setDate] = useState('');
+    const [date, setDate] = useState(new Date());
+    const [dateTime,setDateTime] = useState("");
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState("")
     const [phone, setPhone] = useState("")
@@ -148,6 +150,7 @@ const NewReg = (props) => {
   };
   
   const handleNextView = () => {
+    console.log("entra")
     // Verificar que se hayan ingresado todos los datos antes de pasar a la siguiente vista
     if (currentView === totalViews - 1) {
       // Verificar que la contraseña no sea nula antes de registrar al usuario
@@ -176,33 +179,32 @@ const NewReg = (props) => {
  //Con esta funcion controlamos la regresion de las vistas se modifica totalViwes dependiendo del numero de vistas que existan la app
     const handlePrevView = () => {
      
+      console.log(currentView,totalViews)
         
-          if (currentView < totalViews && currentView != totalViews-13) {
-            setCurrentView(currentView -1);
-            if (currentView == totalViews-13){
-              setCurrentView(navigation.navigate("Login"));
-            }
+          if (currentView < totalViews && currentView != totalViews) {
+            console.log("hola")
+            setCurrentView(currentView-1);
+            
+        }
+        else{
+          console.log("incorrect")
+
         }
   
       
     };
 
   //Funcion creada para controlar los picker (fecha, genero y tipo de sangre)
-    const handleInputChange = (text, field) => {
-      switch (field) {
-        case 'type':
-          setType(text);
-          break;
-        case 'gen':
-          setGen(text);
-          break;
-        case 'date':
-          setDate(text);
-          break;
-        default:
-          break;
-      }
-    };
+  const handleDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    const isoString = currentDate.toISOString(); // Get the ISO string representation
+    const curr = isoString.split('T'); // Split the date part and time part
+
+    console.log("la fehca es ", curr[0])
+    setDate(currentDate);
+    setDateTime(curr[0])
+    setOpen(false);
+  };
   
     const handleOnChange = () => {
       setOpen(true);
@@ -324,10 +326,11 @@ const NewReg = (props) => {
                 <TextInput
                   style={[styles.dateSelect, { backgroundColor: teme.bla }, { color: teme.color }]}
                   placeholder={t('slcdate')}
-                  value={date}
-                  onChangeText={(val) => handleInputChange(val, 'date')}
+                  value={dateTime}
+                  onChangeText={(val) => handleDateChange()}
+                  editable={false} 
                   error={errorDate}
-                  defaultValue={date}
+                  defaultValue={dateTime}
                 />
                 <TouchableOpacity style={styles.calendar} onPress={handleOnChange}>
                   <MaterialCommunityIcons name="calendar-clock-outline" color="#000000" size={60} />
@@ -339,15 +342,13 @@ const NewReg = (props) => {
                 >
                   <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                      <DatePicker
-                        mode="calendar"
-                        selected={date}
-                        minimumDate={null}
-                        onDateChange={(val) => {
-                          setDate(val);
-                          setOpen(false);
-                        }}
-                      />
+                    <DateTimePicker
+                      testID="dateTimePicker"
+                      value={date}
+                      mode="date" // Use 'date' mode for selecting date
+                      display="default"
+                      onChange={handleDateChange} // Handle date selection
+                   />
                       <TouchableOpacity style={styles.calendar} onPress={() => setOpen(false)}>
                         <MaterialCommunityIcons name="cancel" color="#000000" size={30} />
                       </TouchableOpacity>
@@ -629,10 +630,10 @@ const NewReg = (props) => {
           }
           break;
         case 2:
-          if(!validateDate(date)){
+         /* if(!validateDate(date)){
             setErrorDate("Debes de ingresar tus apellidos correctamente")
             return false;
-          }
+          }*/
           break; 
         case 3:
           if(!Bloodtype(type)){

@@ -13,6 +13,8 @@ import Locate from '../screens/Locate';
 import Setting from '../screens/Setting';
 import Chatbot from '../screens/Chatbot';
 
+import Location from '@/screens/Locate2';
+
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
@@ -48,6 +50,16 @@ export default function TabNavigator() {
             <Tab.Screen
                 name = 'Maps'
                 component = { Locate }
+                options={{ 
+                    tabBarLabel: 'Maps',
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="map-marker-radius" color={color} size={size} />
+                    ),
+                }} 
+            />
+               <Tab.Screen
+                name = 'Location'
+                component = { Location }
                 options={{ 
                     tabBarLabel: 'Maps',
                     tabBarIcon: ({ color, size }) => (
