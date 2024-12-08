@@ -8,7 +8,7 @@ const handleGenericAPIRequest = async (message) => {
 
     if (!message.trim()) return null; 
     const genAI = new GoogleGenerativeAI(API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     try {
         const chat = model.startChat({
@@ -30,7 +30,9 @@ const handleGenericAPIRequest = async (message) => {
         return text;
     } catch (error) {
         console.error("Error sending chat request:", error);
-        return null;
+        const response2 = await error.response;
+        const text2 = "Error sending chat request:Resource has been exhausted";
+        return text2
     }
 };
 

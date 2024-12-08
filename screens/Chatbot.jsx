@@ -20,7 +20,7 @@ const Chat = () => {
           user: {
               _id: 2,
               name: 'Bot',
-              avatar: require('../assets/images/icon.png'),
+              avatar: require('../assets/logotipo.png'),
           },
       };
         setMessages(previousMessages => GiftedChat.append(previousMessages, [botMessage]));

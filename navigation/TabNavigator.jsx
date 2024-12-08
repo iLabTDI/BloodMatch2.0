@@ -47,6 +47,9 @@ export default function TabNavigator() {
                     headerShown: false
                 }} 
             />
+            {/* mapa viejito no funciona cuando se buldea la aplicacion
+            
+            
             <Tab.Screen
                 name = 'Maps'
                 component = { Locate }
@@ -56,7 +59,8 @@ export default function TabNavigator() {
                         <MaterialCommunityIcons name="map-marker-radius" color={color} size={size} />
                     ),
                 }} 
-            />
+            />*/ }
+           
                <Tab.Screen
                 name = 'Location'
                 component = { Location }

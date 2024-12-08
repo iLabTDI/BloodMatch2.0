@@ -31,7 +31,10 @@ export default function Messagescreen({ navigation, route }) {
           : new Date().getMinutes(),
     };
 
-     console.log("el mensaje",currentGroupName,currentGroupID)
+     console.log("el mensaje",  currentGroupID)
+     
+
+ 
       socket.emit("newChatMessage", {
         currentChatMesage,
         groupIdentifier: currentGroupID,
@@ -41,6 +44,7 @@ export default function Messagescreen({ navigation, route }) {
 
       setCurrentChatMessage("");
       Keyboard.dismiss();
+      
     
   }
 
