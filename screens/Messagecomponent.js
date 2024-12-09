@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#ffffff",
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 20,
     marginBottom: 2,
   },
   messageTime : {

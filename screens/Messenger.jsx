@@ -16,26 +16,14 @@ const height = Dimensions.get("window").height;
 const Messenger = ({ navigation }) => {
 
   const teme = useContext(themeContext)
-
-  //Constante para json filtrado
   const [filterData, setfilterData] = useState([]);
-  //Constante para json completo
-  const [fullData, setfullData] = useState([]);
-  //Constante para el texto del buscador 
   const [search, setsearch] = useState('');
-  const [currentGroupName, setCurrentGroupName] = useState("");
   const [allChatRooms, setAllChatRooms] = useState([]);
-  const [link,setLink] =useState('')
-var  [idGroup,setIdGroup] = useState("")
-    const [save,setSave]=useState([])
 
 
     const handleFindGroup = (id) => {
          
             socket.emit("encontrar",id);
-          
-           
-            
       };
 
     const verification = async () => {
@@ -112,18 +100,18 @@ var  [idGroup,setIdGroup] = useState("")
     
 
   const user=getGlobalData("usuario")
- // console.log("El usuario es",user)
  
   function filteredChatRooms  (){ 
     const result=allChatRooms.map(group => {
     
       if(user===group.currentGroupName){
-        filt.push({ id: group.id, currentSecondGroup: group.currentSecondGroup });
-        console.log(filt)
+        filt.push({ id: group.id, currentSecondGroup: group.currentSecondGroup,messages:group.messages });
+        console.log("lo que tiene flit",filt)
         
         return {
           id: group.id,
-          currentSecondGroup: group.currentSecondGroup 
+          currentSecondGroup: group.currentSecondGroup ,
+          messages:group.messages
         };
       }
       else{
@@ -131,7 +119,8 @@ var  [idGroup,setIdGroup] = useState("")
         console.log(filt)
         return {
           id: group.id,
-          currentSecondGroup: group.currentGroupName
+          currentSecondGroup: group.currentGroupName,
+          messages:group.messages
         };
   
   

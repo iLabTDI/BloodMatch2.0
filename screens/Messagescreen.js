@@ -62,7 +62,7 @@ export default function Messagescreen({ navigation, route }) {
   return (
     <View style={styles.wrapper}>
       <View
-        style={[styles.wrapper, { paddingVertical: 15, paddingHorizontal: 10 }]}
+        style={[styles.wrapper, { paddingVertical: 50, paddingHorizontal: 10 }]}
       >
         {allChatMessages && allChatMessages[0] ? (
          <FlatList

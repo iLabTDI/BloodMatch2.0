@@ -7,9 +7,11 @@ export default function Chatcomponent({ item }) {
   const navigation = useNavigation();
 
   useEffect(() => {
+    console.log("el titeem es=",item)
     if (item && item.messages) {
       console.log(" los items son=", item.messages[item.messages.length - 1]);
     }
+
   }, [item]);
 
   function handleNavigateToMessageScreen() {
