@@ -1,7 +1,7 @@
 import React from 'react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-
-const API_KEY ='AIzaSyA-JwabyU1H1u9U0AyENhyCr0-EXJyvzUg';
+import Constants from 'expo-constants';
+const API_KEY =Constants.expoConfig.extra.google;
 
 const handleGenericAPIRequest = async (message) => {
     console.log("El mensaje enviado es: " + message);
@@ -11,7 +11,7 @@ const handleGenericAPIRequest = async (message) => {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     try {
-        const chat = model.startChat({
+        const chat = model.startChat({  
             history: [
                 {
                     role: "user",
