@@ -96,12 +96,11 @@ async function loadChatGroups() {
     console.log("Messages data:", messagesData);
 
     if (groupsData.length > 0) {
-      // Mapear los grupos, asociando los mensajes correspondientes
+ 
       chatgroups = groupsData.map(group => {
-        // Filtrar los mensajes que coinciden con el id del grupo
+     
         const groupMessages = messagesData.find(message => message.idGroup === group.id);
         
-        // Verificar si el campo messages es un array con un solo objeto
         let messages = [];
         if (groupMessages && Array.isArray(groupMessages.messages)) {
           messages = groupMessages.messages.length === 1 ? groupMessages.messages[0] : groupMessages.messages;
@@ -127,7 +126,7 @@ async function loadChatGroups() {
 
 // Cargar los datos cuando el servidor se inicie
 loadChatGroups().then(() => {
-  console.log("Los grupos del log son", chatgroups); // Esto debería funcionar ahora
+  console.log("Los grupos del log son", chatgroups); 
 });
 
 
@@ -137,9 +136,7 @@ loadChatGroups().then(() => {
 // Save chat groups to the JSON file
 async function saveChatGroups() {
   try {
-    //fs.writeFileSync(DATA_FILE, JSON.stringify(chatgroups, null, 2));
-    //const jsonChatgroups = JSON.stringify(chatgroups  );
-    //console.log(jsonChatgroups)
+
     const {data, error}= await supabase.from("saveGroups").update([{Groups:chatgroups}]).eq("id","5")
    
     if(error){
