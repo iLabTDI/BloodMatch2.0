@@ -7,6 +7,7 @@ import themeContext from "../helper/ThemeCon";
 const PlaceImage = require('../assets/logotipo.png');
 import { getDates } from '../lib/querys';
 import  { setGlobalData } from "../backend/querys/inserts/New_email";
+import NetInfo from '@react-native-community/netinfo';
 const LogIn = (props) => {
     
     const { navigation } = props;
@@ -14,15 +15,13 @@ const LogIn = (props) => {
     const theme = useContext(themeContext);
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
-    const [email,setEmail] = useState("");
     const [errorUserName, setErrorUserName] = useState("");
     const [errorPassword, setErrorPassword] = useState("");
-   
-    const [second, setSecond] = useState("");
-    const [allChatRooms, setAllChatRooms] = useState([]);
+    const [isConnected, setIsConnected] = useState(false);
 
-    const [ data,setData]=useState("")
     const DoSignIn = async () => {
+
+        
         try {
            const data=await getDates(user, password)
            const usuario = data[0];
@@ -39,10 +38,16 @@ const LogIn = (props) => {
             alert.apply("error")
         }
     };
-   
-
+    useEffect(() => {
+        //anado un listener para que al momento de cambiar de estado se refleje en tiempo real
+        const unsubscribe = NetInfo.addEventListener(state => {
+            setIsConnected(state.isConnected);
+            console.log("Estado de la conexion:", state.isConnected);
+        });
     
- 
+        
+        return () => unsubscribe();
+    }, []);
 
     return (
         <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -65,10 +70,9 @@ const LogIn = (props) => {
             <ButtonGeneric
                 text={t("log-in")}
                 onPress={() => {
-       
-                    DoSignIn();
-                    
+                    isConnected ? DoSignIn() :Alert.alert("no hay connection a internet aaaa")
                 }}
+
             />
               <TouchableOpacity style={styles.regisButton} onPress={() => { navigation.navigate('new-reg') }}>
                 <Text style={{ ...styles.textLink, marginStart: '40%' }}>{t("rgst")}</Text>
