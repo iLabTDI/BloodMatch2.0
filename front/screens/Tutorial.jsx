@@ -40,7 +40,7 @@ const Tutorial = () => {
               }}
             />
           ),
-          title: "¡Haz Match!",
+          title: "¡Haz Match!!",
           subtitle: (
             <View>
               <Text style={[styles.subtitle, { marginTop: -10 }]}>
