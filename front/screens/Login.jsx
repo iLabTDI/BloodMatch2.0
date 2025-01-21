@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, Alert, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, Alert, Platform, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SocialIcon } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
@@ -14,6 +14,8 @@ import { getDates } from '../lib/querys';
 import  { setGlobalData } from "../backend/querys/inserts/New_email";
 
 import { handleSubmit,getUrl } from "../lib/querys";
+import validations from "../helper/validations.js";
+import { New_User } from "../lib/querys";
 
 const LogIn = (props) => {
 
@@ -26,12 +28,10 @@ const LogIn = (props) => {
 
     // Login/Register UI helpers components
     const [activeTab, setActiveTab] = useState('login');
-    // const [userType, setUserType] = useState('donor');
-    // const [userGender, setUserGender] = useState('female');
-    // const [bloodType, setBloodType] = useState('');
-    // const [termsAgree, setTermsAgree] = useState(false);
     const [seePassword, setSeePassword] = useState(false);
     const [showPicker, setShowPicker] = useState(false);
+    const [isImageLoading, setIsImageLoading] = useState(false);
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
 
     // Modal in error case
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -78,7 +78,6 @@ const LogIn = (props) => {
         }
     };
        
-
     const toggleModal = () => setIsModalVisible(!isModalVisible);
 
     const handleInputChange = (field, value) => {
@@ -86,7 +85,9 @@ const LogIn = (props) => {
             ...prevState,
             [field]: value,
         }));
+    }
 
+    const printRegister = () => {
         console.log("**********************************************************");
         console.log("Nombre: ", register.firstName);
         console.log("Apellido: ", register.lastName);
@@ -108,33 +109,63 @@ const LogIn = (props) => {
         setShowPicker(false);
         if (selectedDate) handleInputChange("birthDate", selectedDate);
     };
-
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            quality: 1,
-            allowsEditing: true
-        });  
-       
-        if (!result.cancelled) {
-            const fileName = await handleSubmit(result.assets[0].uri);
-            // console.log("Nombre del archivo subido:", fileName);
-            const data2 = await getUrl(fileName)
-    
-            // data2 contendrá la URL de la imagen
-            const imageUrl = data2.publicUrl;
-            // console.log('Imagen URL:', imageUrl);
-            // setImage2(imageUrl)
-            handleInputChange("uriImage", imageUrl);
-    
-            if (imageUrl.length > 0) {
-                Alert.alert("¡Imagen guardada!", imageUrl);
-            } else {
-                Alert.alert("No se pudo guardar la imagen!");
-            }
-        }    
-    };
  
+    const pickImage = async () => {
+        setIsImageLoading(true);
+        try {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                quality: 1,
+                allowsEditing: true,
+            });
+    
+            if (!result.cancelled) {
+                const fileName = await handleSubmit(result.assets[0].uri);
+                const data2 = await getUrl(fileName);
+                const imageUrl = data2.publicUrl;
+    
+                handleInputChange("uriImage", imageUrl);
+    
+                if (imageUrl.length > 0) {
+                    setIsImageLoaded(true);
+                } else {
+                    setTitleModal("Error");
+                    setTextModal("No se puede guardar la imagen!");
+                    setIsModalVisible(true);
+                }
+            }
+        } catch (error) {
+            console.log("Error al seleccionar la imagen:", error);
+        } finally {
+            setIsImageLoading(false);
+        }
+    };
+
+    const handleSubmitRegister = async () => {
+        // printRegister();
+        let validateFields = [vFirstName = validations.firstName(register.firstName),
+        vLastName = validations.lastName(register.lastName),
+        vBirthDate = validations.birthDate(register.birthDate),
+        vState = validations.state(register.state),
+        vMunicipality = validations.municipality(register.municipality),
+        vPhoneNumber = validations.phoneNumber(register.phoneNumber),
+        vEmail = validations.email(register.email),
+        vPassword = validations.password(register.password),
+        vPasswordConfirm = validations.passwordConfirm(register.password, register.passwordConfirm),
+        vBloodType = validations.bloodType(register.bloodType),
+        vUriImage = validations.image(register.uriImage),
+        vTermsAgree = validations.termsAgree(register.termsAgree)];
+
+        validateFields.reverse();
+
+        validateFields.forEach(el => {
+            if(el.message){
+                setTitleModal("Error");
+                setTextModal(el.message);
+                setIsModalVisible(true);
+            }
+        });
+    }
 
     // return (
     //     <View style={[styles.container, { backgroundColor: theme.background }]}>
@@ -386,9 +417,27 @@ const LogIn = (props) => {
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4 flex flex-row justify-between"
                             onPress={pickImage}
                         >
-                            <Text className="text-black/60">Imagen de perfil</Text>
+                            <Text className="text-black/60">{
+                                isImageLoaded 
+                                ? "Imagen cargada"
+                                : "Imagen de perfil"
+                            }</Text>
                             <FontAwesome5 name="upload" size={24} color="gray" />
                         </TouchableOpacity>
+
+                        {isImageLoading && <ActivityIndicator
+                            color={'red'}
+                            size={'large'}
+                        />}
+
+                        { (isImageLoading === false && isImageLoaded === true) &&
+                            <View className='w-full flex flex-row justify-center mb-4'>
+                                <Image
+                                    source={{uri: register.uriImage}}
+                                    className='w-36 h-36 rounded-full'
+                                />
+                            </View>
+                        }
                         
                         <View className="flex-row items-center mb-4">
                             <TouchableOpacity className="mr-2" onPress={() => {handleInputChange('termsAgree', !register.termsAgree)}}>
@@ -400,11 +449,24 @@ const LogIn = (props) => {
                                 )
                             }
                             </TouchableOpacity>
-                            <Text className="text-gray-600 flex-1">
-                                Acepto los <Text className="text-red-500">términos y condiciones</Text>
+
+                            <Text className="text-gray-600 h-full">
+                                Acepto los
                             </Text>
+                            <TouchableOpacity 
+                                onPress={() => navigation.push(t("termycondi"))}
+                                className='ml-1 h-full'
+                            > 
+                                <Text className="text-red-500">
+                                    términos y condiciones
+                                </Text>
+                            </TouchableOpacity>
+
                         </View>
-                        <TouchableOpacity className="bg-red-500 rounded-full py-3 px-4 mb-4">
+                        <TouchableOpacity 
+                            className="bg-red-500 rounded-full py-3 px-4 mb-4"
+                            onPress={handleSubmitRegister}
+                        >
                             <Text className="text-white text-center font-semibold">Comienza a ayudar</Text>
                         </TouchableOpacity>
                         </>
@@ -417,11 +479,12 @@ const LogIn = (props) => {
                 </Text>
                 </View>
 
-                <GenericModal isVisible={isModalVisible} onClose={toggleModal}>
-                    <Text className="text-xl font-bold mb-4">{titleModal}</Text>
-                    <Text>{textModal}</Text>
-                </GenericModal>
+                
             </ScrollView>
+            <GenericModal isVisible={isModalVisible} onClose={toggleModal}>
+                <Text className="text-xl font-bold mb-4">{titleModal}</Text>
+                <Text>{textModal}</Text>
+            </GenericModal>
         </SafeAreaView>
     );
 };
