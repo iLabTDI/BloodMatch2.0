@@ -141,6 +141,19 @@ const LogIn = (props) => {
         }
     };
 
+    const handleInfoPassword = () => {
+        setTitleModal("Caracteristicas necesarias de la contraseña: ");
+        setTextModal(`
+        - Debe tener al menos 8 caracteres
+        - Debe incluir al menos una letra mayúscula
+        - DSebe incluir al menos una letra minúscula
+        - Debe tener al menos un número 
+        - Debe tener al menos un símbolo especial
+        - No debe tener espacios
+        `);
+        setIsModalVisible(true);
+    }
+
     const handleSubmitRegister = async () => {
         // printRegister();
         let validateFields = [vFirstName = validations.firstName(register.firstName),
@@ -279,18 +292,21 @@ const LogIn = (props) => {
                         <Text className="text-2xl font-bold text-gray-800 mb-6 text-center">
                             Únete a la comunidad BloodMatch
                         </Text>
+                        
                         <TextInput
                             placeholder="Nombre(s)"
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4"
                             value={register.firstName}
                             onChangeText={(value) => handleInputChange("firstName", value)}
                         />
+
                         <TextInput
                             placeholder="Apellidos"
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4"
                             value={register.lastName}
                             onChangeText={(value) => handleInputChange("lastName", value)}
                         />
+
                         <TouchableOpacity
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4 flex flex-row justify-between"
                             onPress={ () => setShowPicker(true)}
@@ -310,6 +326,7 @@ const LogIn = (props) => {
                                 />
                             }
                         </TouchableOpacity>
+
                         <View className="flex-row justify-between mb-4">
                             <TouchableOpacity
                                 className={`flex-1 py-2 px-4 rounded-full mr-2 ${register.gender === 'female' ? 'bg-red-500' : 'bg-gray-200'}`}
@@ -349,9 +366,6 @@ const LogIn = (props) => {
                                 </Picker>
                             </View>
                         </View>
-
-
-
                         
                         <TextInput
                             placeholder="Numero telefonico"
@@ -367,13 +381,20 @@ const LogIn = (props) => {
                             value={register.email}
                             onChangeText={(value) => handleInputChange('email',value)}
                         />
-                        <TextInput
-                            placeholder="Contraseña"
-                            className="bg-gray-100 rounded-full py-3 px-4 mb-4"
-                            secureTextEntry
-                            value={register.password}
-                            onChangeText={(value) => handleInputChange('password',value)}
-                        />
+
+                        <View className='bg-gray-100 rounded-full px-4 mb-4 flex-row justify-between items-center'>
+                            <TextInput
+                                placeholder="Contraseña"
+                                className="w-3/4"
+                                secureTextEntry
+                                value={register.password}
+                                onChangeText={(value) => handleInputChange('password',value)}
+                            />
+                            <TouchableOpacity onPress={handleInfoPassword}>
+                                <FontAwesome5 name="info-circle" size={24} color="gray" />
+                            </TouchableOpacity>
+                        </View>
+
                         <TextInput
                             placeholder="Confirmar contraseña"
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4"
@@ -381,6 +402,7 @@ const LogIn = (props) => {
                             value={register.passwordConfirm}
                             onChangeText={(value) => handleInputChange('passwordConfirm',value)}
                         />
+
                         <View className="flex-row justify-between mb-4">
                             <TouchableOpacity
                                 className={`flex-1 py-2 px-4 rounded-full mr-2 ${register.bloodTypeRol === 'donor' ? 'bg-red-500' : 'bg-gray-200'}`}
@@ -395,6 +417,7 @@ const LogIn = (props) => {
                             <Text className={`text-center ${register.bloodTypeRol === 'recipient' ? 'text-white' : 'text-gray-600'}`}>Receptor</Text>
                             </TouchableOpacity>
                         </View>
+
                         <View className="bg-gray-100 rounded-full pr-4 mb-4">
                             <Picker
                                 selectedValue={register.bloodType}
@@ -461,8 +484,8 @@ const LogIn = (props) => {
                                     términos y condiciones
                                 </Text>
                             </TouchableOpacity>
-
                         </View>
+
                         <TouchableOpacity 
                             className="bg-red-500 rounded-full py-3 px-4 mb-4"
                             onPress={handleSubmitRegister}
