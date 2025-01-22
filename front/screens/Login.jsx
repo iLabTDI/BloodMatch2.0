@@ -23,7 +23,7 @@ const LogIn = (props) => {
     const { t } = useTranslation();
 
     // Login
-    const [user, setUser] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     // Login/Register UI helpers components
@@ -59,10 +59,11 @@ const LogIn = (props) => {
 
     const DoSignIn = async () => {
         try {
-           const data = await getDates(user, password)
+           const data = await getDates(email.trim(), password.trim())
            const usuario = data[0];
             if (usuario && usuario.password === password) {
-                setGlobalData('usuario', user);
+                // setGlobalData('usuario', ema);
+                setGlobalData('email', email);
                 navigation.push('Home');
             } else {
                 setTitleModal("Error");
@@ -155,7 +156,6 @@ const LogIn = (props) => {
     }
 
     const handleSubmitRegister = async () => {
-        // printRegister();
         let validateFields = [vFirstName = validations.firstName(register.firstName),
         vLastName = validations.lastName(register.lastName),
         vBirthDate = validations.birthDate(register.birthDate),
@@ -169,15 +169,42 @@ const LogIn = (props) => {
         vUriImage = validations.image(register.uriImage),
         vTermsAgree = validations.termsAgree(register.termsAgree)];
 
-        validateFields.reverse();
+        const firstError = validateFields.find(el => el.message);
 
-        validateFields.forEach(el => {
-            if(el.message){
-                setTitleModal("Error");
-                setTextModal(el.message);
-                setIsModalVisible(true);
+        if (firstError) {
+            setTitleModal("Error");
+            setTextModal(firstError.message);
+            setIsModalVisible(true);
+        } else {
+            // Register new user 
+            try {
+                let user = register.firstName.trim();
+                New_User(
+                    register.email.trim(),
+                    register.firstName.trim(),
+                    register.lastName.trim(),
+                    register.birthDate,
+                    register.bloodType.trim(),
+                    register.gender.trim(),
+                    register.password.trim(),
+                    register.state.trim(),
+                    register.municipality.trim(),
+                    register.phoneNumber.trim(),
+                    user,
+                    register.uriImage.trim()
+                );
+
+
+                setTitleModal("Éxito");
+                setTextModal("El formulario se envió correctamente");
+                setIsModalVisible(true);   
+                // navigation.push('Login');
+            } catch (error) {
+                setTitleModal("Éxito");
+                setTextModal("Error al intentar registrar nuevo usuario, por favor intentalo mas tarde");
+                setIsModalVisible(true);   
             }
-        });
+        }
     }
 
     // return (
@@ -251,10 +278,11 @@ const LogIn = (props) => {
                             ¡Conéctate para salvar vidas!
                         </Text>
                         <TextInput
-                            placeholder="Usuario"
+                            placeholder="Correo"
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4"
-                            value={user}
-                            onChangeText={val => setUser(val)}
+                            keyboardType="email-address"
+                            value={email}
+                            onChangeText={val => setEmail(val)}
                         />
                         <View className='flex-row max-w-full items-center bg-gray-100 rounded-full px-4 mb-6'>
                             <TextInput

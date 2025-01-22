@@ -1,14 +1,14 @@
 import { supabase } from "./supabase";
 
 
-export async function getDates(user, password){
+export async function getDates(email, password){
 
   try
   {
         const {data, error} = await supabase
         .from('usuarios')
         .select('*')
-        .eq('UserName',user)
+        .eq('Email',email)
         .eq('password',password);
         if (error) {
         console.log(error);
