@@ -1,3 +1,5 @@
+import {isExistingEmail} from "../lib/querys"
+
 const validations = {
     firstName: (val) => {
         return (val && val.trim() !== "") ? true : {message: "El nombre es obligatorio"};
@@ -65,13 +67,17 @@ const validations = {
         return true;
     },
 
-    email: (val) => {
+    email: async (val) => {
         if (!val || val.trim() === "") return {message: "El correo electrónico es obligatorio"};
     
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
         if (!emailRegex.test(val)) return {message: "El correo electrónico no es válido"};
     
+        let vEmail = await isExistingEmail(val);
+        if(vEmail) return {message: "El correo proporcionado ya se encuentra en uso, por favor use otro"};
+        console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+
         return true;
     },
 

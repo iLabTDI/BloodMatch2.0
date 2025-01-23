@@ -67,7 +67,7 @@ const LogIn = (props) => {
                 navigation.push('Home');
             } else {
                 setTitleModal("Error");
-                setTextModal("Nombre de usuario y/o contraseña incorrectos");
+                setTextModal("Correo y/o contraseña incorrectos");
                 setIsModalVisible(true);
             }
         } catch (error) {
@@ -162,7 +162,7 @@ const LogIn = (props) => {
         vState = validations.state(register.state),
         vMunicipality = validations.municipality(register.municipality),
         vPhoneNumber = validations.phoneNumber(register.phoneNumber),
-        vEmail = validations.email(register.email),
+        vEmail = await validations.email(register.email),
         vPassword = validations.password(register.password),
         vPasswordConfirm = validations.passwordConfirm(register.password, register.passwordConfirm),
         vBloodType = validations.bloodType(register.bloodType),
@@ -178,7 +178,7 @@ const LogIn = (props) => {
         } else {
             // Register new user 
             try {
-                let user = register.firstName.trim();
+                let user = register.email.trim();
                 New_User(
                     register.email.trim(),
                     register.firstName.trim(),
@@ -194,48 +194,35 @@ const LogIn = (props) => {
                     register.uriImage.trim()
                 );
 
-
                 setTitleModal("Éxito");
                 setTextModal("El formulario se envió correctamente");
-                setIsModalVisible(true);   
-                // navigation.push('Login');
+                setIsModalVisible(true); 
+                setRegister({
+                    firstName: "",
+                    lastName: "",
+                    birthDate: null,
+                    gender: "female",
+                    state: "",
+                    municipality: "",
+                    phoneNumber: "",
+                    email: "",
+                    password: "",
+                    passwordConfirm: "",
+                    bloodTypeRol: "donor",
+                    bloodType: "",
+                    uriImage: "",
+                    termsAgree: false,
+                });  
+                setIsImageLoading(false);
+                setIsImageLoaded(false);
+                setActiveTab('login');
             } catch (error) {
-                setTitleModal("Éxito");
+                setTitleModal("Error");
                 setTextModal("Error al intentar registrar nuevo usuario, por favor intentalo mas tarde");
                 setIsModalVisible(true);   
             }
         }
     }
-
-    // return (
-    //     <View style={[styles.container, { backgroundColor: theme.background }]}>
-    //         <Image source={PlaceImage} style={styles.image} />
-    //         <TextInput
-    //             style={[styles.textInput, { backgroundColor: theme.bla }, { color: theme.color }]}
-    //             placeholder="Usuario"
-    //             value={user}
-    //             onChangeText={val => setUser(val)}
-    //             error={errorUserName}
-    //         />
-    //         <TextInput
-    //             style={[styles.textInput, { backgroundColor: theme.bla }, { color: theme.color }]}
-    //             placeholder="Contraseña"
-    //             secureTextEntry={true}
-    //             value={password}
-    //             onChangeText={val => setPassword(val)}
-    //             error={errorPassword}
-    //         />
-    //         <ButtonGeneric
-    //             text={t("log-in")}
-    //             onPress={() => {
-    //                 DoSignIn();
-    //             }}
-    //         />
-    //           <TouchableOpacity style={styles.regisButton} onPress={() => { navigation.navigate('new-reg') }}>
-    //             <Text style={{ ...styles.textLink, marginStart: '40%' }}>{t("rgst")}</Text>
-    //         </TouchableOpacity>
-    //     </View>
-    // );
 
     return (
         <SafeAreaView className="flex-1 bg-red-50">
