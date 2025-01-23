@@ -1,13 +1,22 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, Dimensions, Keyboard, Alert } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Dimensions,
+  Keyboard,
+  Alert,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import themeContext from "../helper/ThemeCon";
-import DeckSwiper from 'react-native-deck-swiper';
+import DeckSwiper from "react-native-deck-swiper";
 import { socket } from "../util/connectionChat";
 import { getGlobalData } from "../backend/querys/inserts/New_email";
 import { generaldates } from "../lib/querys";
+import { Tutorial } from "../components/Tutorial";
 
 interface TaskInterface {
   user: string;
@@ -18,8 +27,8 @@ interface TaskInterface {
   image: String;
 }
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 function Home() {
   const [datos, setDatos] = useState(null);
@@ -48,79 +57,80 @@ function Home() {
     fetchData();
   }, []);
 
-
   const handleCreateNewRoom = (user) => {
     try {
-      //i get the global user 
-      const usuario = getGlobalData("usuario")
-      console.log("lo que imprimo es=",usuario,"y",user)
+      //i get the global user
+      const usuario = getGlobalData("usuario");
+      console.log("lo que imprimo es=", usuario, "y", user);
       setNewGroup(usuario);
 
-      socket.emit("createNewGroup", { currentGroupName: usuario, currentSecondGroup: user });
+      socket.emit("createNewGroup", {
+        currentGroupName: usuario,
+        currentSecondGroup: user,
+      });
       Keyboard.dismiss();
     } catch (error) {
       console.error("Error creating new group:", error);
     }
   };
 
-  
   const getDatabase = async () => {
     try {
-
-      const data=await generaldates()
-        const list = [];
-        let i = 0;
-        const show = data.length;
-        console.log("la longitud de la lista es",show) 
-       const datos= data.map(user => ({
-          id: user.Email,
-          user:user.UserName,
-          sangre :user.Blood_Type,
-          municipio : user.City,
-          descripcion: user.Situation
-        }));
-        console.log("los datos son",datos)
-        while (i <= show - 1) {
-         console.log(i)
-         let dat=getGlobalData("usuario")
-         console.log("el usuario es=",dat)
-         console.log("data",data[i].UserName)
-         if(dat===data[i].UserName){
-          console.log("hola")
+      const data = await generaldates();
+      const list = [];
+      let i = 0;
+      const show = data.length;
+      console.log("la longitud de la lista es", show);
+      const datos = data.map((user) => ({
+        id: user.Email,
+        user: user.UserName,
+        sangre: user.Blood_Type,
+        municipio: user.City,
+        descripcion: user.Situation,
+      }));
+      console.log("los datos son", datos);
+      while (i <= show - 1) {
+        console.log(i);
+        let dat = getGlobalData("usuario");
+        console.log("el usuario es=", dat);
+        console.log("data", data[i].UserName);
+        if (dat === data[i].UserName) {
+          console.log("hola");
           i++;
-         }else{
-        const dates = [{
-                    'id': data[i].Email,
-                    'user': data[i].UserName,
-                    'sangre': data[i].Blood_Type,
-                    'municipio': data[i].City,
-                    'descripcion':data[i].Situation,
-                    'image': data[i].url
-                  }];
+        } else {
+          const dates = [
+            {
+              id: data[i].Email,
+              user: data[i].UserName,
+              sangre: data[i].Blood_Type,
+              municipio: data[i].City,
+              descripcion: data[i].Situation,
+              image: data[i].url,
+            },
+          ];
 
           i++;
           list.push(dates);
-         }
         }
-        
-        return list;
-      
+      }
+
+      return list;
     } catch (error) {
       console.log(error);
     }
   };
 
   const swipeRight = (cardIndex) => {
-    console.log('Deslizamiento hacia la derecha detectado', cardIndex);
-    let matchedCard = tasks[cardIndex][0]; // aqui tengo la lista de listas para agarrar al usuario 
+    console.log("Deslizamiento hacia la derecha detectado", cardIndex);
+    let matchedCard = tasks[cardIndex][0]; // aqui tengo la lista de listas para agarrar al usuario
     const card = matchedCard.user;
-    console.log("loque agarra de la carta es",card)
+    console.log("loque agarra de la carta es", card);
     handleCreateNewRoom(card);
   };
 
   const swipeLeft = () => {
-    console.log('Deslizamiento hacia la izquierda detectado');
-    setCurrentIndex(prevIndex => prevIndex + 1);
+    console.log("Deslizamiento hacia la izquierda detectado");
+    setCurrentIndex((prevIndex) => prevIndex + 1);
   };
 
   const renderCard = (task: TaskInterface) => {
@@ -143,7 +153,7 @@ function Home() {
 
   return (
     <LinearGradient
-      colors={['white', theme.background]}
+      colors={["white", theme.background]}
       style={styles.container}
     >
       <StatusBar style="auto" />

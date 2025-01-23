@@ -5,5 +5,5 @@ export const BaseUrl =
     ? "http://10.214.80.136:3000/"
     : "http://localhost:3000";
 
-export const socket = io.connect("http://10.214.117.205:8002/");
+export const socket = io.connect("http://10.214.101.167:8002/");
 //export const socket = io.connect("https://vibrant-dawn-08238.pktriot.net/")

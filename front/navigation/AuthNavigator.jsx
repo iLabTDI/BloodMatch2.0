@@ -14,8 +14,9 @@ import Termycon from "../screens/terminos";
 import Privacidad from "../screens/Privacidad";
 import NewReg from "../screens/New-reg";
 import Messagescreen from "../screens/Messagescreen";
-import Tutorial from "../screens/Tutorial";
-//import chat from './screens/Chatbot'
+import Home from "@/screens/Home";
+import Tutorial from "../components/Tutorial";
+//import chat from './../components/Tutorial
 
 export default function AuthNavigator() {
   const { t } = useTranslation();
