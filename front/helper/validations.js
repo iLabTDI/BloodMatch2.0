@@ -76,7 +76,6 @@ const validations = {
     
         let vEmail = await isExistingEmail(val);
         if(vEmail) return {message: "El correo proporcionado ya se encuentra en uso, por favor use otro"};
-        console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
 
         return true;
     },

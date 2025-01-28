@@ -75,6 +75,7 @@ export const New_User = async (
         }
     } catch (error) {
         console.error("Error al insertar datos 1:", error.message);
+        throw new Error("Error al insertar datos 2:", error);
     }
 };
 

@@ -75,7 +75,7 @@ const LogIn = (props) => {
             setTitleModal("Error");
             setTextModal("Error al intentar iniciar sesión");
             setIsModalVisible(true);
-            alert.apply("error")
+            // alert.apply("error")
         }
     };
        
@@ -147,7 +147,7 @@ const LogIn = (props) => {
         setTextModal(`
         - Debe tener al menos 8 caracteres
         - Debe incluir al menos una letra mayúscula
-        - DSebe incluir al menos una letra minúscula
+        - Debe incluir al menos una letra minúscula
         - Debe tener al menos un número 
         - Debe tener al menos un símbolo especial
         - No debe tener espacios
@@ -179,7 +179,7 @@ const LogIn = (props) => {
             // Register new user 
             try {
                 let user = register.email.trim();
-                New_User(
+                await New_User(
                     register.email.trim(),
                     register.firstName.trim(),
                     register.lastName.trim(),
@@ -243,7 +243,7 @@ const LogIn = (props) => {
                         onPress={() => setActiveTab('login')}
                     >
                         <Text className={`text-center font-semibold ${activeTab === 'login' ? 'text-white' : 'text-gray-600'}`}>
-                        Iniciar sesión
+                            {t("log-in")}
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -251,7 +251,7 @@ const LogIn = (props) => {
                         onPress={() => setActiveTab('register')}
                     >
                         <Text className={`text-center font-semibold ${activeTab === 'register' ? 'text-white' : 'text-gray-600'}`}>
-                        Registrarse
+                            {t("rgst")}
                         </Text>
                     </TouchableOpacity>
                     </View>
@@ -298,7 +298,7 @@ const LogIn = (props) => {
                         <View className="flex-row justify-center space-x-4 mb-4">
                             <SocialIcon type="google" />
                             <SocialIcon type="facebook" />
-                            <SocialIcon type="twitter" />
+                            {/* <SocialIcon type="twitter" /> */}
                         </View>
                         </>
                     ) : (
