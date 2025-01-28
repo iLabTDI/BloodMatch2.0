@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { hp, wp } from "../helper/common";
 
-export default function CustomOnboarding() {
+export default function Tutorial({ onClose }) {
   const [currentPage, setCurrentPage] = useState(0);
 
   const pages = [
@@ -105,7 +105,7 @@ export default function CustomOnboarding() {
         </Text>
         <TouchableOpacity
           style={styles.button}
-          onPress={currentPage === pages.length - 1 ? goToHome : goToNextPage}
+          onPress={currentPage === pages.length - 1 ? onClose : goToNextPage}
         >
           <Text style={styles.buttonText}>
             {currentPage === pages.length - 1 ? "Finalizado" : "Siguiente"}

@@ -24,8 +24,8 @@ export default function AuthNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
-        name="Tutorial"
-        component={Tutorial}
+        name="Login"
+        component={Login}
         options={{ headerShown: false }}
       />
       <Stack.Screen name="Messagescreen" component={Messagescreen} />

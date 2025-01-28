@@ -15,8 +15,13 @@ import themeContext from "../helper/ThemeCon";
 import DeckSwiper from "react-native-deck-swiper";
 import { socket } from "../util/connectionChat";
 import { getGlobalData } from "../backend/querys/inserts/New_email";
-import { generaldates } from "../lib/querys";
-import { Tutorial } from "../components/Tutorial";
+import {
+  generaldates,
+  getTutorialValue,
+  updateTutorialValue,
+} from "../lib/querys";
+import Tutorial from "../components/Tutorial";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface TaskInterface {
   user: string;
@@ -41,10 +46,40 @@ function Home() {
   const [tasks, setTasks] = useState([]);
   const swiperRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showTutorial, setShowTutorial] = useState(false);
+
+  // useEffect(() => {
+  //   async function fetchUserData() {
+  //     try {
+  //       const usuario = getGlobalData("usuario");
+  //       setUser(usuario);
+
+  //       const estadoTutorial = usuario?.estadoTutorial === "true";
+  //       console.log("Entra al useeffect de serch");
+  //       setShowTutorial(!estadoTutorial);
+  //     } catch (error) {
+  //       console.error("Error fetching user data", error);
+  //     }
+  //   }
+  //   fetchUserData();
+  // }, []);
+
+  useEffect(() => {
+    async function fetchUserData() {
+      const tutorialValue = await getTutorialValue(getGlobalData("usuario"));
+      if (tutorialValue) {
+        setShowTutorial(false);
+      } else {
+        setShowTutorial(true);
+      }
+    }
+    fetchUserData();
+  }, []);
+
   useEffect(() => {
     socket.emit("getAllGroups");
 
-    socket.on("groupList", (groups) => {
+    user?.socket.on("groupList", (groups) => {
       setAllChatRooms(groups);
     });
   }, [socket]);
@@ -151,71 +186,85 @@ function Home() {
     );
   };
 
-  return (
-    <LinearGradient
-      colors={["white", theme.background]}
-      style={styles.container}
-    >
-      <StatusBar style="auto" />
-      <Text style={styles.title}>Ayuda a: </Text>
-      <DeckSwiper
-        ref={swiperRef}
-        cards={tasks}
-        renderCard={renderCard}
-        onSwipedRight={(cardIndex) => swipeRight(cardIndex)}
-        onSwipedLeft={swipeLeft}
-        backgroundColor="transparent"
-        stackSize={2}
-        stackSeparation={15}
-        animateOverlayLabelsOpacity
-        animateCardOpacity
-        disableBottomSwipe
-        disableTopSwipe
-        infinite
-        overlayLabels={{
-          left: {
-            element: (
-              <Image
-                source={require("../images/next.png")}
-                style={styles.overlayImage}
-              />
-            ),
-            style: {
-              wrapper: {
-                flexDirection: "column",
-                alignItems: "flex-end",
-                justifyContent: "flex-start",
-                marginTop: 0,
-                marginLeft: -25,
+  const onClose = () => {
+    async function updateTutorial() {
+      const result = await updateTutorialValue(getGlobalData("usuario"));
+      console.log("Checando result: ", result);
+    }
+    updateTutorial();
+    setShowTutorial(false);
+    console.log("onClose", showTutorial);
+  };
+
+  if (showTutorial) {
+    return <Tutorial onClose={onClose} />;
+  } else {
+    return (
+      <LinearGradient
+        colors={["white", theme.background]}
+        style={styles.container}
+      >
+        <StatusBar style="auto" />
+        <Text style={styles.title}>Ayuda a: </Text>
+        <DeckSwiper
+          ref={swiperRef}
+          cards={tasks}
+          renderCard={renderCard}
+          onSwipedRight={(cardIndex) => swipeRight(cardIndex)}
+          onSwipedLeft={swipeLeft}
+          backgroundColor="transparent"
+          stackSize={2}
+          stackSeparation={15}
+          animateOverlayLabelsOpacity
+          animateCardOpacity
+          disableBottomSwipe
+          disableTopSwipe
+          infinite
+          overlayLabels={{
+            left: {
+              element: (
+                <Image
+                  source={require("../images/next.png")}
+                  style={styles.overlayImage}
+                />
+              ),
+              style: {
+                wrapper: {
+                  flexDirection: "column",
+                  alignItems: "flex-end",
+                  justifyContent: "flex-start",
+                  marginTop: 0,
+                  marginLeft: -25,
+                },
               },
             },
-          },
-          right: {
-            element: (
-              <Image
-                source={require("../images/donate.png")}
-                style={styles.overlayImage}
-              />
-            ),
-            style: {
-              label: {
-                backgroundColor: "blue",
-                color: "white",
-                fontSize: 24,
-              },
-              wrapper: {
-                flexDirection: "column",
-                alignItems: "flex-start",
-                justifyContent: "flex-start",
-                marginTop: 0,
-                marginLeft: 25,
+            right: {
+              element: (
+                <Image
+                  source={require("../images/donate.png")}
+                  style={styles.overlayImage}
+                />
+              ),
+              style: {
+                label: {
+                  backgroundColor: "blue",
+                  color: "white",
+                  fontSize: 24,
+                },
+                wrapper: {
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  justifyContent: "flex-start",
+                  marginTop: 0,
+                  marginLeft: 25,
+                },
               },
             },
-          },
-        }}
-      />
-    </LinearGradient>
-  );
+          }}
+        />
+      </LinearGradient>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
