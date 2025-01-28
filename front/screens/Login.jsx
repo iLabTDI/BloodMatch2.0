@@ -59,7 +59,7 @@ const LogIn = (props) => {
 
     const DoSignIn = async () => {
         try {
-           const data = await getDates(email.trim(), password.trim())
+           const data = await getDates(email.trim(), password.trim());
            const usuario = data[0];
             if (usuario && usuario.password === password) {
                 // setGlobalData('usuario', ema);
@@ -185,6 +185,7 @@ const LogIn = (props) => {
                     register.lastName.trim(),
                     register.birthDate,
                     register.bloodType.trim(),
+                    register.bloodTypeRol.trim(),
                     register.gender.trim(),
                     register.password.trim(),
                     register.state.trim(),
