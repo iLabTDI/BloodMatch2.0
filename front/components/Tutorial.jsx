@@ -17,7 +17,7 @@ export default function Tutorial({ onClose }) {
     {
       backgroundColor: "#a6e4d0",
       image: require("../images/homeTutorial.png"),
-      dimensions: { width: wp(58), height: hp(60) },
+      dimensions: { width: wp(48), height: hp(50) },
       color: "#0f7448",
       title: "¡Haz Match!",
       subtitle: (
@@ -32,7 +32,7 @@ export default function Tutorial({ onClose }) {
     {
       backgroundColor: "#fff3b5",
       image: require("../images/chatbotTutorial.png"),
-      dimensions: { width: wp(80), height: hp(60) },
+      dimensions: { width: wp(75), height: hp(55) },
       color: "#e46f15",
       title: "¿Necesitas Apoyo?",
       subtitle: "Pregunta tus dudas al chatbot",
@@ -40,7 +40,7 @@ export default function Tutorial({ onClose }) {
     {
       backgroundColor: "#ADD8E6",
       image: require("../images/mapaTutorial.png"),
-      dimensions: { width: wp(65), height: hp(60) },
+      dimensions: { width: wp(60), height: hp(55) },
       color: "#1d2d7b",
       title: "Encuentra un hospital",
       subtitle: "El mapa te ayudará a encontrar un hospital para ir a donar",
@@ -48,7 +48,7 @@ export default function Tutorial({ onClose }) {
     {
       backgroundColor: "#FFEFD5",
       image: require("../images/perfilTutorial.png"),
-      dimensions: { width: wp(70), height: hp(65) },
+      dimensions: { width: wp(60), height: hp(55) },
       color: "#c0a105",
       title: "¡Tu perfil aquí!",
       subtitle: "Aquí verás tu información y podrás cambiar tu foto",
@@ -56,10 +56,10 @@ export default function Tutorial({ onClose }) {
     {
       backgroundColor: "#e6e6fd",
       image: require("../images/configuracionTutorial.png"),
-      dimensions: { width: wp(65), height: hp(65) },
+      dimensions: { width: wp(55), height: hp(55) },
       color: "#69379f",
       title: "¡Ajusta cuando quieras!",
-      subtitle: "Aquí verás tu información y podrás cambiar tu foto",
+      subtitle: "Personaliza la aplicación como gustes",
     },
   ];
 
@@ -70,8 +70,6 @@ export default function Tutorial({ onClose }) {
   const goToPreviousPage = () => {
     if (currentPage > 0) setCurrentPage(currentPage - 1);
   };
-
-  const goToHome = () => console.log("Ir al screen Home");
 
   const renderImage = () => {
     const { image, dimensions } = pages[currentPage];
