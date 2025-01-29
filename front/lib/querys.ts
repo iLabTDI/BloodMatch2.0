@@ -45,7 +45,7 @@ export async function generaldates(){
 
 }
 
-export const New_User = async ( Email,firstName,lastName,date,type,gen,password,state,city,phone,user,url) => {
+export const New_User = async ( Email:string,firstName:string,lastName:string,date,type:string,gen:string,password:string,state:string,city:string,phone:string,user:string,url:string) => {
     try {
           const { data, error } = await supabase
             .from('usuarios')
@@ -62,7 +62,8 @@ export const New_User = async ( Email,firstName,lastName,date,type,gen,password,
                 City: city, 
                 Phone: phone,
                 UserName: user,
-                url:url
+                url:url,
+                tutorial:false
                
   
               },
