@@ -67,7 +67,7 @@ export const New_User = async (
                     UserName: user,
                     password: password,
                     role: typeRol,
-                    tutorial: null,
+                    tutorial: false,
                     url: url,
                 },
             ])
