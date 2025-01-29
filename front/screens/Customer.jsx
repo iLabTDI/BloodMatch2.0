@@ -81,12 +81,12 @@ const pickImage = async () => {
    
     const fetchData = async () => {
       
-      const usuario = getGlobalData('usuario');
+      const usuario = getGlobalData('email');
       console.log(" lo que imprime es",usuario);
       const { data, error } = await supabase
         .from('usuarios') // Nombre de la tabla de usuarios
         .select('*')
-        .eq('UserName',usuario);
+        .eq('Email',usuario);
   
       if (error) {
         console.error('Error fetching user:', error.message);
