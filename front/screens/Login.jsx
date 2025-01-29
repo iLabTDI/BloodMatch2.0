@@ -7,7 +7,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import GenericModal from '../components/GenericModal';
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from 'expo-image-picker';
-
+import CryptoJS from 'crypto-js';
 import { useTranslation } from "react-i18next";
 const PlaceImage = require('../assets/logotipo.png');
 import { getDates } from '../lib/querys';
@@ -25,7 +25,6 @@ const LogIn = (props) => {
     // Login
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
-
     // Login/Register UI helpers components
     const [activeTab, setActiveTab] = useState('login');
     const [seePassword, setSeePassword] = useState(false);
@@ -42,6 +41,7 @@ const LogIn = (props) => {
     const [register, setRegister] = useState({
         firstName: "",
         lastName: "",
+        userName:"",
         birthDate: null,
         gender: "female",
         state: "",
@@ -61,17 +61,30 @@ const LogIn = (props) => {
 
         
         try {
-           const data = await getDates(user, password)
-           const usuario = data[0];
-            if (usuario && usuario.password === password) {
+            const data = await getDates(user, password);
+            const usuario = data[0];
+            console.log("el usuario password es",usuario.password)
+          
+            if (usuario) {
+           
+              const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
+              console.log(hashedPassword)
+          
+              if (hashedPassword === usuario.password) {
                 setGlobalData('usuario', user);
+                Alert.alert("usuario encontrado ")
                 navigation.push('Home');
-            } else {
+              } else {
                 setTitleModal("Error");
                 setTextModal("Nombre de usuario y/o contraseña incorrectos");
                 setIsModalVisible(true);
+              }
+            } else {
+              setTitleModal("Error");
+              setTextModal("Usuario no encontrado");
+              setIsModalVisible(true);
             }
-        } catch (error) {
+          }  catch (error) {
             console.error("Error en el inicio de sesión:", error);
             setTitleModal("Error");
             setTextModal("Error al intentar iniciar sesión");
@@ -174,12 +187,49 @@ const LogIn = (props) => {
         validateFields.reverse();
 
         validateFields.forEach(el => {
+           
             if(el.message){
                 setTitleModal("Error");
                 setTextModal(el.message);
                 setIsModalVisible(true);
             }
         });
+        console.log("lo que hay es",validateFields )
+        const allTrue = validateFields.every(element => element === true);
+        if(allTrue){
+            
+        const verification=await New_User(register)
+        console.log("la verificacion es",verification)
+       if(verification){
+        Alert.alert("datos insertados correctamente")
+        setRegister({
+            firstName: "",
+            lastName: "",
+            birthDate: "",
+            gender: "",
+            state: "",
+            municipality: "",
+            phoneNumber: "",
+            email: "",
+            password: "",
+            passwordConfirm: "",
+            bloodTypeRol: "",
+            bloodType: "",
+            uriImage: "",
+            termsAgree: false,
+        });
+        setActiveTab("login")
+       }else{
+        Alert.alert("email existente  ")
+   
+        
+        
+
+       }
+        }
+      
+
+        
     }
 
     // return (
@@ -307,6 +357,12 @@ const LogIn = (props) => {
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4"
                             value={register.lastName}
                             onChangeText={(value) => handleInputChange("lastName", value)}
+                        />
+                           <TextInput
+                            placeholder="nickname"
+                            className="bg-gray-100 rounded-full py-3 px-4 mb-4"
+                            value={register.userName}
+                            onChangeText={(value) => handleInputChange("userName", value)}
                         />
 
                         <TouchableOpacity

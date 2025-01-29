@@ -1,6 +1,5 @@
 import { supabase } from "./supabase";
-
-
+import CryptoJS from 'crypto-js';
 export async function getDates(user:string, password:string){
 
   try
@@ -45,25 +44,28 @@ export async function generaldates(){
 
 }
 
-export const New_User = async ( Email:string,firstName:string,lastName:string,date,type:string,gen:string,password:string,state:string,city:string,phone:string,user:string,url:string) => {
+export const New_User = async (register:any) => {
     try {
+      const password = register.password;
+      const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
           const { data, error } = await supabase
             .from('usuarios')
             .insert([
               {
-                Email: Email,
-                FirstName: firstName, 
-                LastName: lastName, 
-                Birthdate: date, 
-                Blood_Type: type, 
-                Sexo: gen, 
-                password:password, 
-                State: state, 
-                City: city, 
-                Phone: phone,
-                UserName: user,
-                url:url,
-                tutorial:false
+                Email: register.email,
+                FirstName: register.firstName, 
+                LastName: register.lastName, 
+                Birthdate: register.birthDate, 
+                Blood_Type: register.bloodType, 
+                Gender: register.gender, 
+                password:hashedPassword, 
+                State: register.state, 
+                City: register.municipality, 
+                Phone: register.phoneNumber,
+                UserName: register.userName,
+                url:register.uriImage,
+                tutorial:false,
+                role:register.bloodTypeRol
                
   
               },
@@ -72,11 +74,14 @@ export const New_User = async ( Email:string,firstName:string,lastName:string,da
   
           if (error) {
             console.error('Error al insertar datos:', error);
+            return false
           } else {
             console.log('Datos insertados con éxito:', data);
+            return true
           }
         } catch (error) {
           console.error('Error al insertar datos 1:', error.message);
+          return false
         }
       };
 
@@ -100,7 +105,7 @@ export const updateImages = async(filePath,formData)=>{
 }
 
 
-export async function handleSubmit( image) {
+export async function handleSubmit( image:string) {
     try {
       let publicUrl = "";
       console.log("se enica",image) 
@@ -137,7 +142,7 @@ export async function handleSubmit( image) {
     }
   }
 
-  export async function getUrl(fileName){
+  export async function getUrl(fileName:string){
 
     const {data } = await supabase.storage.from('prueba') .getPublicUrl(fileName);
         console.log(data)
@@ -146,7 +151,7 @@ export async function handleSubmit( image) {
   }
 
 
-  export async function verificateUser(usuario){
+  export async function verificateUser(usuario:string){
     const {data,error }= await supabase.from("usuarios").select("UserName").eq("UserName",usuario)
     if(error){
       console.log("was an error",error)
