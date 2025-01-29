@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "blood2",
-    "slug": "blood2",
-    "owner": "rauf1234",
+    "name": "bloodmatch",
+    "slug": "bloodmatch",
+    "owner": "leonardosep13",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logotipo.png",
@@ -52,7 +52,7 @@
       "supabaseAnonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFiZ3NwdWp3eXVqdGNja25xZW5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTA0MzU5NzgsImV4cCI6MjAyNjAxMTk3OH0.NOjPxUVPBYztUlLCl6CBYg9vIrl9I58zD6bolUzqYfs",
       "google": "AIzaSyAeuINf12oVscVv8i1koH0_3QQkbd36_eo",
       "eas": {
-        "projectId": "b2a573a2-8380-4092-bc56-8350443770a8"
+        "projectId": "5dbe065e-7bfe-4119-966e-9f530d022cfe"
       }
     }
   }

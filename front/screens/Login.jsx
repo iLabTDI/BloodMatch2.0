@@ -45,36 +45,48 @@ const LogIn = (props) => {
  
 
     return (
-        <View style={[styles.container, { backgroundColor: theme.background }]}>
-            <Image source={PlaceImage} style={styles.image} />
+        <View style={[styles.container, { backgroundColor: "white" }]}>
+            
+            <View style={{marginTop:-50}}>
+                <Image source={PlaceImage} style={styles.image} />
+            </View>
+
+            <View style={{marginTop:10,width:"70%"}}>
+            
+            <View style={{marginLeft:23}}>
+                <Text style={{fontSize:18,marginTop:10}}>
+                    Usuario
+                </Text>
+            </View>
+            
             <TextInput
-                style={[styles.textInput, { backgroundColor: theme.bla }, { color: theme.color }]}
-                placeholder="Usuario"
+                style={[styles.textInput, { backgroundColor: "white" }, {padding: 10}, { color: theme.color },{marginTop:10}]}
                 value={user}
                 onChangeText={val => setUser(val)}
                 error={errorUserName}
             />
+            <View style={{marginLeft:23}}>
+                <Text style={{fontSize:18,marginTop:10}}>
+                    Contraseña
+                </Text>
+            </View>
+
             <TextInput
-                style={[styles.textInput, { backgroundColor: theme.bla }, { color: theme.color }]}
-                placeholder="Contraseña"
+                style={[styles.textInput, { backgroundColor: "white" },{padding: 10},{marginTop:10}]}
                 secureTextEntry={true}
                 value={password}
                 onChangeText={val => setPassword(val)}
                 error={errorPassword}
             />
-            <ButtonGeneric
-                text={t("log-in")}
-                onPress={() => {
-       
-                    DoSignIn();
-                    
-                }}
-            />
-              <TouchableOpacity style={styles.regisButton} onPress={() => { navigation.navigate('new-reg') }}>
-                <Text style={{ ...styles.textLink, marginStart: '40%' }}>{t("rgst")}</Text>
+            <TouchableOpacity style={styles.loginButton} onPress={() => { DoSignIn()}}>
+                <Text style={{ color:"white",fontStyle:"Italic", marginStart: '35%' }}>Iniciar sesion</Text>
             </TouchableOpacity>
-           
-        
+
+            <TouchableOpacity style={styles.regisButton} onPress={() => { navigation.navigate('new-reg') }}>
+                <Text style={{ color:"white",fontStyle:"Italic", marginStart: '35%' }}>{t("rgst")}</Text>
+            </TouchableOpacity>
+
+            </View>
         </View>
     );
 };
@@ -89,17 +101,22 @@ const styles = StyleSheet.create({
         marginTop: '27%',
         marginVertical: 10,
         width: 203,
-        height: 310,
+        height:210,
     },
     textInput: {
         width: '83%',
-        height: 40,
+        height: 50,
         borderRadius: 10,
-        marginVertical: 7,
+        marginVertical: 8,
+        marginHorizontal:20,
         fontWeight: 'bold',
         fontStyle: 'italic',
         fontSize: 16,
-        backgroundColor: '#fff'
+        backgroundColor: 'black',
+        borderRadius:5,
+        borderWidth:1,
+        padding:10,
+        marginTop:24,
     },
     textLink: {
         color: '#fff',
@@ -109,13 +126,26 @@ const styles = StyleSheet.create({
     },
     regisButton: {
         borderRadius: 10,
-        marginVertical: 13,
+        marginVertical: 15,
+        marginHorizontal:18,
         paddingVertical: 11,
         width: '84%',
         flexDirection: 'row',
         borderColor: '#fff',
         borderWidth: 1,
-    }
+        backgroundColor:"black",
+    },
+    loginButton:{
+            borderRadius: 10,
+            marginVertical: 15,
+            marginHorizontal:18,
+            paddingVertical: 11,
+            width: '84%',
+            flexDirection: 'row',
+            borderColor: '#fff',
+            borderWidth: 1,
+            backgroundColor:"red",
+    },
 });
 
 export default LogIn;

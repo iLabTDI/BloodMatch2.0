@@ -204,14 +204,14 @@ const Setting = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#ceecff',
+      backgroundColor: 'red',
       alignItems: 'stretch',
       
     },
 
     contLogout: {
       borderColor: '#000', 
-      backgroundColor: '#fff',
+      backgroundColor: 'blue',
       padding: '1.5%', 
       margin: '1%', 
       borderRadius: 15,
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   },
   contOpc:{
     paddingVertical: 7,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "baseline"
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
       color:'#28398d', 
       fontSize: height*.027,
       alignSelf: 'flex-start',
-      fontFamily: 'Quicksand-Bold',
+      fontFamily: 'Verdana',
     },
 
     text5: {
@@ -243,15 +243,15 @@ const styles = StyleSheet.create({
       color:'#28398d', 
       fontSize: height*.027,
       alignSelf: 'flex-start',
-      fontFamily: 'Quicksand-Bold',
+      fontFamily: 'Verdana',
     }
 
     ,
     textLogout:{
-      color:'#28398d', 
+      color:'black', 
       fontSize: height*.027,
       alignSelf: 'flex-start',
-      fontFamily: 'Quicksand-Bold',
+      fontFamily: 'Verdana',
     },
     BackLogo: {
       color:'#000', 
@@ -262,7 +262,11 @@ const styles = StyleSheet.create({
     },
     button: {
       alignItems: 'flex-start',
-      padding: 10,
+      padding: 15,
+      borderColor:"black",
+      borderRadius:"5",
+      borderWidth:0.5,
+      height:60
     },
 
     tinyLogo5:{
@@ -282,7 +286,7 @@ const styles = StyleSheet.create({
       fontSize: 30,
       alignSelf: 'center',
       fontWeight: 'bold',
-      fontStyle: 'italic'
+      fontStyle: 'Verdana'
     }
 });
 

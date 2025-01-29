@@ -13,7 +13,7 @@ RUN npm install && npm install -g nodemon
 # Copia el resto del código de la aplicación al contenedor
 COPY . .
 
-# Expone el puerto 8001 en el que correrá tu aplicación
+# Expone el puerto 8002 en el que correrá tu aplicación
 EXPOSE 8002
 
 # Comando para correr la aplicación

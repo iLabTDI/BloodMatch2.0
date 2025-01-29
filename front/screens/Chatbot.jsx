@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
   sendText: {
     color: "#fff",
     fontWeight: "bold",
+    marginTop:1,
   },
 });
 

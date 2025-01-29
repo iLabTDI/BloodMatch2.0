@@ -10,6 +10,7 @@ export function ButtonGeneric(props) {
       style = {{
         ...styles.button,
         backgroundColor: '#e087b5',
+      
       }}
       onPress={ onPress }
     >

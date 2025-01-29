@@ -16,10 +16,9 @@ import Termycon from '../screens/terminos';
 import Privacidad from '../screens/Privacidad';
 import NewReg from '../screens/New-reg';
 import Messagescreen from '../screens/Messagescreen';
-//import chat from './screens/Chatbot'
+import notificaciones from '../screens/pruebaNotificaciones';
+import pruebaNotificaciones from '../screens/pruebaNotificaciones';
 
-
-;
 
 
 export default function AuthNavigator() {
@@ -27,6 +26,12 @@ export default function AuthNavigator() {
     const Stack = createNativeStackNavigator();
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
+
+            <Stack.Screen
+                name = 'pruebaNotificaciones'
+                component = { pruebaNotificaciones }
+                options={{ headerShown: false}} 
+            /> 
             <Stack.Screen
                 name = 'Login'
                 component = { Login }

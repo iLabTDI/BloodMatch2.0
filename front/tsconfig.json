@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "screens/Locate2.jsx"  ]
+, "screens/Locate2.jsx", "screens/pruebaNotificaciones.tsx"  ]
 }

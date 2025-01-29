@@ -48,7 +48,7 @@ const verify=(currentGroupName,currentSecondGroup)=>{
         for(let i=0; i<chatgroups.length; i++){
           console.log(chatgroups[i].currentGroupName,chatgroups[i].currentSecondGroup)
           if((currentGroupName=== chatgroups[i].currentGroupName||currentGroupName=== chatgroups[i].currentSecondGroup) && (currentSecondGroup===chatgroups[i].currentGroupName||currentSecondGroup===chatgroups[i].currentSecondGroup)){
-            console.log("ya se ha crreado un grupo ")
+            console.log("ya se ha cerreado un grupo ")
             return 1
             
           }if(longitud===i){

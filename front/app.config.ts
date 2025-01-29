@@ -8,8 +8,8 @@ dotenv.config();
 export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     ...config,
-    slug: "blood2",
-    name: "blood2",
+    slug: "bloodmatch",
+    name: "bloodmatch",
     extra: {
       ...config.extra,
       supabaseUrl: process.env.Project_URL,
