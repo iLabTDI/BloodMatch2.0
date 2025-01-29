@@ -1,3 +1,4 @@
+import Tutorial from "@/components/Tutorial";
 import { supabase } from "./supabase";
 import CryptoJS from 'crypto-js';
 export async function getDates(user:string, password:string){
@@ -26,23 +27,9 @@ export async function getDates(user:string, password:string){
 }
 
 
-export async function generaldates(){
-    const {data,error} = await supabase.from('usuarios').select('*');
 
-    console.log("los usuarios que esta agarrando son estos ", data)
-
-    if (error) {
-      console.log(error);
-    }
-    if (!data || data.length === 0) {
-      console.log("error datos invalidos");
-    }else{
-
-        return data
-    }
-
-
-}
+    
+   
 
 export const New_User = async (register:any) => {
     try {
@@ -84,74 +71,106 @@ export const New_User = async (register:any) => {
           return false
         }
       };
+export async function generaldates() {
+  const { data, error } = await supabase.from("usuarios").select("*");
 
+  console.log("los usuarios que esta agarrando son estos ", data);
 
-export const updateImages = async(filePath,formData)=>{
-
-  try{
-    console.log("el file path es ",filePath,"El forma",formData)
-    const { error } = await supabase.storage
-    .from("prueba")
-    .upload(filePath, formData);
-    if (error) throw error;
-
-  }catch(error)
-  {
-    console.log(error)
+  if (error) {
+    console.log(error);
   }
-   
-   
-
+  if (!data || data.length === 0) {
+    console.log("error datos invalidos");
+  } else {
+    return data;
+  }
 }
 
 
-export async function handleSubmit( image:string) {
-    try {
-      let publicUrl = "";
-      console.log("se enica",image) 
-      if (image) {
-        
-        const fileExt = image.split(".").pop();
-        console.log(fileExt)
-        const fileName = image.replace(/^.*[\\\/]/, "");
-        console.log(fileName)
-        const filePath = `posts/${Date.now()}.${fileExt}`;
-        console.log(filePath)
-        const formData = new FormData();
-  
-        const photo = {
-          uri: image,
-          name: fileName,
-          type: `image/${fileExt}`,
-        } as unknown as Blob;
-        
-        formData.append("file", photo);
-  
-        const images=await updateImages(filePath,formData)
-  
-        console.log(images)
-       
-     return filePath
-       
-      }
-  
-  
-  
-    } catch (error) {
-      console.log("error")
+
+export const updateImages = async (filePath, formData) => {
+  try {
+    console.log("el file path es ", filePath, "El forma", formData);
+    const { error } = await supabase.storage
+      .from("prueba")
+      .upload(filePath, formData);
+    if (error) throw error;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export async function handleSubmit(image) {
+  try {
+    let publicUrl = "";
+    console.log("se enica", image);
+    if (image) {
+      const fileExt = image.split(".").pop();
+      console.log(fileExt);
+      const fileName = image.replace(/^.*[\\\/]/, "");
+      console.log(fileName);
+      const filePath = `posts/${Date.now()}.${fileExt}`;
+      console.log(filePath);
+      const formData = new FormData();
+
+      const photo = {
+        uri: image,
+        name: fileName,
+        type: `image/${fileExt}`,
+      } as unknown as Blob;
+
+      formData.append("file", photo);
+
+      const images = await updateImages(filePath, formData);
+
+      console.log(images);
+
+      return filePath;
     }
+  } catch (error) {
+    console.log("error");
+  }
+}
+
+export async function getUrl(fileName) {
+  const { data } = await supabase.storage.from("prueba").getPublicUrl(fileName);
+  console.log(data);
+
+  return data;
+}
+
+
+
+export async function getTutorialValue(userName) {
+  if (!userName) {
+    console.error("Se requiere un userName válido");
+    return false;
   }
 
-  export async function getUrl(fileName:string){
+  console.log("el usuario es+",userName)
 
-    const {data } = await supabase.storage.from('prueba') .getPublicUrl(fileName);
-        console.log(data)
+  const { data, error } = await supabase
+    .from("usuarios")
+    .select("tutorial")
+    .eq("UserName", userName)
+    .single();
 
-        return data;
+  if (error) {
+    console.error("Error al consultar estadoTutorial:", error.message);
+    return false;
+  }
+  if(data.tutorial===false){
+    console.log("el tuto es",data.tutorial)
+    return false
+  }else{
+    return true
   }
 
+ 
+}
 
-  export async function verificateUser(usuario:string){
+
+export async function verificateUser(usuario:string){
     const {data,error }= await supabase.from("usuarios").select("UserName").eq("UserName",usuario)
     if(error){
       console.log("was an error",error)
@@ -161,5 +180,31 @@ export async function handleSubmit( image:string) {
       console.log ("sicces",data[0].UserName)
       return true;
     }
+  if (data) {
+    return data.tutorial === null ? false : data.tutorial;
   }
-  
+}
+
+export async function updateTutorialValue(userName) {
+  if (!userName) {
+    console.error("UserName no es valido");
+    return null;
+  }
+  try {
+    const { data, error } = await supabase
+      .from("usuarios")
+      .update({ tutorial: true })
+      .eq("UserName", userName)
+      .select();
+
+    if (error) {
+      console.error("hubo un error", error);
+      return null;
+    }
+    console.log("Checando el cambio", data);
+    return data;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
