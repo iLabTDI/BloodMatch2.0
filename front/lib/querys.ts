@@ -67,7 +67,7 @@ export const New_User = async (
                     UserName: user,
                     password: password,
                     role: typeRol,
-                    tutorial: null,
+                    tutorial: false,
                     url: url,
                 },
             ])
@@ -164,7 +164,7 @@ export async function handleSubmit(image) {
   }
 }
 
-export async function getTutorialValue(userName) {
+export async function getTutorialValue(userName:any) {
   if (!userName) {
     console.error("Se requiere un userName válido");
     return false;

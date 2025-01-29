@@ -66,7 +66,8 @@ function Home() {
 
   useEffect(() => {
     async function fetchUserData() {
-      const tutorialValue = await getTutorialValue(getGlobalData("usuario"));
+      console.warn("XXXXX: ", getGlobalData("email"));
+      const tutorialValue = await getTutorialValue(getGlobalData("email"));
       console.log(tutorialValue)
       if (tutorialValue) {
         setShowTutorial(false);
@@ -189,7 +190,7 @@ function Home() {
 
   const onClose = () => {
     async function updateTutorial() {
-      const result = await updateTutorialValue(getGlobalData("usuario"));
+      const result = await updateTutorialValue(getGlobalData("email"));
       console.log("Checando result: ", result);
     }
     updateTutorial();
