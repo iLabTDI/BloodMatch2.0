@@ -130,6 +130,7 @@ export async function isExistingEmail(email) {
         console.error("Error inesperado:", err.message);
         return true;
     }
+  }
 
 export async function handleSubmit(image) {
   try {

@@ -7,7 +7,6 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import GenericModal from '../components/GenericModal';
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from 'expo-image-picker';
-import CryptoJS from 'crypto-js';
 import { useTranslation } from "react-i18next";
 const PlaceImage = require('../assets/logotipo.png');
 import { getDates } from '../lib/querys';
@@ -324,12 +323,12 @@ const LogIn = (props) => {
                             value={register.lastName}
                             onChangeText={(value) => handleInputChange("lastName", value)}
                         />
-                           <TextInput
+                           {/* <TextInput
                             placeholder="nickname"
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4"
                             value={register.userName}
                             onChangeText={(value) => handleInputChange("userName", value)}
-                        />
+                        /> */}
 
                         <TouchableOpacity
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4 flex flex-row justify-between"
