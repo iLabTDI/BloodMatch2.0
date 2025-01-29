@@ -114,6 +114,7 @@ const NewReg = (props) => {
 
       if (imageUrl.length > 0) {
         Alert.alert("¡Imagen guardada!");
+        console.log("yo",saveImage)
       } else {
         Alert.alert("No se pudo guardar la imagen!");
         
@@ -591,10 +592,14 @@ const NewReg = (props) => {
 
                  <MaterialCommunityIcons name="pencil-plus-outline" color={'#000000'} size={50} />
               </TouchableOpacity>
-
+ <Image
+          source={{ uri: saveImage }}
+          style={styles.previewImage}
+        />
               <TouchableOpacity style={styles.arrowleft} onPress={handlePrevView}>
                    <MaterialCommunityIcons name="arrow-left-circle" color="#000000" size={60} />
               </TouchableOpacity>
+             
          <ButtonGeneric text= {t("confr")}
                 title='Logearsss'
                 onPress={registrar}
@@ -819,6 +824,13 @@ const styles = StyleSheet.create({
       justifyContent: 'flex-end',
       flexDirection: 'row',
       alignItems: 'center'
+    },
+    previewImage: {
+      width: 150,
+      height: 150,
+      borderRadius: 10,
+      //marginVertical: 20,
+      alignSelf: 'center',
     },
 });
 

@@ -1,13 +1,27 @@
 import React, { useState, useContext, useRef, useEffect } from "react";
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, Dimensions, Keyboard, Alert } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Dimensions,
+  Keyboard,
+  Alert,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import themeContext from "../helper/ThemeCon";
-import DeckSwiper from 'react-native-deck-swiper';
+import DeckSwiper from "react-native-deck-swiper";
 import { socket } from "../util/connectionChat";
 import { getGlobalData } from "../backend/querys/inserts/New_email";
-import { generaldates } from "../lib/querys";
+import {
+  generaldates,
+  getTutorialValue,
+  updateTutorialValue,
+} from "../lib/querys";
+import Tutorial from "../components/Tutorial";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface TaskInterface {
   user: string;
@@ -18,8 +32,8 @@ interface TaskInterface {
   image: String;
 }
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 function Home() {
   const [datos, setDatos] = useState(null);
@@ -32,10 +46,41 @@ function Home() {
   const [tasks, setTasks] = useState([]);
   const swiperRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showTutorial, setShowTutorial] = useState(false);
+
+  // useEffect(() => {
+  //   async function fetchUserData() {
+  //     try {
+  //       const usuario = getGlobalData("usuario");
+  //       setUser(usuario);
+
+  //       const estadoTutorial = usuario?.estadoTutorial === "true";
+  //       console.log("Entra al useeffect de serch");
+  //       setShowTutorial(!estadoTutorial);
+  //     } catch (error) {
+  //       console.error("Error fetching user data", error);
+  //     }
+  //   }
+  //   fetchUserData();
+  // }, []);
+
+  useEffect(() => {
+    async function fetchUserData() {
+      const tutorialValue = await getTutorialValue(getGlobalData("usuario"));
+      console.log(tutorialValue)
+      if (tutorialValue) {
+        setShowTutorial(false);
+      } else {
+        setShowTutorial(true);
+      }
+    }
+    fetchUserData();
+  }, []);
+
   useEffect(() => {
     socket.emit("getAllGroups");
 
-    socket.on("groupList", (groups) => {
+    user?.socket.on("groupList", (groups) => {
       setAllChatRooms(groups);
     });
   }, [socket]);
@@ -48,79 +93,80 @@ function Home() {
     fetchData();
   }, []);
 
-
   const handleCreateNewRoom = (user) => {
     try {
-      //i get the global user 
-      const usuario = getGlobalData("usuario")
-      console.log("lo que imprimo es=",usuario,"y",user)
+      //i get the global user
+      const usuario = getGlobalData("usuario");
+      console.log("lo que imprimo es=", usuario, "y", user);
       setNewGroup(usuario);
 
-      socket.emit("createNewGroup", { currentGroupName: usuario, currentSecondGroup: user });
+      socket.emit("createNewGroup", {
+        currentGroupName: usuario,
+        currentSecondGroup: user,
+      });
       Keyboard.dismiss();
     } catch (error) {
       console.error("Error creating new group:", error);
     }
   };
 
-  
   const getDatabase = async () => {
     try {
-
-      const data=await generaldates()
-        const list = [];
-        let i = 0;
-        const show = data.length;
-        console.log("la longitud de la lista es",show) 
-       const datos= data.map(user => ({
-          id: user.Email,
-          user:user.UserName,
-          sangre :user.Blood_Type,
-          municipio : user.City,
-          descripcion: user.Situation
-        }));
-        console.log("los datos son",datos)
-        while (i <= show - 1) {
-         console.log(i)
-         let dat=getGlobalData("usuario")
-         console.log("el usuario es=",dat)
-         console.log("data",data[i].UserName)
-         if(dat===data[i].UserName){
-          console.log("hola")
+      const data = await generaldates();
+      const list = [];
+      let i = 0;
+      const show = data.length;
+      console.log("la longitud de la lista es", show);
+      const datos = data.map((user) => ({
+        id: user.Email,
+        user: user.UserName,
+        sangre: user.Blood_Type,
+        municipio: user.City,
+        descripcion: user.Situation,
+      }));
+      console.log("los datos son", datos);
+      while (i <= show - 1) {
+        console.log(i);
+        let dat = getGlobalData("usuario");
+        console.log("el usuario es=", dat);
+        console.log("data", data[i].UserName);
+        if (dat === data[i].UserName) {
+          console.log("hola");
           i++;
-         }else{
-        const dates = [{
-                    'id': data[i].Email,
-                    'user': data[i].UserName,
-                    'sangre': data[i].Blood_Type,
-                    'municipio': data[i].City,
-                    'descripcion':data[i].Situation,
-                    'image': data[i].url
-                  }];
+        } else {
+          const dates = [
+            {
+              id: data[i].Email,
+              user: data[i].UserName,
+              sangre: data[i].Blood_Type,
+              municipio: data[i].City,
+              descripcion: data[i].Situation,
+              image: data[i].url,
+            },
+          ];
 
           i++;
           list.push(dates);
-         }
         }
-        
-        return list;
-      
+      }
+
+      return list;
     } catch (error) {
       console.log(error);
     }
   };
 
   const swipeRight = (cardIndex) => {
-    console.log('Deslizamiento hacia la derecha detectado', cardIndex);
-    let matchedCard = tasks[cardIndex][0]; // aqui tengo la lista de listas para agarrar al usuario 
+    console.log("Deslizamiento hacia la derecha detectado", cardIndex);
+    let matchedCard = tasks[cardIndex][0]; // aqui tengo la lista de listas para agarrar al usuario
     const card = matchedCard.user;
-    console.log("loque agarra de la carta es",card)
+    console.log("loque agarra de la carta es", card);
     handleCreateNewRoom(card);
   };
 
   const swipeLeft = () => {
-    console.log('Deslizamiento hacia la izquierda detectado');
-    setCurrentIndex(prevIndex => prevIndex + 1);
+    console.log("Deslizamiento hacia la izquierda detectado");
+    setCurrentIndex((prevIndex) => prevIndex + 1);
   };
 
   const renderCard = (task: TaskInterface) => {
@@ -141,71 +187,85 @@ function Home() {
     );
   };
 
-  return (
-    <LinearGradient
-      colors={['white', theme.background]}
-      style={styles.container}
-    >
-      <StatusBar style="auto" />
-      <Text style={styles.title}>Ayuda a: </Text>
-      <DeckSwiper
-        ref={swiperRef}
-        cards={tasks}
-        renderCard={renderCard}
-        onSwipedRight={(cardIndex) => swipeRight(cardIndex)}
-        onSwipedLeft={swipeLeft}
-        backgroundColor="transparent"
-        stackSize={2}
-        stackSeparation={15}
-        animateOverlayLabelsOpacity
-        animateCardOpacity
-        disableBottomSwipe
-        disableTopSwipe
-        infinite
-        overlayLabels={{
-          left: {
-            element: (
-              <Image
-                source={require("../images/next.png")}
-                style={styles.overlayImage}
-              />
-            ),
-            style: {
-              wrapper: {
-                flexDirection: "column",
-                alignItems: "flex-end",
-                justifyContent: "flex-start",
-                marginTop: 0,
-                marginLeft: -25,
+  const onClose = () => {
+    async function updateTutorial() {
+      const result = await updateTutorialValue(getGlobalData("usuario"));
+      console.log("Checando result: ", result);
+    }
+    updateTutorial();
+    setShowTutorial(false);
+    console.log("onClose", showTutorial);
+  };
+
+  if (showTutorial) {
+    return <Tutorial onClose={onClose} />;
+  } else {
+    return (
+      <LinearGradient
+        colors={["white", theme.background]}
+        style={styles.container}
+      >
+        <StatusBar style="auto" />
+        <Text style={styles.title}>Ayuda a: </Text>
+        <DeckSwiper
+          ref={swiperRef}
+          cards={tasks}
+          renderCard={renderCard}
+          onSwipedRight={(cardIndex) => swipeRight(cardIndex)}
+          onSwipedLeft={swipeLeft}
+          backgroundColor="transparent"
+          stackSize={2}
+          stackSeparation={15}
+          animateOverlayLabelsOpacity
+          animateCardOpacity
+          disableBottomSwipe
+          disableTopSwipe
+          infinite
+          overlayLabels={{
+            left: {
+              element: (
+                <Image
+                  source={require("../images/next.png")}
+                  style={styles.overlayImage}
+                />
+              ),
+              style: {
+                wrapper: {
+                  flexDirection: "column",
+                  alignItems: "flex-end",
+                  justifyContent: "flex-start",
+                  marginTop: 0,
+                  marginLeft: -25,
+                },
               },
             },
-          },
-          right: {
-            element: (
-              <Image
-                source={require("../images/donate.png")}
-                style={styles.overlayImage}
-              />
-            ),
-            style: {
-              label: {
-                backgroundColor: "blue",
-                color: "white",
-                fontSize: 24,
-              },
-              wrapper: {
-                flexDirection: "column",
-                alignItems: "flex-start",
-                justifyContent: "flex-start",
-                marginTop: 0,
-                marginLeft: 25,
+            right: {
+              element: (
+                <Image
+                  source={require("../images/donate.png")}
+                  style={styles.overlayImage}
+                />
+              ),
+              style: {
+                label: {
+                  backgroundColor: "blue",
+                  color: "white",
+                  fontSize: 24,
+                },
+                wrapper: {
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  justifyContent: "flex-start",
+                  marginTop: 0,
+                  marginLeft: 25,
+                },
               },
             },
-          },
-        }}
-      />
-    </LinearGradient>
-  );
+          }}
+        />
+      </LinearGradient>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

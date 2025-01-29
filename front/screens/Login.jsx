@@ -7,7 +7,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import GenericModal from '../components/GenericModal';
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from 'expo-image-picker';
-
+import CryptoJS from 'crypto-js';
 import { useTranslation } from "react-i18next";
 const PlaceImage = require('../assets/logotipo.png');
 import { getDates } from '../lib/querys';
@@ -25,7 +25,6 @@ const LogIn = (props) => {
     // Login
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
     // Login/Register UI helpers components
     const [activeTab, setActiveTab] = useState('login');
     const [seePassword, setSeePassword] = useState(false);
@@ -42,6 +41,7 @@ const LogIn = (props) => {
     const [register, setRegister] = useState({
         firstName: "",
         lastName: "",
+        userName:"",
         birthDate: null,
         gender: "female",
         state: "",
@@ -58,6 +58,8 @@ const LogIn = (props) => {
     });
 
     const DoSignIn = async () => {
+
+        
         try {
            const data = await getDates(email.trim(), password.trim());
            const usuario = data[0];
@@ -65,7 +67,7 @@ const LogIn = (props) => {
                 // setGlobalData('usuario', ema);
                 setGlobalData('email', email);
                 navigation.push('Home');
-            } else {
+              } else {
                 setTitleModal("Error");
                 setTextModal("Correo y/o contraseña incorrectos");
                 setIsModalVisible(true);
@@ -321,6 +323,12 @@ const LogIn = (props) => {
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4"
                             value={register.lastName}
                             onChangeText={(value) => handleInputChange("lastName", value)}
+                        />
+                           <TextInput
+                            placeholder="nickname"
+                            className="bg-gray-100 rounded-full py-3 px-4 mb-4"
+                            value={register.userName}
+                            onChangeText={(value) => handleInputChange("userName", value)}
                         />
 
                         <TouchableOpacity
