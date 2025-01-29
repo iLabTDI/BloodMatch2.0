@@ -14,7 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import themeContext from "../helper/ThemeCon";
 import DeckSwiper from "react-native-deck-swiper";
 import { socket } from "../util/connectionChat";
-import { getGlobalData } from "../backend/querys/inserts/New_email";
+import { getGlobalData, getAllGlobalData } from "../backend/querys/inserts/New_email";
 import {
   generaldates,
   getTutorialValue,
