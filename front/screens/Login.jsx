@@ -57,8 +57,6 @@ const LogIn = (props) => {
     });
 
     const DoSignIn = async () => {
-
-        
         try {
            const data = await getDates(email.trim(), password.trim());
            const usuario = data[0];

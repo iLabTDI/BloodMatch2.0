@@ -106,11 +106,11 @@ export async function getUrl(fileName) {
 
 export async function isExistingEmail(email) {
     try {
-        // Consultar la tabla "usuarios" para verificar si el correo ya existe
+        // Consultar la tabla usuarios para verificar si el correo ya existe
         const { data, error } = await supabase
         .from("usuarios")
-        .select("Email") // Selecciona solo la columna "Email"
-        .eq("Email", email); // Asegúrate de comparar en minúsculas si aplica
+        .select("Email")
+        .eq("Email", email); 
         
         if (error) {
             console.error("Hubo un error al consultar Supabase:", error.message);
