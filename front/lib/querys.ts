@@ -9,7 +9,6 @@ export async function getDates(user:string, password:string){
         .from('usuarios')
         .select('*')
         .eq('UserName',user)
-        //.eq('password',password);
         if (error) {
         console.log(error);
         }else{
