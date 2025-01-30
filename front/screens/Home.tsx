@@ -66,7 +66,6 @@ function Home() {
 
   useEffect(() => {
     async function fetchUserData() {
-      console.warn("XXXXX: ", getGlobalData("email"));
       const tutorialValue = await getTutorialValue(getGlobalData("email"));
       console.log(tutorialValue)
       if (tutorialValue) {
