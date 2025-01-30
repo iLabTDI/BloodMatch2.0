@@ -14,14 +14,16 @@ import { useNavigation } from "@react-navigation/native";
 import themeContext from "../helper/ThemeCon";
 import DeckSwiper from "react-native-deck-swiper";
 import { socket } from "../util/connectionChat";
-import { getGlobalData, getAllGlobalData } from "../backend/querys/inserts/New_email";
+import {
+  getGlobalData,
+  getAllGlobalData,
+} from "../backend/querys/inserts/New_email";
 import {
   generaldates,
   getTutorialValue,
   updateTutorialValue,
 } from "../lib/querys";
 import Tutorial from "../components/Tutorial";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface TaskInterface {
   user: string;
@@ -42,32 +44,22 @@ function Home() {
   const [secondNewGroup, setSecondNewGroup] = useState("Alex Robles");
   const [allChatGroups, setAllChatRooms] = useState([]);
   const theme = useContext(themeContext);
-  const navigation = useNavigation();
   const [tasks, setTasks] = useState([]);
   const swiperRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showTutorial, setShowTutorial] = useState(false);
+  const navigation = useNavigation();
 
-  // useEffect(() => {
-  //   async function fetchUserData() {
-  //     try {
-  //       const usuario = getGlobalData("usuario");
-  //       setUser(usuario);
-
-  //       const estadoTutorial = usuario?.estadoTutorial === "true";
-  //       console.log("Entra al useeffect de serch");
-  //       setShowTutorial(!estadoTutorial);
-  //     } catch (error) {
-  //       console.error("Error fetching user data", error);
-  //     }
-  //   }
-  //   fetchUserData();
-  // }, []);
+  useEffect(() => {
+    navigation.setOptions({
+      tabBarStyle: showTutorial ? { display: "none" } : undefined,
+    });
+  }, [showTutorial]);
 
   useEffect(() => {
     async function fetchUserData() {
       const tutorialValue = await getTutorialValue(getGlobalData("email"));
-      console.log(tutorialValue)
+      console.log(tutorialValue);
       if (tutorialValue) {
         setShowTutorial(false);
       } else {

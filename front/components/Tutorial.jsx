@@ -91,7 +91,6 @@ export default function Tutorial({ onClose }) {
       </Text>
       <Text style={styles.subtitle}>{pages[currentPage].subtitle}</Text>
 
-      {/* Barra inferior */}
       <View style={styles.bottomBar}>
         {currentPage > 0 && (
           <TouchableOpacity style={styles.button} onPress={goToPreviousPage}>
