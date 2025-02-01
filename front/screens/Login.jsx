@@ -23,7 +23,7 @@ const LogIn = (props) => {
     const { t } = useTranslation();
 
     // Login
-    const [user, setUser] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     // Login/Register UI helpers components
     const [activeTab, setActiveTab] = useState('login');
@@ -63,7 +63,7 @@ const LogIn = (props) => {
         try { 
             const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
             
-            const data = await getDates(user, hashedPassword);
+            const data = await getDates(email, hashedPassword);
             const usuario = data[0];
            
           
@@ -74,8 +74,8 @@ const LogIn = (props) => {
               console.log(hashedPassword)
           
               if (hashedPassword === usuario.password) {
-                setGlobalData('usuario', user);
-                Alert.alert("usuario encontrado ")
+                setGlobalData('email', email);
+                Alert.alert("Email encontrado ")
                 navigation.push('Home');
               } else {
                 setTitleModal("Error");
@@ -314,10 +314,10 @@ const LogIn = (props) => {
                             ¡Conéctate para salvar vidas!
                         </Text>
                         <TextInput
-                            placeholder="Usuario"
+                            placeholder="Email"
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4"
-                            value={user}
-                            onChangeText={val => setUser(val)}
+                            value={email}
+                            onChangeText={val => setEmail(val)}
                         />
                         <View className='flex-row max-w-full items-center bg-gray-100 rounded-full px-4 mb-6'>
                             <TextInput

@@ -19,7 +19,7 @@ const height = Dimensions.get("window").height;
 const Customer = ({  }) => {
   const theme = useContext(themeContext);
   const { t } = useTranslation();
-  const [user, setUser] = useState(null);
+  const [email, setEmail] = useState(null);
   const [image, setImage] = useState(require('../images/user.png'));
  
 
@@ -57,7 +57,7 @@ const pickImage = async () => {
       const { data, error } = await supabase
         .from('usuarios') 
         .update({ "url": imageUrl }) 
-        .eq('UserName', usuario); 
+        .eq('Email', email); 
 
         
 
@@ -80,13 +80,13 @@ const pickImage = async () => {
   useEffect(() => {
    
     const fetchData = async () => {
-      
-      const usuario = getGlobalData('usuario');
-      console.log(" lo que imprime es",usuario);
+      try{
+        const email1 = getGlobalData('email');
+      console.log(" lo que imprime es",email1);
       const { data, error } = await supabase
         .from('usuarios') // Nombre de la tabla de usuarios
         .select('*')
-        .eq('UserName',usuario);
+        .eq('Email',email1);
   
       if (error) {
         console.error('Error fetching user:', error.message);
@@ -94,12 +94,12 @@ const pickImage = async () => {
         // Verificar si hay datos y manejar los casos de múltiples filas o ninguna fila
         if (data && data.length > 0) {
           
-          setUser(data[0]);
-         const usuarioEncontrado = data[0];
-         const urlEncontrado = usuarioEncontrado.url;
-         console.log("el url que se encontro es=",urlEncontrado);
+          setEmail(data[0]);
+         const emailLocated = data[0];
+         const urlLocated= emailLocated .url;
+         console.log("el url que se encontro es=",urlLocated);
 
-         setImage({ uri: urlEncontrado}); //  in this part  i get the url from the the image
+         setImage({ uri: urlLocated}); //  in this part  i get the url from the the image
       
          
         } else {
@@ -107,6 +107,12 @@ const pickImage = async () => {
           console.error('No user data fousnd');
         }
       }
+
+      }catch(e){
+        console.log(e)
+      }
+      
+      
     };
   
     fetchData();
@@ -126,25 +132,25 @@ const pickImage = async () => {
       <View style={styles.column}>
         <View>
           <Text adjustsFontSizeToFit={true} numberOfLines={1} style={[styles.nameUser, width >= 800 ? styles.nameUserGnde : styles.nameUser, { color: theme.color }]}>
-            @{user ? user.UserName : ''}
+            {email ? email.Email: ''}
           </Text>
         </View>
         <View style={styles.row}>
           <View style={[styles.sect21, { backgroundColor: theme.bla }]}>
-            <Text style={[styles.ContsText, { color: theme.color }]}>{t("gnd")}: {user ? user.Sexo : ''} </Text>
+            <Text style={[styles.ContsText, { color: theme.color }]}>{t("gnd")}: {email? email.Gender : ''} </Text>
           </View>
           <View style={[styles.sect21, { backgroundColor: theme.bla }]}>
-            <Text style={[styles.ContsText, { color: theme.color }]}>{t("tpy")}: {user ? user.Blood_Type : ''}</Text>
+            <Text style={[styles.ContsText, { color: theme.color }]}>{t("tpy")}: {email ? email.Blood_Type : ''}</Text>
           </View>
         </View>
         <View style={[styles.sctgrande, { backgroundColor: theme.bla }]}>
           <Text adjustsFontSizeToFit={true} numberOfLines={2} style={[styles.ContsText, { color: theme.color }]}>
-            {t("name")}: {user ? user.FirstName : ''} {user ? user.LastName : ''}
+            {t("name")}: {email ? email.FirstName : ''} {email ? email.LastName : ''}
           </Text>
         </View>
         <View style={[styles.sctgrande, { backgroundColor: theme.bla }]}>
           <Text style={[styles.ContsText, { color: theme.color }]}>
-            {t("cty")}: {user ? user.City : ''}
+            {t("cty")}: {email ? email.City : ''}
           </Text>
         </View>
         

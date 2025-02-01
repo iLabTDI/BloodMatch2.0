@@ -14,14 +14,16 @@ import { useNavigation } from "@react-navigation/native";
 import themeContext from "../helper/ThemeCon";
 import DeckSwiper from "react-native-deck-swiper";
 import { socket } from "../util/connectionChat";
-import { getGlobalData, getAllGlobalData } from "../backend/querys/inserts/New_email";
+import {
+  getGlobalData,
+  getAllGlobalData,
+} from "../backend/querys/inserts/New_email";
 import {
   generaldates,
   getTutorialValue,
   updateTutorialValue,
 } from "../lib/querys";
 import Tutorial from "../components/Tutorial";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface TaskInterface {
   user: string;
@@ -42,32 +44,22 @@ function Home() {
   const [secondNewGroup, setSecondNewGroup] = useState("Alex Robles");
   const [allChatGroups, setAllChatRooms] = useState([]);
   const theme = useContext(themeContext);
-  const navigation = useNavigation();
   const [tasks, setTasks] = useState([]);
   const swiperRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showTutorial, setShowTutorial] = useState(false);
+  const navigation = useNavigation();
 
-  // useEffect(() => {
-  //   async function fetchUserData() {
-  //     try {
-  //       const usuario = getGlobalData("usuario");
-  //       setUser(usuario);
-
-  //       const estadoTutorial = usuario?.estadoTutorial === "true";
-  //       console.log("Entra al useeffect de serch");
-  //       setShowTutorial(!estadoTutorial);
-  //     } catch (error) {
-  //       console.error("Error fetching user data", error);
-  //     }
-  //   }
-  //   fetchUserData();
-  // }, []);
+  useEffect(() => {
+    navigation.setOptions({
+      tabBarStyle: showTutorial ? { display: "none" } : undefined,
+    });
+  }, [showTutorial]);
 
   useEffect(() => {
     async function fetchUserData() {
-      const tutorialValue = await getTutorialValue(getGlobalData("usuario"));
-      console.log(tutorialValue)
+      const tutorialValue = await getTutorialValue(getGlobalData("email"));
+      console.log(tutorialValue);
       if (tutorialValue) {
         setShowTutorial(false);
       } else {
@@ -178,10 +170,10 @@ function Home() {
       <View style={styles.cardContainer}>
         <View style={styles.card}>
           <Image source={{ uri: task[0].image }} style={styles.image} />
-          <Text style={styles.textBold}>{task[0].user}</Text>
-          <Text style={styles.textBold}>{task[0].sangre}</Text>
-          <Text style={styles.textBold}>{task[0].municipio}</Text>
-          <Text style={styles.text}>{task[0].descripcion}</Text>
+          <Text style={styles.textBold}>{task[0].firstName}</Text>
+          <Text style={styles.textBold}>{task[0].Blood_Type}</Text>
+          <Text style={styles.textBold}>{task[0].City}</Text>
+          <Text style={styles.text}>{task[0].Situation}</Text>
         </View>
       </View>
     );
@@ -189,7 +181,7 @@ function Home() {
 
   const onClose = () => {
     async function updateTutorial() {
-      const result = await updateTutorialValue(getGlobalData("usuario"));
+      const result = await updateTutorialValue(getGlobalData("email"));
       console.log("Checando result: ", result);
     }
     updateTutorial();
