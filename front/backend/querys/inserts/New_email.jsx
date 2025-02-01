@@ -10,3 +10,5 @@ export const setGlobalData = (key, value) => {
 export const getGlobalData = (key) => {
   return globalData[key]; // return the dates 
 };
+
+export const getAllGlobalData = () => globalData;

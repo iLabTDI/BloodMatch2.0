@@ -60,14 +60,17 @@ const LogIn = (props) => {
     const DoSignIn = async () => {
 
         
-        try {
-            const data = await getDates(user, password);
+        try { 
+            const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
+            
+            const data = await getDates(user, hashedPassword);
             const usuario = data[0];
-            console.log("el usuario password es",usuario.password)
+           
           
             if (usuario) {
            
-              const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
+             
+
               console.log(hashedPassword)
           
               if (hashedPassword === usuario.password) {
@@ -170,21 +173,28 @@ const LogIn = (props) => {
     }
 
     const handleSubmitRegister = async () => {
-        printRegister();
-        let validateFields = [vFirstName = validations.firstName(register.firstName),
-        vLastName = validations.lastName(register.lastName),
-        vBirthDate = validations.birthDate(register.birthDate),
-        vState = validations.state(register.state),
-        vMunicipality = validations.municipality(register.municipality),
-        vPhoneNumber = validations.phoneNumber(register.phoneNumber),
-        vEmail = validations.email(register.email),
-        vPassword = validations.password(register.password),
-        vPasswordConfirm = validations.passwordConfirm(register.password, register.passwordConfirm),
-        vBloodType = validations.bloodType(register.bloodType),
-        vUriImage = validations.image(register.uriImage),
-        vTermsAgree = validations.termsAgree(register.termsAgree)];
+       // printRegister();
+        console.log("entra")
+        let validateFields = await Promise.all([
+            validations.firstName(register.firstName),
+            validations.lastName(register.lastName),
+            validations.birthDate(register.birthDate),
+            validations.state(register.state),
+            validations.municipality(register.municipality),
+            validations.phoneNumber(register.phoneNumber),
+            validations.email(register.email),
+            validations.password(register.password),
+            validations.passwordConfirm(register.password, register.passwordConfirm),
+            validations.bloodType(register.bloodType),
+            validations.image(register.uriImage),
+            validations.termsAgree(register.termsAgree)
+        ]);
+        
+        validateFields.reverse();
+        
 
         validateFields.reverse();
+        console.log("entra2")
 
         validateFields.forEach(el => {
            
@@ -194,8 +204,9 @@ const LogIn = (props) => {
                 setIsModalVisible(true);
             }
         });
-        console.log("lo que hay es",validateFields )
+        console.log("lo que hay es jjjj",validateFields )
         const allTrue = validateFields.every(element => element === true);
+        console.log("all",allTrue)
         if(allTrue){
             
         const verification=await New_User(register)
@@ -358,12 +369,7 @@ const LogIn = (props) => {
                             value={register.lastName}
                             onChangeText={(value) => handleInputChange("lastName", value)}
                         />
-                           <TextInput
-                            placeholder="nickname"
-                            className="bg-gray-100 rounded-full py-3 px-4 mb-4"
-                            value={register.userName}
-                            onChangeText={(value) => handleInputChange("userName", value)}
-                        />
+                           
 
                         <TouchableOpacity
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4 flex flex-row justify-between"

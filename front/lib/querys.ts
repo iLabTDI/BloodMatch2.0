@@ -1,103 +1,124 @@
 import Tutorial from "@/components/Tutorial";
 import { supabase } from "./supabase";
-import CryptoJS from 'crypto-js';
-export async function getDates(user:string, password:string){
 
-  try
-  {
-        const {data, error} = await supabase
-        .from('usuarios')
-        .select('*')
-        .eq('UserName',user)
+export async function getDates(usuario, password) {
+    try {
+        const { data, error } = await supabase
+            .from("usuarios")
+            .select("*")
+            .eq("UserName", usuario)
+            .eq("password", password);
         if (error) {
-        console.log(error);
-        }else{
-
-        console.log(data)
-        return data
+            console.log(error);
+        } else {
+            console.log(data);
+            return data;
         }
-
-
-  }catch(e){
-    console.log(e);
-
-  }
-
+    } catch (e) {
+        console.log(e);
+    }
 }
 
+export async function generaldates() {
+    const { data, error } = await supabase.from("usuarios").select("*");
 
+    console.log("los usuarios que esta agarrando son estos ", data);
 
-    
-   
+    if (error) {
+        console.log(error);
+    }
+    if (!data || data.length === 0) {
+        console.log("error datos invalidos");
+    } else {
+        return data;
+    }
+}
 
-export const New_User = async (register:any) => {
+export const New_User = async (
+  register:any
+) => {
     try {
-      const password = register.password;
-      const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
-          const { data, error } = await supabase
-            .from('usuarios')
+        const { data, error } = await supabase
+            .from("usuarios")
             .insert([
-              {
-                Email: register.email,
-                FirstName: register.firstName, 
-                LastName: register.lastName, 
-                Birthdate: register.birthDate, 
-                Blood_Type: register.bloodType, 
-                Gender: register.gender, 
-                password:hashedPassword, 
-                State: register.state, 
-                City: register.municipality, 
-                Phone: register.phoneNumber,
-                UserName: register.userName,
-                url:register.uriImage,
-                tutorial:false,
-                role:register.bloodTypeRol
-               
-  
-              },
+                {
+                    Birthdate: register.date,
+                    Blood_Type: register.type,
+                    City: register.city,
+                    Email: register.Email,
+                    FirstName: register.firstName,
+                    Gender: register.gen,
+                    LastName: register.lastName,
+                    Phone:register.phone,
+                    Situation: null,
+                    State: register.state,
+                    UserName:"julio",
+                    password: register.password,
+                    role: register.typeRol,
+                    tutorial: false,
+                    url: register.url,
+                },
             ])
             .select();
-  
-          if (error) {
-            console.error('Error al insertar datos:', error);
-            return false
-          } else {
-            console.log('Datos insertados con éxito:', data);
-            return true
-          }
-        } catch (error) {
-          console.error('Error al insertar datos 1:', error.message);
-          return false
+        if (error) {
+            console.error("Error al insertar datos:", error);
+            throw new Error("Error al insertar datos:", error);
+        } else {
+            console.log("Datos insertados con éxito:", data);
         }
-      };
-export async function generaldates() {
-  const { data, error } = await supabase.from("usuarios").select("*");
-
-  console.log("los usuarios que esta agarrando son estos ", data);
-
-  if (error) {
-    console.log(error);
-  }
-  if (!data || data.length === 0) {
-    console.log("error datos invalidos");
-  } else {
-    return data;
-  }
-}
-
-
+    } catch (error) {
+        console.error("Error al insertar datos 1:", error.message);
+        throw new Error("Error al insertar datos 2:", error);
+    }
+};
 
 export const updateImages = async (filePath, formData) => {
-  try {
-    console.log("el file path es ", filePath, "El forma", formData);
-    const { error } = await supabase.storage
-      .from("prueba")
-      .upload(filePath, formData);
-    if (error) throw error;
-  } catch (error) {
-    console.log(error);
-  }
+    try {
+        console.log("el file path es ", filePath, "El forma", formData);
+        const { error } = await supabase.storage
+            .from("prueba")
+            .upload(filePath, formData);  
+        if (error) throw error;
+    } catch (error) {
+        console.log(error);
+    }
 };
+
+export async function getUrl(fileName) {
+    const { data } = await supabase.storage
+        .from("prueba")
+        .getPublicUrl(fileName);
+    console.log(data);
+    return data;
+}
+
+export async function isExistingEmail(email) {
+    try {
+        // Consultar la tabla usuarios para verificar si el correo ya existe
+        const { data, error } = await supabase
+        .from("usuarios")
+        .select("Email")
+        .eq("Email", email); 
+        
+        if (error) {
+            console.error("Hubo un error al consultar Supabase:", error.message);
+            return true;
+        }
+        
+        // Si la consulta devuelve datos, significa que el correo ya existe
+        if (data && data.length > 0) {
+            console.log("El correo ya está registrado:", data[0].Email);
+            return true;
+        }
+        
+        // Si no hay datos, el correo no está registrado
+        console.log("El correo no está registrado. Puede usarse.");
+        return false;
+    } catch (err) {
+        console.error("Error inesperado:", err.message);
+        return true;
+    }
+  }
 
 export async function handleSubmit(image) {
   try {
@@ -131,16 +152,7 @@ export async function handleSubmit(image) {
   }
 }
 
-export async function getUrl(fileName) {
-  const { data } = await supabase.storage.from("prueba").getPublicUrl(fileName);
-  console.log(data);
-
-  return data;
-}
-
-
-
-export async function getTutorialValue(userName) {
+export async function getTutorialValue(userName:any) {
   if (!userName) {
     console.error("Se requiere un userName válido");
     return false;
