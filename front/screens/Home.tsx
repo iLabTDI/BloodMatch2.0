@@ -189,7 +189,7 @@ function Home() {
 
   const onClose = () => {
     async function updateTutorial() {
-      const result = await updateTutorialValue(getGlobalData("email"));
+      const result = await updateTutorialValue(getGlobalData("usuario"));
       console.log("Checando result: ", result);
     }
     updateTutorial();

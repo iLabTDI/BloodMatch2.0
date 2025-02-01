@@ -1,6 +1,6 @@
 import Tutorial from "@/components/Tutorial";
 import { supabase } from "./supabase";
-
+import CryptoJS from 'crypto-js';
 export async function getDates(usuario, password) {
     try {
         const { data, error } = await supabase
@@ -33,44 +33,46 @@ export async function generaldates() {
         return data;
     }
 }
-
-export const New_User = async (
-  register:any
-) => {
-    try {
+export const New_User = async (register:any) => {
+  try {
+    const password = register.password;
+    const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
         const { data, error } = await supabase
-            .from("usuarios")
-            .insert([
-                {
-                    Birthdate: register.date,
-                    Blood_Type: register.type,
-                    City: register.city,
-                    Email: register.Email,
-                    FirstName: register.firstName,
-                    Gender: register.gen,
-                    LastName: register.lastName,
-                    Phone:register.phone,
-                    Situation: null,
-                    State: register.state,
-                    UserName:"julio",
-                    password: register.password,
-                    role: register.typeRol,
-                    tutorial: false,
-                    url: register.url,
-                },
-            ])
-            .select();
+          .from('usuarios')
+          .insert([
+            {
+              Email: register.email,
+              FirstName: register.firstName, 
+              LastName: register.lastName, 
+              Birthdate: register.birthDate, 
+              Blood_Type: register.bloodType, 
+              Gender: register.gender, 
+              password:hashedPassword, 
+              State: register.state, 
+              City: register.municipality, 
+              Phone: register.phoneNumber,
+              UserName:"t",
+              url:register.uriImage,
+              tutorial:false,
+              role:register.bloodTypeRol
+             
+
+            },
+          ])
+          .select();
+
         if (error) {
-            console.error("Error al insertar datos:", error);
-            throw new Error("Error al insertar datos:", error);
+          console.error('Error al insertar datos:', error);
+          return false
         } else {
-            console.log("Datos insertados con éxito:", data);
+          console.log('Datos insertados con éxito:', data);
+          return true
         }
-    } catch (error) {
-        console.error("Error al insertar datos 1:", error.message);
-        throw new Error("Error al insertar datos 2:", error);
-    }
-};
+      } catch (error) {
+        console.error('Error al insertar datos 1:', error.message);
+        return false
+      }
+    };
 
 export const updateImages = async (filePath, formData) => {
     try {
