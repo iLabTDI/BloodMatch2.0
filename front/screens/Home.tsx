@@ -8,8 +8,18 @@ import {
   Dimensions,
   Keyboard,
   Alert,
+  Animated,
+  PanResponder,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  ScrollView,
+  Platform
 } from "react-native";
+import { styled } from 'nativewind';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import { Heart, X, MessageCircle, MapPin, User, Settings, Search } from 'react-native-feather';
 import { LinearGradient } from "expo-linear-gradient";
+import Constants from 'expo-constants';
 import { useNavigation } from "@react-navigation/native";
 import themeContext from "../helper/ThemeCon";
 import DeckSwiper from "react-native-deck-swiper";
@@ -22,6 +32,7 @@ import {
 } from "../lib/querys";
 import Tutorial from "../components/Tutorial";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ModalFilters from '../components/ModalFilters'
 
 interface TaskInterface {
   user: string;
@@ -32,8 +43,15 @@ interface TaskInterface {
   image: String;
 }
 
+const StyledView = styled(View);
+const AnimatedView = Animated.createAnimatedComponent(StyledView);
+
+
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 function Home() {
   const [datos, setDatos] = useState(null);
@@ -45,8 +63,16 @@ function Home() {
   const navigation = useNavigation();
   const [tasks, setTasks] = useState([]);
   const swiperRef = useRef(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // const [currentIndex, setCurrentIndex] = useState(0);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [users, setUsers] = useState([]);
+
+
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [showModalFilter, setShowModalFilter] = useState(false);
+  const pan = useState(new Animated.ValueXY())[0];
+
 
   // useEffect(() => {
   //   async function fetchUserData() {
@@ -74,7 +100,18 @@ function Home() {
         setShowTutorial(true);
       }
     }
+
+    async function fetchData() {
+      const result = await getDatabase();
+      // setTasks(result);
+      setUsers(result);
+      console.log("**************************************************************************");
+      console.log(result);
+      console.log("**************************************************************************");
+    }
+
     fetchUserData();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -84,14 +121,6 @@ function Home() {
       setAllChatRooms(groups);
     });
   }, [socket]);
-
-  useEffect(() => {
-    async function fetchData() {
-      const result = await getDatabase();
-      setTasks(result);
-    }
-    fetchData();
-  }, []);
 
   const handleCreateNewRoom = (user) => {
     try {
@@ -123,6 +152,7 @@ function Home() {
         sangre: user.Blood_Type,
         municipio: user.City,
         descripcion: user.Situation,
+        rol: user.role
       }));
       console.log("los datos son", datos);
       while (i <= show - 1) {
@@ -142,6 +172,7 @@ function Home() {
               municipio: data[i].City,
               descripcion: data[i].Situation,
               image: data[i].url,
+              rol: data[i].role
             },
           ];
 
@@ -158,7 +189,7 @@ function Home() {
 
   const swipeRight = (cardIndex) => {
     console.log("Deslizamiento hacia la derecha detectado", cardIndex);
-    let matchedCard = tasks[cardIndex][0]; // aqui tengo la lista de listas para agarrar al usuario
+    let matchedCard = users[cardIndex][0]; // aqui tengo la lista de listas para agarrar al usuario
     const card = matchedCard.user;
     console.log("loque agarra de la carta es", card);
     handleCreateNewRoom(card);
@@ -187,6 +218,113 @@ function Home() {
     );
   };
 
+  // const Card = ({ user, pan, panResponders }) => (
+  //   <AnimatedView
+  //     className="absolute w-[300px] h-[400px] bg-white rounded-xl shadow-lg"
+  //     style={{
+  //       transform: [{ translateX: pan.x }, { translateY: pan.y }],
+  //     }}
+  //     {...panResponders.panHandlers}
+  //   >
+  //     <Image source={user[0].image} className="w-full h-3/4 rounded-t-xl" />
+  //     <View className="p-4">
+  //       <Text className="text-xl font-bold">{user[0].name}, {user[0].age}</Text>
+  //       <Text className="text-lg font-semibold text-red-500">{user[0].bloodType}</Text>
+  //       <Text className="text-sm text-gray-600">{user[0].description}</Text>
+  //       <View className="mt-2 bg-green-500 rounded-full px-3 py-1 self-start">
+  //         <Text className="text-white font-semibold">Disponible para donar</Text>
+  //       </View>
+  //     </View>
+  //   </AnimatedView>
+  // );
+
+  const Card = ({ user, pan, panResponders }) => {
+    if (!user) {
+      return null;
+    }
+  
+    return (
+      <AnimatedView
+        className="absolute w-[300px] h-[400px] bg-white rounded-xl shadow-lg"
+        style={{
+          transform: [{ translateX: pan.x }, { translateY: pan.y }],
+        }}
+        {...panResponders.panHandlers}
+      >
+        <Image source={{ uri: user.image }} className="w-full h-3/4 rounded-t-xl" />
+        <View className="p-4">
+          <Text className="text-xl font-bold">{user.user}</Text>
+          <Text className="text-lg font-semibold text-red-500">{user.sangre}</Text>
+          <Text className="text-sm text-gray-600">{user.municipio}</Text>
+          <View className="mt-2 bg-green-500 rounded-full px-3 py-1 self-start">
+            <Text className="text-white font-semibold">{user.rol === 'donor' ? 'Donador' : 'Receptor'}</Text>
+          </View>
+        </View>
+      </AnimatedView>
+    );
+  };
+
+
+
+  const panResponders = PanResponder.create({
+    onMoveShouldSetPanResponder: () => true,
+    onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }], { useNativeDriver: false }),
+    onPanResponderRelease: (_, gesture) => {
+      if (gesture.dx > 120) {
+        Animated.spring(pan, {
+          toValue: { x: SCREEN_WIDTH + 100, y: gesture.dy },
+          useNativeDriver: false,
+        }).start(() => {
+          setCurrentIndex(currentIndex + 1);
+          pan.setValue({ x: 0, y: 0 });
+        });
+        console.log(`Match con ${users[currentIndex][0].user}`);
+        swipeRight(currentIndex);
+      } else if (gesture.dx < -120) {
+        Animated.spring(pan, {
+          toValue: { x: -SCREEN_WIDTH - 100, y: gesture.dy },
+          useNativeDriver: false,
+        }).start(() => {
+          setCurrentIndex(currentIndex + 1);
+          pan.setValue({ x: 0, y: 0 });
+        });
+        console.log(`Reject  ${users[currentIndex][0].user}`);
+        swipeLeft();
+      } else {
+        Animated.spring(pan, {
+          toValue: { x: 0, y: 0 },
+          useNativeDriver: false,
+        }).start();
+      }
+    },
+  });
+
+  const handleMatch = () => {
+    Animated.timing(pan, {
+      toValue: { x: SCREEN_WIDTH + 100, y: 0 },
+      duration: 300,
+      useNativeDriver: false,
+    }).start(() => {
+      setCurrentIndex(currentIndex + 1);
+      pan.setValue({ x: 0, y: 0 });
+    });
+    console.log(`Match con ${users[currentIndex][0].user}`);
+    swipeRight(currentIndex);
+  };
+
+  const handleReject = () => {
+    Animated.timing(pan, {
+      toValue: { x: -SCREEN_WIDTH - 100, y: 0 },
+      duration: 300,
+      useNativeDriver: false,
+    }).start(() => {
+      setCurrentIndex(currentIndex + 1);
+      pan.setValue({ x: 0, y: 0 });
+    });
+    console.log(`Reject  ${users[currentIndex][0].user}`);
+    swipeLeft();
+  };
+
   const onClose = () => {
     async function updateTutorial() {
       const result = await updateTutorialValue(getGlobalData("email"));
@@ -201,128 +339,135 @@ function Home() {
     return <Tutorial onClose={onClose} />;
   } else {
     return (
-      <LinearGradient
-        colors={["white", theme.background]}
-        style={styles.container}
+      // <LinearGradient
+      //   colors={["white", theme.background]}
+      //   style={styles.container}
+      // >
+      //   <StatusBar style="auto" />
+      //   <Text style={styles.title}>Ayuda a: </Text>
+      //   <DeckSwiper
+      //     ref={swiperRef}
+      //     cards={tasks}
+      //     renderCard={renderCard}
+      //     onSwipedRight={(cardIndex) => swipeRight(cardIndex)}
+      //     onSwipedLeft={swipeLeft}
+      //     backgroundColor="transparent"
+      //     stackSize={2}
+      //     stackSeparation={15}
+      //     animateOverlayLabelsOpacity
+      //     animateCardOpacity
+      //     disableBottomSwipe
+      //     disableTopSwipe
+      //     infinite
+      //     overlayLabels={{
+      //       left: {
+      //         element: (
+      //           <Image
+      //             source={require("../images/next.png")}
+      //             style={styles.overlayImage}
+      //           />
+      //         ),
+      //         style: {
+      //           wrapper: {
+      //             flexDirection: "column",
+      //             alignItems: "flex-end",
+      //             justifyContent: "flex-start",
+      //             marginTop: 0,
+      //             marginLeft: -25,
+      //           },
+      //         },
+      //       },
+      //       right: {
+      //         element: (
+      //           <Image
+      //             source={require("../images/donate.png")}
+      //             style={styles.overlayImage}
+      //           />
+      //         ),
+      //         style: {
+      //           label: {
+      //             backgroundColor: "blue",
+      //             color: "white",
+      //             fontSize: 24,
+      //           },
+      //           wrapper: {
+      //             flexDirection: "column",
+      //             alignItems: "flex-start",
+      //             justifyContent: "flex-start",
+      //             marginTop: 0,
+      //             marginLeft: 25,
+      //           },
+      //         },
+      //       },
+      //     }}
+      //   />
+      // </LinearGradient>
+
+
+
+
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        className="flex-1 bg-gray-100"
       >
-        <StatusBar style="auto" />
-        <Text style={styles.title}>Ayuda a: </Text>
-        <DeckSwiper
-          ref={swiperRef}
-          cards={tasks}
-          renderCard={renderCard}
-          onSwipedRight={(cardIndex) => swipeRight(cardIndex)}
-          onSwipedLeft={swipeLeft}
-          backgroundColor="transparent"
-          stackSize={2}
-          stackSeparation={15}
-          animateOverlayLabelsOpacity
-          animateCardOpacity
-          disableBottomSwipe
-          disableTopSwipe
-          infinite
-          overlayLabels={{
-            left: {
-              element: (
-                <Image
-                  source={require("../images/next.png")}
-                  style={styles.overlayImage}
-                />
-              ),
-              style: {
-                wrapper: {
-                  flexDirection: "column",
-                  alignItems: "flex-end",
-                  justifyContent: "flex-start",
-                  marginTop: 0,
-                  marginLeft: -25,
-                },
-              },
-            },
-            right: {
-              element: (
-                <Image
-                  source={require("../images/donate.png")}
-                  style={styles.overlayImage}
-                />
-              ),
-              style: {
-                label: {
-                  backgroundColor: "blue",
-                  color: "white",
-                  fontSize: 24,
-                },
-                wrapper: {
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                  justifyContent: "flex-start",
-                  marginTop: 0,
-                  marginLeft: 25,
-                },
-              },
-            },
-          }}
-        />
-      </LinearGradient>
+        <TouchableOpacity onPress={() => setShowModalFilter(true)} className="bg-white p-4 border-b border-gray-200" style={styles.search}>
+          <View className="flex-row items-center bg-gray-100 rounded-full px-2 py-2 pr-5">
+            <TouchableOpacity
+              className="flex-1 ml-2 text-base"
+              onPress={() => setShowModalFilter(true)}
+            >
+              <Text className="text-[#9CA3AF]">Buscar donantes o receptores según ...</Text>
+            </TouchableOpacity> 
+            <FontAwesome5 name="sliders-h" size={24} color="black" />
+          </View>
+        </TouchableOpacity>
+        <ScrollView 
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View className="flex-1 items-center justify-center">
+            {users[currentIndex] && (
+              <Card user={users[currentIndex][0]} pan={pan} panResponders={panResponders} />
+            )}
+            <View className="flex-row justify-between w-full mt-8 mb-4 px-2">
+              <TouchableOpacity
+                className="bg-red-500 w-16 h-16 rounded-full items-center justify-center"
+                onPress={handleReject}
+              >
+                <X stroke="white" width={32} height={32} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                className="bg-green-500 w-16 h-16 rounded-full items-center justify-center"
+                onPress={handleMatch}
+              >
+                <Heart stroke="white" fill="white" width={32} height={32} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
+        {showModalFilter && <ModalFilters onClose={() => setShowModalFilter(false)}/>}
+      </KeyboardAvoidingView>
+
+
+
+
+
+
+
+
+
+
+
+
+      
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 0,
-  },
-  cardContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  card: {
-    width: windowWidth * 0.9,
-    height: windowHeight * 0.7,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "black",
-    backgroundColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-    borderRadius: 20,
-    shadowRadius: 3,
-    shadowOpacity: 0.2,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 4,
-  },
-  image: {
-    width: "80%",
-    height: "40%",
-    borderRadius: 50,
-    marginBottom: 10,
-    resizeMode: "cover",
-  },
-  text: {
-    fontSize: 16,
-    marginTop: 15,
-    textAlign: "justify",
-  },
-  textBold: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  overlayImage: {
-    width: "20%",
-    height: "30%",
-    resizeMode: "contain",
-  },
+  search: {
+    marginTop: Constants.statusBarHeight
+  }
 });
 
 export default Home;

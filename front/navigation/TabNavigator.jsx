@@ -2,6 +2,7 @@
 import React from 'react'
 import { View, Text, Settings } from 'react-native';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { FontAwesome5 } from '@expo/vector-icons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useTranslation } from "react-i18next";
 
@@ -22,16 +23,24 @@ export default function TabNavigator() {
     return (
         <Tab.Navigator
             screenOptions={{
-                tabBarActiveTintColor:'#00a3e1',
-                tabBarShowLabel: false,
+                tabBarActiveTintColor:'#EF4444',
+                tabBarActiveBackgroundColor: '#FEE2E2',
+                tabBarShowLabel: true,
+                tabBarStyle: {
+                    height: 60,
+                },
+                tabBarItemStyle: {
+                    // flexDirection: 'row',
+                    // alignItems: 'center',
+                },
             }}>
             <Tab.Screen
                 name = 'Home_Tab'
                 component = { Home }
                 options={{ 
-                    tabBarLabel: 'Home',
+                    tabBarLabel: 'Inicio',
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="home-outline" color={color} size={size} />
+                        <MaterialCommunityIcons name="home" color={color} size={size} />
                     ),
                     headerShown: false
                 }} 
@@ -65,7 +74,7 @@ export default function TabNavigator() {
                 name = 'Location'
                 component = { Location }
                 options={{ 
-                    tabBarLabel: 'Maps',
+                    tabBarLabel: 'Mapa',
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="map-marker-radius" color={color} size={size} />
                     ),
@@ -75,12 +84,12 @@ export default function TabNavigator() {
                 name = 'Messenger'
                 component = { Messenger }
                 options={{ 
-                    tabBarLabel: 'Menssenger',
+                    tabBarLabel: 'Mensajes',
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="facebook-messenger" color={color} size={size} />
                     ),
-                    tabBarBadge: 1,
-                    tabBarBadgeStyle: { backgroundColor: 'blue' }
+                    // tabBarBadge: false,
+                    // tabBarBadgeStyle: { backgroundColor: 'blue' }
                 }} 
             />
             <Tab.Screen
@@ -98,7 +107,7 @@ export default function TabNavigator() {
                 name = {t("confi")}
                 component = { Setting }
                 options={{  
-                    tabBarLabel: 'Configuración',
+                    tabBarLabel: 'Ajustes',
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="cog" color={color} size={size} />
                     ),
