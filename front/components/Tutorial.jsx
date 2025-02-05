@@ -1,9 +1,20 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React, { useState, useRef } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Animated,
+  Dimensions,
+} from "react-native";
 import { hp, wp } from "../helper/common";
 
 export default function Tutorial({ onClose }) {
   const [currentPage, setCurrentPage] = useState(0);
+  const translateX = useRef(new Animated.Value(0)).current;
+
+  const screenWidth = Dimensions.get("window").width;
 
   const pages = [
     {
@@ -64,33 +75,94 @@ export default function Tutorial({ onClose }) {
   ];
 
   const goToNextPage = () => {
-    if (currentPage < pages.length - 1) setCurrentPage(currentPage + 1);
+    if (currentPage < pages.length - 1) {
+      Animated.timing(translateX, {
+        toValue: -(currentPage + 1) * screenWidth, // Mueve a la siguiente página
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => {
+        setCurrentPage(currentPage + 1);
+      });
+    }
   };
 
   const goToPreviousPage = () => {
-    if (currentPage > 0) setCurrentPage(currentPage - 1);
+    if (currentPage > 0) {
+      Animated.timing(translateX, {
+        toValue: -(currentPage - 1) * screenWidth, // Mueve a la página anterior
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => {
+        setCurrentPage(currentPage - 1);
+      });
+    }
   };
 
-  const renderImage = () => {
-    const { image, dimensions } = pages[currentPage];
-    const style = currentPage === 0 ? styles.logo : styles.image;
+  const renderPages = () => {
+    return (
+      <Animated.View
+        style={{
+          flexDirection: "row",
+          width: screenWidth * pages.length,
+          transform: [{ translateX }],
+        }}
+      >
+        {pages.map((page, index) => (
+          <View
+            key={index}
+            style={[
+              styles.container,
+              {
+                backgroundColor: page.backgroundColor,
+                width: screenWidth, // Asegura que cada página ocupe toda la pantalla
+              },
+            ]}
+          >
+            {index === 0 ? (
+              <Image
+                source={page.image}
+                style={[styles.logo, page.dimensions]}
+              />
+            ) : (
+              <Image
+                source={page.image}
+                style={[styles.image, page.dimensions]}
+              />
+            )}
 
-    return <Image source={image} style={[style, dimensions]} />;
+            <Text style={[styles.title, { color: page.color }]}>
+              {page.title}
+            </Text>
+
+            {typeof page.subtitle === "string" ? (
+              <Text style={styles.subtitle}>{page.subtitle}</Text>
+            ) : (
+              page.subtitle
+            )}
+          </View>
+        ))}
+      </Animated.View>
+    );
+  };
+  const renderPage = () => {
+    const { backgroundColor, color, title, subtitle } = pages[currentPage];
+    return (
+      <Animated.View
+        style={[
+          styles.container,
+          { backgroundColor, transform: [{ translateX }] },
+        ]}
+      >
+        {renderImage()}
+        <Text style={[styles.title, { color }]}>{title}</Text>
+        <Text style={styles.subtitle}>{subtitle}</Text>
+      </Animated.View>
+    );
   };
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: pages[currentPage].backgroundColor },
-      ]}
-    >
-      {renderImage()}
-      <Text style={[styles.title, { color: pages[currentPage].color }]}>
-        {pages[currentPage].title}
-      </Text>
-      <Text style={styles.subtitle}>{pages[currentPage].subtitle}</Text>
-
+    <View style={styles.mainContainer}>
+      {renderPages()} {/* Renderiza todas las páginas */}
       <View style={styles.bottomBar}>
         {currentPage > 0 && (
           <TouchableOpacity style={styles.button} onPress={goToPreviousPage}>
@@ -105,7 +177,7 @@ export default function Tutorial({ onClose }) {
           onPress={currentPage === pages.length - 1 ? onClose : goToNextPage}
         >
           <Text style={styles.buttonText}>
-            {currentPage === pages.length - 1 ? "Finalizado" : "Siguiente"}
+            {currentPage === pages.length - 1 ? "Finalizar" : "Siguiente"}
           </Text>
         </TouchableOpacity>
       </View>
@@ -114,10 +186,14 @@ export default function Tutorial({ onClose }) {
 }
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    height: hp(100),
   },
   image: {
     marginBottom: 20,
