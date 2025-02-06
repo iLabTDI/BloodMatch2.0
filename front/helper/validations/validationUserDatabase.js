@@ -3,7 +3,7 @@ import {verificateUser} from "../../lib/querys"
 
 export async function validateUserDatabase(user) {
     if (user === '') {
-      console.error('Campo vacío');
+      //console.error('Campo vacío');
       alert("Su nombre no es valido , elige otro");
       return false;
     }
@@ -12,7 +12,7 @@ export async function validateUserDatabase(user) {
       alert("elige otro");
       return false;
     }
-    console.log("es valido")
+    //console.log("es valido")
 
     return true
   }

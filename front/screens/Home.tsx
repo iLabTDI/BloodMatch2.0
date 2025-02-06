@@ -58,8 +58,9 @@ function Home() {
 
   useEffect(() => {
     async function fetchUserData() {
-      const tutorialValue = await getTutorialValue(getGlobalData("email"));
-      console.log(tutorialValue);
+      const getUserDates=getGlobalData("email")
+      const tutorialValue = await getTutorialValue(getUserDates.Email);
+      //console.log(tutorialValue);
       if (tutorialValue) {
         setShowTutorial(false);
       } else {
@@ -70,35 +71,37 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    socket.emit("getAllGroups");
-
     user?.socket.on("groupList", (groups) => {
       setAllChatRooms(groups);
     });
-  }, [socket]);
-
-  useEffect(() => {
     async function fetchData() {
       const result = await getDatabase();
       setTasks(result);
     }
     fetchData();
-  }, []);
+  }, [socket]);
 
-  const handleCreateNewRoom = (user) => {
+
+
+  const handleCreateNewRoom = (id:string,name:string) => {
     try {
       //i get the global user
-      const usuario = getGlobalData("usuario");
-      console.log("lo que imprimo es=", usuario, "y", user);
-      setNewGroup(usuario);
+      const datesUser= getGlobalData("dates");
+      console.log("lo que imprimo es=", datesUser.id_user, "y", id,name);
+      setNewGroup(datesUser.id_user);
 
+      // in this part i emit the current user and the id of the user that madev the match 
+      
       socket.emit("createNewGroup", {
-        currentGroupName: usuario,
-        currentSecondGroup: user,
+        currentGroupName: datesUser.id_user,
+        currentIdGroupName:datesUser.FirstName,
+        currentSecondGroup: id,
+        currentIdSecondName:name,
       });
+ 
       Keyboard.dismiss();
     } catch (error) {
-      console.error("Error creating new group:", error);
+      //console.error("Error creating new group:", error);
     }
   };
 
@@ -108,30 +111,29 @@ function Home() {
       const list = [];
       let i = 0;
       const show = data.length;
-      console.log("la longitud de la lista es", show);
+      //console.log("la longitud de la lista es", show);
       const datos = data.map((user) => ({
         id: user.Email,
-        user: user.UserName,
+        user: user.FirstName,
         sangre: user.Blood_Type,
         municipio: user.City,
         descripcion: user.Situation,
       }));
-      console.log("los datos son", datos);
+      //console.log("los datos son", datos);
       while (i <= show - 1) {
-        console.log(i);
-        let dat = getGlobalData("usuario");
-        console.log("el usuario es=", dat);
-        console.log("data", data[i].UserName);
-        if (dat === data[i].UserName) {
-          console.log("hola");
+        let dat = getGlobalData("dates");
+        //console.log("el usuario es=", dat);
+        //console.log("data", data[i].FirstName);
+        if (dat === data[i].FirstName) {
           i++;
         } else {
           const dates = [
             {
-              id: data[i].Email,
-              user: data[i].UserName,
-              sangre: data[i].Blood_Type,
-              municipio: data[i].City,
+              id_user: data[i].id_user,
+              Email:data[i].Email,
+              FirstName: data[i].FirstName,
+              Blood_Type: data[i].Blood_Type,
+              City: data[i].City,
               descripcion: data[i].Situation,
               image: data[i].url,
             },
@@ -144,33 +146,32 @@ function Home() {
 
       return list;
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   };
 
   const swipeRight = (cardIndex) => {
     console.log("Deslizamiento hacia la derecha detectado", cardIndex);
     let matchedCard = tasks[cardIndex][0]; // aqui tengo la lista de listas para agarrar al usuario
-    const card = matchedCard.user;
-    console.log("loque agarra de la carta es", card);
-    handleCreateNewRoom(card);
+    const card = matchedCard;
+    handleCreateNewRoom(card.id_user,card.FirstName);
   };
 
   const swipeLeft = () => {
-    console.log("Deslizamiento hacia la izquierda detectado");
+    //console.log("Deslizamiento hacia la izquierda detectado");
     setCurrentIndex((prevIndex) => prevIndex + 1);
   };
 
   const renderCard = (task: TaskInterface) => {
     if (!task) {
-      console.log("Datos incompletos");
+      //console.log("Datos incompletos");
       return <Text>there's not a dates in </Text>;
     }
     return (
       <View style={styles.cardContainer}>
         <View style={styles.card}>
           <Image source={{ uri: task[0].image }} style={styles.image} />
-          <Text style={styles.textBold}>{task[0].firstName}</Text>
+          <Text style={styles.textBold}>{task[0].id_user}</Text>
           <Text style={styles.textBold}>{task[0].Blood_Type}</Text>
           <Text style={styles.textBold}>{task[0].City}</Text>
           <Text style={styles.text}>{task[0].Situation}</Text>
@@ -181,12 +182,14 @@ function Home() {
 
   const onClose = () => {
     async function updateTutorial() {
-      const result = await updateTutorialValue(getGlobalData("email"));
-      console.log("Checando result: ", result);
+      const generalDatesUser=getGlobalData("dates")
+      //console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",generalDatesUser.Email)
+      const result = await updateTutorialValue(generalDatesUser.Email);
+      //console.log("Checando result: ", result);
     }
     updateTutorial();
     setShowTutorial(false);
-    console.log("onClose", showTutorial);
+    //console.log("onClose", showTutorial);
   };
 
   if (showTutorial) {

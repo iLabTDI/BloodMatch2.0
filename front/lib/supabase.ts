@@ -22,7 +22,7 @@ const supabaseUrl = Constants.expoConfig.extra.supabaseUrl ;
 
 
 const supabaseAnonKey =Constants.expoConfig.extra.supabaseAnonKey;
-console.log(supabaseUrl,supabaseAnonKey)
+//console.log(supabaseUrl,supabaseAnonKey)
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     auth: {

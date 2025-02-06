@@ -7,6 +7,6 @@ export const setGlobalImage = (key, value) => {
 };
 
 export const getGlobalImage = (key) => {
-  //console.log("esto tiene el get global images",globalData[key])
+  ////console.log("esto tiene el get global images",globalData[key])
   return globalData[key]; // return the dates 
 };

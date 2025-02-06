@@ -40,7 +40,7 @@ var MexicoState = [
         return null;
     }
     else if (!MexicoState.includes(state)){
-        console.error('Ingresar un estado valido')
+        //console.error('Ingresar un estado valido')
         alert("Ingresar un estado valido de la republica mexicana")
         return null;
     }

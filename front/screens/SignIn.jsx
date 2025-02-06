@@ -105,26 +105,26 @@ const SignIn = ({ navigation }) => {
     //Funcion creadad para subir los datos del registro en la base de datos 
     const subida = async (email,password,usuario,lastName,firstName,date,type,state,city,phone) => {
         try {
-            console.log("Datos recibidos: ", password, email,usuario,lastName,firstName,date,type,state,city,phone);
+            //console.log("Datos recibidos: ", password, email,usuario,lastName,firstName,date,type,state,city,phone);
             const { user, error } = await supabase.auth.signUp({
               email: email,
               password: password,
             });
             if (error) {
-              console.log(error);
+              //console.log(error);
             } else {
               const { data, error } = await supabase.auth.signInWithPassword({
                     email: email,
                     password: password,
               })
               const UID =  data.user.id;
-              console.log("New user data:", UID);
+              //console.log("New user data:", UID);
               New_User(UID,email,usuario,lastName,firstName,date,type,state,city,phone);
               navigation.navigate('Home');
 
                         }
           } catch (error) {
-            console.error("Error en handleLogin:", error);
+            //console.error("Error en handleLogin:", error);
           }
     };     
 
@@ -135,11 +135,11 @@ const SignIn = ({ navigation }) => {
  //         }
           try {
             await subida(email,password,user,lastName,firstName,date,type,state,city,phone);
-            console.log("Registro exitoso")
+            //console.log("Registro exitoso")
           } catch (error) {
-            console.error("Error al registrar al usuario, intentar de nuevo", error)
+            //console.error("Error al registrar al usuario, intentar de nuevo", error)
           }
-          console.log('okey')
+          //console.log('okey')
       }
     //Validaciones de errores o del paso de datos exitoso
 
@@ -147,36 +147,36 @@ const SignIn = ({ navigation }) => {
         let isValid = true
    
         //Validacion de nombre
-        console.log(firstName)
+        //console.log(firstName)
         if(!validateName(firstName)) {
             setErrorFirstName("Debe de ingresar sus nombres válidos.")
             isValid = isValid && false;
-            console.log(isValid)
+            //console.log(isValid)
         }else{
             isValid = isValid && true;
-            console.log(isValid)
+            //console.log(isValid)
         }
 
         //Validacion de apellido
-        console.log(lastName)
+        //console.log(lastName)
         if(!validateName(lastName)) {
             setErrorLastName("Debe de ingresar sus apellidos válidos.")
             isValid = isValid && false;
-            console.log(isValid)
+            //console.log(isValid)
         }else{
             isValid = isValid && true;
-            console.log(isValid)
+            //console.log(isValid)
         }
 
         // Validacion de email
-        console.log(email)
+        //console.log(email)
         if(!validateEmail(email)) {
             setErrorEmail("Debe de ingresar un correo válido.")
             isValid = isValid && false;
-            console.log(isValid)
+            //console.log(isValid)
         }else{
             isValid = isValid && true;
-            console.log(isValid)
+            //console.log(isValid)
         }
 
         //if(calcularEdad(edad) < 18){
@@ -185,106 +185,106 @@ const SignIn = ({ navigation }) => {
         //}
         
         //Validacion de genero
-        console.log(gen)
+        //console.log(gen)
         if(!validateGender(gen)) {
             setErrorGen("Favor de ingresar, masculino o femenino")
             isValid = isValid && false;
-            console.log(isValid)
+            //console.log(isValid)
         }else{
             isValid = isValid && true;
-            console.log(isValid)
+            //console.log(isValid)
         }
 
         //estado
-        console.log(state)
+        //console.log(state)
         if(!StateVal(state)) {
             setErrorState("Debe de ingresar un estado válido.")
             isValid = isValid && false;
-            console.log(isValid)
+            //console.log(isValid)
         }else{
             isValid = isValid && true;
-            console.log(isValid)
+            //console.log(isValid)
         }
 
         //municipio
-        console.log(city)
+        //console.log(city)
         if(!ValidateJalisco(city)) {
             setErrorCity("Debe de ingresar una ciudad válido.")
             isValid = isValid && false;
-            console.log(isValid)
+            //console.log(isValid)
         }else{
             isValid = isValid && true;
-            console.log(isValid)
+            //console.log(isValid)
         }
         //celular
-        console.log(phone)
+        //console.log(phone)
         if(!validatePhone(phone)) {
             setErrorPhone("Debe de ingresar un numero celular válido.")
             isValid = isValid && false;
-            console.log(isValid)
+            //console.log(isValid)
         }else{
             isValid = isValid && true;
-            console.log(isValid)
+            //console.log(isValid)
         }
 
         //tipo de sangre
-        console.log(type)
+        //console.log(type)
         if(!Bloodtype(type)) {
             setErrorType("Debe de ingresar un tipo de sangre válido.")
             isValid = isValid && false;
-            console.log(isValid)
+            //console.log(isValid)
         }else{
             isValid = isValid && true;
-            console.log(isValid)
+            //console.log(isValid)
         }
 
         //nombre de usuario
-        console.log(user)
+        //console.log(user)
         if(!validateUser(user) || user.length<8) {
             setErrorUser("Usuario ya existente.")
             isValid = isValid && false;
-            console.log(isValid)
+            //console.log(isValid)
         }else{
             isValid = isValid && true;
-            console.log(isValid)
+            //console.log(isValid)
         }
 
         //contraseña
-        console.log(password)
+        //console.log(password)
         if(!validatePassword(password)) {
             setErrorPassword("Debe de ingresar una contraseña válido.")
             isValid = isValid && false;
-            console.log(isValid)
+            //console.log(isValid)
         }else{
             isValid = isValid && true;
-            console.log(isValid)
+            //console.log(isValid)
         }
 
         //confirmacion de contraseña
-        console.log(passcon)
+        //console.log(passcon)
         if(ConfirmPass(passcon) && passcon !== password) {
             setErrorPasscon("Debe de ingresar la misma contraseña.")
             isValid = isValid && false;
-            console.log(isValid)
+            //console.log(isValid)
         }else{
             isValid = isValid && true;
-            console.log(isValid)
+            //console.log(isValid)
         }
 
         //fecha de nacimiento
-        console.log(date)
+        //console.log(date)
         //Pensar excepción para la edad
         if(!validateDate(date)) {
             setErrorDate("Solo mayores de 18.")
             isValid = isValid;
-            console.log(isValid)
+            //console.log(isValid)
         }else{
             isValid = isValid;
-            console.log(isValid)
+            //console.log(isValid)
         }
 
 
-        console.log(isValid)
+        //console.log(isValid)
         return isValid
     }
 

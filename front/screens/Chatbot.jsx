@@ -16,7 +16,7 @@ const Chat = () => {
   const fetchData = async (message) => {
     try {
       const answer = await handleGenericAPIRequest(message);
-      console.log("Respuesta del bot: " + answer);
+      //console.log("Respuesta del bot: " + answer);
 
       const botMessage = {
         _id: Math.round(Math.random() * 1000000),
@@ -33,13 +33,13 @@ const Chat = () => {
         GiftedChat.append(previousMessages, [botMessage])
       );
     } catch (e) {
-      console.error("Error al procesar el mensaje: " + e);
+      //console.error("Error al procesar el mensaje: " + e);
     }
   };
 
   const onSend = (newMessages = []) => {
     const messageText = newMessages[0].text;
-    console.log("Mensaje enviado: " + messageText);
+    //console.log("Mensaje enviado: " + messageText);
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, newMessages)
     );

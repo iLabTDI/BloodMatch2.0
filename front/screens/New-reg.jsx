@@ -104,17 +104,17 @@ const NewReg = (props) => {
    
      if (!result.cancelled) {
       const fileName = await handleSubmit(result.assets[0].uri);
-      console.log("Nombre del archivo subido:", fileName);
+      //console.log("Nombre del archivo subido:", fileName);
      const data2=await getUrl(fileName)
 
       // data2 contendrá la URL de la imagen
       const imageUrl = data2.publicUrl;
-      console.log('Imagen URL:', imageUrl);
+      //console.log('Imagen URL:', imageUrl);
       setImage2(imageUrl)
 
       if (imageUrl.length > 0) {
         Alert.alert("¡Imagen guardada!");
-        console.log("yo",saveImage)
+        //console.log("yo",saveImage)
       } else {
         Alert.alert("No se pudo guardar la imagen!");
         
@@ -130,18 +130,18 @@ const NewReg = (props) => {
     while (!isValid) {
       // Llama a validateUser y espera el resultado
       isValid = await validateUserDatabase(user);
-      console.log(isValid);
+      //console.log(isValid);
   
       if (isValid) {
-        console.log("Usuario valido, avanzando a la siguiente vista");
+        //console.log("Usuario valido, avanzando a la siguiente vista");
         setCurrentView((prevView) => prevView + 1);
       } else {
-        console.log("Usuario no válido, intenta nuevamente");
+        //console.log("Usuario no válido, intenta nuevamente");
         return;
       }
     }
     }catch(e){
-      console.log(e)
+      //console.log(e)
 
 
     }
@@ -151,7 +151,7 @@ const NewReg = (props) => {
   };
   
   const handleNextView = () => {
-    console.log("entra")
+    //console.log("entra")
     // Verificar que se hayan ingresado todos los datos antes de pasar a la siguiente vista
     if (currentView === totalViews - 1) {
       // Verificar que la contraseña no sea nula antes de registrar al usuario
@@ -170,7 +170,7 @@ const NewReg = (props) => {
     } else {
       // Si no estamos en la última vista, simplemente pasamos a la siguiente
       if(handleView()){
-        console.log("hola")
+        //console.log("hola")
         setCurrentView(currentView + 1);
       }
     }
@@ -180,15 +180,15 @@ const NewReg = (props) => {
  //Con esta funcion controlamos la regresion de las vistas se modifica totalViwes dependiendo del numero de vistas que existan la app
     const handlePrevView = () => {
      
-      console.log(currentView,totalViews)
+      //console.log(currentView,totalViews)
         
           if (currentView < totalViews && currentView != totalViews) {
-            console.log("hola")
+            //console.log("hola")
             setCurrentView(currentView-1);
             
         }
         else{
-          console.log("incorrect")
+          //console.log("incorrect")
 
         }
   
@@ -201,7 +201,7 @@ const NewReg = (props) => {
     const isoString = currentDate.toISOString(); // Get the ISO string representation
     const curr = isoString.split('T'); // Split the date part and time part
 
-    console.log("la fehca es ", curr[0])
+    //console.log("la fehca es ", curr[0])
     setDate(currentDate);
     setDateTime(curr[0])
     setOpen(false);
@@ -230,7 +230,7 @@ const NewReg = (props) => {
       Phone: phone,
       UserName: user
     };
-    //console.log(registroData)
+    ////console.log(registroData)
     //New_User(registroData);
     
       New_User(email, firstName, lastName, date, type, gen, password, state, city,phone, user,saveImage);
@@ -259,9 +259,9 @@ const NewReg = (props) => {
   };
 
   const registrar=()=>{
-    console.log("lo que agraa es",saveImage)
+    //console.log("lo que agraa es",saveImage)
     if(saveImage.length>0){
-       console.log("imagen aceptada")
+       //console.log("imagen aceptada")
        registerUser(email,password,user,lastName,firstName,date,type,state,city,phone,saveImage)
     }else{
       Alert.alert("porfavor elige una imagen ")
@@ -682,7 +682,7 @@ const NewReg = (props) => {
 
           if(!validateUser(user) ){
             setErrorUser("Debes de ingresar tus apellidos correctamente")
-            console.log("Error",a)
+            //console.log("Error",a)
             return false;
             
           }
@@ -695,7 +695,7 @@ const NewReg = (props) => {
           }
           break;   
         case 11:
-          console.log("confirm")
+          //console.log("confirm")
           if(!ConfirmPass(passcon,password)){
             setErrorPasscon("Debes de ingresar tus apellidos correctamente")
             return false;

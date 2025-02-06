@@ -63,18 +63,13 @@ const LogIn = (props) => {
         try { 
             const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
             
-            const data = await getDates(email, hashedPassword);
-            const usuario = data[0];
+            const getDatesDatabase = await getDates(email, hashedPassword);
+            const dates = getDatesDatabase[0];
            
           
-            if (usuario) {
-           
-             
-
-              console.log(hashedPassword)
-          
-              if (hashedPassword === usuario.password) {
-                setGlobalData('email', email);
+            if (dates) {
+              if (hashedPassword === dates.password) {
+                setGlobalData('dates', dates);
                 Alert.alert("Email encontrado ")
                 navigation.push('Home');
               } else {
@@ -174,7 +169,7 @@ const LogIn = (props) => {
 
     const handleSubmitRegister = async () => {
        // printRegister();
-        console.log("entra")
+        //console.log("entra")
         let validateFields = await Promise.all([
             validations.firstName(register.firstName),
             validations.lastName(register.lastName),
@@ -192,9 +187,7 @@ const LogIn = (props) => {
         
         validateFields.reverse();
         
-
         validateFields.reverse();
-        console.log("entra2")
 
         validateFields.forEach(el => {
            

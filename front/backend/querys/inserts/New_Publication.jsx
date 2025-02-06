@@ -17,12 +17,12 @@ const New_Publication = async (id, nombre, sangre, apellidos, descripcion, estad
           ])
           .select();
         if (error) {
-          console.error('Error al insertar datos:', error);
+          //console.error('Error al insertar datos:', error);
         } else {
-          console.log('Datos insertados con éxito:', data);
+          //console.log('Datos insertados con éxito:', data);
         }
       } catch (error) {
-        console.error('Error al insertar datos:', error.message);
+        //console.error('Error al insertar datos:', error.message);
       }
     };
 

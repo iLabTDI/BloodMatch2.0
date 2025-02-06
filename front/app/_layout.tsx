@@ -23,7 +23,7 @@ export default function App () {
   useEffect(()=>{
     let eventListener = EventRegister.addEventListener('Cambiar el tema', (data) =>{
       setTheme(data);
-      console.log(data)
+      //console.log(data)
     });
     return () => {
       EventRegister.removeEventListener(eventListener)

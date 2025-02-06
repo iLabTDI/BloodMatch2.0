@@ -38,7 +38,7 @@ const pickImage = async () => {
       
       // Subir la imagen y obtener el nombre del archivo
       const fileName = await handleSubmit(result.assets[0].uri);
-      console.log("Nombre del archivo subido:", fileName);
+      //console.log("Nombre del archivo subido:", fileName);
 
       // Obtener la URL pública de la imagen subida
       const { data: data2, error: error2 } = await supabase.storage
@@ -51,7 +51,7 @@ const pickImage = async () => {
 
       // data2 contendrá la URL de la imagen
       const imageUrl = data2.publicUrl;
-      console.log('Imagen URL:', imageUrl);
+      //console.log('Imagen URL:', imageUrl);
 
       // Actualizar la URL de la imagen en la base de datos de usuarios
       const { data, error } = await supabase
@@ -71,7 +71,7 @@ const pickImage = async () => {
     }
   } catch (error) {
     Alert.alert('Hubo un error al procesar la imagen.');
-    console.error(error);
+    //console.error(error);
   }
 };
 
@@ -81,15 +81,15 @@ const pickImage = async () => {
    
     const fetchData = async () => {
       try{
-        const email1 = getGlobalData('email');
-      console.log(" lo que imprime es",email1);
+        const dates = getGlobalData('dates');
+      //console.log(" lo que imprime es",email1);
       const { data, error } = await supabase
         .from('usuarios') // Nombre de la tabla de usuarios
         .select('*')
-        .eq('Email',email1);
+        .eq('Email',dates.Email);
   
       if (error) {
-        console.error('Error fetching user:', error.message);
+        //console.error('Error fetching user:', error.message);
       } else {
         // Verificar si hay datos y manejar los casos de múltiples filas o ninguna fila
         if (data && data.length > 0) {
@@ -97,19 +97,19 @@ const pickImage = async () => {
           setEmail(data[0]);
          const emailLocated = data[0];
          const urlLocated= emailLocated .url;
-         console.log("el url que se encontro es=",urlLocated);
+         //console.log("el url que se encontro es=",urlLocated);
 
          setImage({ uri: urlLocated}); //  in this part  i get the url from the the image
       
          
         } else {
-          console.log(data)
-          console.error('No user data fousnd');
+          //console.log(data)
+          //console.error('No user data fousnd');
         }
       }
 
       }catch(e){
-        console.log(e)
+        //console.log(e)
       }
       
       

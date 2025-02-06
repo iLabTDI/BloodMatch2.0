@@ -1,4 +1,4 @@
-import { useContext, useEffect, useLayoutEffect ,useState} from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import {
   FlatList,
   Keyboard,
@@ -8,16 +8,16 @@ import {
   TextInput,
   View,
 } from "react-native";
-import  {socket}  from "../util/connectionChat";
+import { socket } from "../util/connectionChat";
 import Messagecomponent from "./Messagecomponent";
 import { getGlobalData } from "../backend/querys/inserts/New_email";
 
 export default function Messagescreen({ navigation, route }) {
-  const [allChatMessages,setAllChatMessages]=useState([]);
+  const [allChatMessages, setAllChatMessages] = useState([]);
   const [currentUser, setCurrentUser] = useState("");
   const [currentChatMesage, setCurrentChatMessage] = useState('')
   const { currentGroupName, currentGroupID } = route.params;
- 
+
 
   function handleAddNewMessage() {
     const timeData = {
@@ -31,32 +31,37 @@ export default function Messagescreen({ navigation, route }) {
           : new Date().getMinutes(),
     };
 
-     console.log("el mensaje",  currentGroupID)
-     
 
- 
-      socket.emit("newChatMessage", {
-        currentChatMesage,
-        groupIdentifier: currentGroupID,
-        currentUser,
-        timeData,
-      });
+    socket.emit("newChatMessage", {
+      currentChatMesage,
+      groupIdentifier: currentGroupID,
+      currentUser,
+      timeData,
+    });
 
-      setCurrentChatMessage("");
-      Keyboard.dismiss();
-      
-    
+    setCurrentChatMessage("");
+    socket.on('foundGroup', (allChats) => {
+      console.log("lo que tienne los chats son", allChats)
+
+      setAllChatMessages(allChats)
+    })
+    Keyboard.dismiss();
+
+
   }
 
 
-  useEffect(()=>{
-    const usuario=getGlobalData("usuario");
-    console.log("El usurio que encontro es=",getGlobalData("usuario"))
-    setCurrentUser(usuario)
-    
+  useEffect(() => {
+    const dates = getGlobalData("dates");
+    setCurrentUser(dates.id_user)
+
     socket.emit('findGroup', currentGroupID)
-    socket.on('foundGroup', (allChats)=> setAllChatMessages(allChats))
-  },[socket])
+    socket.on('foundGroup', (allChats) => {
+      console.log("lo que tienne los chats son", allChats)
+
+      setAllChatMessages(allChats)
+    })
+  }, [socket])
 
 
   return (
@@ -64,16 +69,16 @@ export default function Messagescreen({ navigation, route }) {
       <View
         style={[styles.wrapper, { paddingVertical: 50, paddingHorizontal: 10 }]}
       >
-        {allChatMessages && allChatMessages[0] ? (
-         <FlatList
-         data={allChatMessages}
-         renderItem={({ item }) => (
-          <Messagecomponent item={item} currentUser={currentUser} />
-        )}
-         keyExtractor={(item) => item.id}
-       />
+        {allChatMessages? (
+          <FlatList
+            data={allChatMessages}
+            renderItem={({ item }) => (
+              <Messagecomponent item={item} currentUser={currentUser} />
+            )}
+            keyExtractor={(item) => item.id}
+          />
         ) : (
-          ""
+          "hola"
         )}
       </View>
       <View style={styles.messageInputContainer}>

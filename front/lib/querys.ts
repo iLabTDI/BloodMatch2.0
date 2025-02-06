@@ -9,13 +9,13 @@ export async function getDates(email:String, password:String) {
             .eq("Email", email)
             .eq("password", password);
         if (error) {
-            console.log(error);
+            //console.log(error);
         } else {
-            console.log(data);
+            //console.log(data);
             return data;
         }
     } catch (e) {
-        console.log(e);
+        //console.log(e);
     }
   
 }
@@ -24,13 +24,13 @@ export async function getDates(email:String, password:String) {
 export async function generaldates() {
   const { data, error } = await supabase.from("usuarios").select("*");
 
-  console.log("los usuarios que esta agarrando son estos ", data);
+  //console.log("los usuarios que esta agarrando son estos ", data);
 
   if (error) {
-    console.log(error);
+    //console.log(error);
   }
   if (!data || data.length === 0) {
-    console.log("error datos invalidos");
+    //console.log("error datos invalidos");
   } else {
     return data;
   }
@@ -64,33 +64,33 @@ export const New_User = async (register:any) => {
           .select();
 
         if (error) {
-          console.error('Error al insertar datos:', error);
+          //console.error('Error al insertar datos:', error);
           return false
         } else {
-          console.log('Datos insertados con éxito:', data);
+          //console.log('Datos insertados con éxito:', data);
           return true
         }
       } catch (error) {
-        console.error('Error al insertar datos 1:', error.message);
+        //console.error('Error al insertar datos 1:', error.message);
         return false
       }
     };
 
 export const updateImages = async (filePath, formData) => {
     try {
-        console.log("el file path es ", filePath, "El forma", formData);
+        //console.log("el file path es ", filePath, "El forma", formData);
         const { error } = await supabase.storage
             .from("prueba")
             .upload(filePath, formData);  
         if (error) throw error;
     } catch (error) {
-        console.log(error);
+        //console.log(error);
     }
 };
 
 export async function getUrl(fileName) {
   const { data } = await supabase.storage.from("prueba").getPublicUrl(fileName);
-  console.log(data);
+  //console.log(data);
   return data;
 }
 
@@ -103,21 +103,21 @@ export async function isExistingEmail(email:String) {
       .eq("Email", email);
 
     if (error) {
-      console.error("Hubo un error al consultar Supabase:", error.message);
+      //console.error("Hubo un error al consultar Supabase:", error.message);
       return true;
     }
 
     // Si la consulta devuelve datos, significa que el correo ya existe
     if (data && data.length > 0) {
-      console.log("El correo ya está registrado:", data[0].Email);
+      //console.log("El correo ya está registrado:", data[0].Email);
       return true;
     }
 
     // Si no hay datos, el correo no está registrado
-    console.log("El correo no está registrado. Puede usarse.");
+    //console.log("El correo no está registrado. Puede usarse.");
     return false;
   } catch (err) {
-    console.error("Error inesperado:", err.message);
+    //console.error("Error inesperado:", err.message);
     return true;
   }
 }
@@ -125,14 +125,14 @@ export async function isExistingEmail(email:String) {
 export async function handleSubmit(image:string) {
   try {
     let publicUrl = "";
-    console.log("se enica", image);
+    //console.log("se enica", image);
     if (image) {
       const fileExt = image.split(".").pop();
-      console.log(fileExt);
+      //console.log(fileExt);
       const fileName = image.replace(/^.*[\\\/]/, "");
-      console.log(fileName);
+      //console.log(fileName);
       const filePath = `posts/${Date.now()}.${fileExt}`;
-      console.log(filePath);
+      //console.log(filePath);
       const formData = new FormData();
 
       const photo = {
@@ -145,22 +145,22 @@ export async function handleSubmit(image:string) {
 
       const images = await updateImages(filePath, formData);
 
-      console.log(images);
+      //console.log(images);
 
       return filePath;
     }
   } catch (error) {
-    console.log("error");
+    //console.log("error");
   }
 }
 
 export async function getTutorialValue(email:string) {
   if (!email) {
-    console.error("Se requiere un userName válido");
+    //console.error("Se requiere un userName válido");
     return false;
   }
 
-  console.log("el email es+", email);
+  //console.log("el email es+", email);
 
   const { data, error } = await supabase
     .from("usuarios")
@@ -169,11 +169,11 @@ export async function getTutorialValue(email:string) {
     .single();
 
   if (error) {
-    console.error("Error al consultar estadoTutorial:", error.message);
+    //console.error("Error al consultar estadoTutorial:", error.message);
     return false;
   }
   if (data.tutorial === false) {
-    console.log("el tuto es", data.tutorial);
+    //console.log("el tuto es", data.tutorial);
     return false;
   } else {
     return true;
@@ -186,11 +186,11 @@ export async function verificateUser(usuario: string) {
     .select("UserName")
     .eq("UserName", usuario);
   if (error) {
-    console.log("was an error", error);
+    //console.log("was an error", error);
     return false;
   }
   if (data.length > 0) {
-    console.log("sicces", data[0].UserName);
+    //console.log("sicces", data[0].UserName);
     return true;
   }
   if (data) {
@@ -199,8 +199,9 @@ export async function verificateUser(usuario: string) {
 }
 
 export async function updateTutorialValue(email:String) {
+  //console.log("hola tijuana 12",email)
   if (!email) {
-    console.error("email no es valido");
+    //console.error("email no es valido");
     return null;
   }
   try {
@@ -211,13 +212,13 @@ export async function updateTutorialValue(email:String) {
       .select();
 
     if (error) {
-      console.error("hubo un error", error);
+      //console.error("hubo un error", error);
       return null;
     }
-    console.log("Checando el cambio", data);
+    //console.log("Checando el cambio", data);
     return data;
   } catch (e) {
-    console.error(e);
+    //console.error(e);
     return null;
   }
 }

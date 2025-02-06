@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 export default function Messagecomponent({ currentUser, item }) {
   const currentUserStatus = item.currentUser !== currentUser;
 
-  console.log(currentUserStatus , item);
+  //console.log(currentUserStatus , item);
 
   return (
     <View style={currentUserStatus ? {} : { alignItems: "flex-end" }}>
