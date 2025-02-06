@@ -16,6 +16,8 @@ import { handleSubmit,getUrl } from "../lib/querys";
 import validations from "../helper/validations.js";
 import { New_User } from "../lib/querys";
 
+import estadosMunicipios from "./estados_municipios.json";  
+
 const LogIn = (props) => {
 
     const { navigation } = props;
@@ -35,6 +37,9 @@ const LogIn = (props) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [titleModal, setTitleModal] = useState("");
     const [textModal, setTextModal] = useState("");
+
+    //STATES
+    const [municipios, setMunicipios] = useState([]);    
 
     // Register
     const [register, setRegister] = useState({
@@ -367,26 +372,34 @@ const LogIn = (props) => {
                             <View className="bg-gray-100 rounded-full mb-4 w-[48%]">
                                 <Picker
                                     selectedValue={register.state}
-                                    onValueChange={(itemValue) => handleInputChange('state',itemValue)}
-                                    style={{color: 'gray', height: 52}}
-                                >
-                                    <Picker.Item label="Estado" value="" style={{fontSize: 15}}/>
-                                    <Picker.Item label="Jalisco" value="Jalisco" />
-                                    <Picker.Item label="Oaxaca" value="Oaxaca" />
+                                    onValueChange={(itemValue) => {
+                                    handleInputChange('state', itemValue); 
+                                    setMunicipios(estadosMunicipios[itemValue] || []); 
+                                    handleInputChange('municipality', ''); 
+                                    }}
+                                    style={{ color: 'gray', height: 52 }}
+                            >
+                                   <Picker.Item label="Estado" value="" style={{ fontSize: 15 }} />
+                                   {Object.keys(estadosMunicipios).map((estado, index) => (
+                                  <Picker.Item key={index} label={estado} value={estado} />
+                              ))}
                                 </Picker>
                             </View>
+
                             <View className="bg-gray-100 rounded-full mb-4 w-[48%]">
-                                <Picker
-                                    selectedValue={register.municipality}
-                                    onValueChange={(itemValue) => handleInputChange('municipality',itemValue)}
-                                    style={{color: 'gray', height: 52 }}
+                                 <Picker
+                                      selectedValue={register.municipality}
+                                      onValueChange={(itemValue) => handleInputChange('municipality', itemValue)}
+                                      style={{ color: 'gray', height: 52 }}
+                                      enabled={municipios.length > 0} 
                                 >
-                                    <Picker.Item label="Municipio" value="" style={{fontSize: 15}}/>
-                                    <Picker.Item label="Tonala" value="Tonala" />
-                                    <Picker.Item label="Guadalajara" value="Guadalajara" />
-                                </Picker>
+                                     <Picker.Item label="Municipio" value="" style={{ fontSize: 15 }} />
+                                     {municipios.map((municipio, index) => (
+                                    <Picker.Item key={index} label={municipio} value={municipio} />
+                              ))}
+                                 </Picker>
                             </View>
-                        </View>
+                       </View>
                         
                         <TextInput
                             placeholder="Numero telefonico"
