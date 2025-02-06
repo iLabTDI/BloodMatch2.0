@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -10,29 +10,21 @@ import {
   Alert,
   Animated,
   PanResponder,
-  KeyboardAvoidingView,
   TouchableOpacity,
   ScrollView,
-  Platform
+  BackHandler
 } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { styled } from 'nativewind';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import { Heart, X, MessageCircle, MapPin, User, Settings, Search } from 'react-native-feather';
-import { LinearGradient } from "expo-linear-gradient";
+import { Heart, X} from 'react-native-feather';
 import Constants from 'expo-constants';
-import { useNavigation } from "@react-navigation/native";
-import themeContext from "../helper/ThemeCon";
-import DeckSwiper from "react-native-deck-swiper";
 import { socket } from "../util/connectionChat";
 import { getGlobalData, getAllGlobalData } from "../backend/querys/inserts/New_email";
-import {
-  generaldates,
-  getTutorialValue,
-  updateTutorialValue,
-} from "../lib/querys";
+import { generaldates, getTutorialValue, updateTutorialValue } from "../lib/querys";
 import Tutorial from "../components/Tutorial";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import ModalFilters from '../components/ModalFilters'
+import { useFocusEffect } from "@react-navigation/native";
 
 interface TaskInterface {
   user: string;
@@ -46,49 +38,43 @@ interface TaskInterface {
 const StyledView = styled(View);
 const AnimatedView = Animated.createAnimatedComponent(StyledView);
 
-
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
-
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 function Home() {
-  const [datos, setDatos] = useState(null);
   const [user, setUser] = useState(null);
   const [newGroup, setNewGroup] = useState("");
-  const [secondNewGroup, setSecondNewGroup] = useState("Alex Robles");
   const [allChatGroups, setAllChatRooms] = useState([]);
-  const theme = useContext(themeContext);
-  const navigation = useNavigation();
-  const [tasks, setTasks] = useState([]);
-  const swiperRef = useRef(null);
-  // const [currentIndex, setCurrentIndex] = useState(0);
+
   const [showTutorial, setShowTutorial] = useState(false);
+
   const [users, setUsers] = useState([]);
-
-
-
   const [currentIndex, setCurrentIndex] = useState(0);
+
   const [showModalFilter, setShowModalFilter] = useState(false);
   const pan = useState(new Animated.ValueXY())[0];
 
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        Alert.alert(
+          "Salir de la aplicación",
+          "¿Estás seguro de que quieres salir?",
+          [
+            { text: "Cancelar", style: "cancel" },
+            { text: "Salir", onPress: () => BackHandler.exitApp() }
+          ]
+        );
+        return true; 
+      };
 
-  // useEffect(() => {
-  //   async function fetchUserData() {
-  //     try {
-  //       const usuario = getGlobalData("usuario");
-  //       setUser(usuario);
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
 
-  //       const estadoTutorial = usuario?.estadoTutorial === "true";
-  //       console.log("Entra al useeffect de serch");
-  //       setShowTutorial(!estadoTutorial);
-  //     } catch (error) {
-  //       console.error("Error fetching user data", error);
-  //     }
-  //   }
-  //   fetchUserData();
-  // }, []);
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+      };
+    }, [])
+  );
 
   useEffect(() => {
     async function fetchUserData() {
@@ -105,9 +91,6 @@ function Home() {
       const result = await getDatabase();
       // setTasks(result);
       setUsers(result);
-      console.log("**************************************************************************");
-      console.log(result);
-      console.log("**************************************************************************");
     }
 
     fetchUserData();
@@ -152,7 +135,9 @@ function Home() {
         sangre: user.Blood_Type,
         municipio: user.City,
         descripcion: user.Situation,
-        rol: user.role
+        rol: user.role,
+        estado: user.State,
+        nombre: user.FirstName
       }));
       console.log("los datos son", datos);
       while (i <= show - 1) {
@@ -172,7 +157,9 @@ function Home() {
               municipio: data[i].City,
               descripcion: data[i].Situation,
               image: data[i].url,
-              rol: data[i].role
+              rol: data[i].role,
+              estado: data[i].State,
+              nombre: data[i].FirstName
             },
           ];
 
@@ -218,29 +205,12 @@ function Home() {
     );
   };
 
-  // const Card = ({ user, pan, panResponders }) => (
-  //   <AnimatedView
-  //     className="absolute w-[300px] h-[400px] bg-white rounded-xl shadow-lg"
-  //     style={{
-  //       transform: [{ translateX: pan.x }, { translateY: pan.y }],
-  //     }}
-  //     {...panResponders.panHandlers}
-  //   >
-  //     <Image source={user[0].image} className="w-full h-3/4 rounded-t-xl" />
-  //     <View className="p-4">
-  //       <Text className="text-xl font-bold">{user[0].name}, {user[0].age}</Text>
-  //       <Text className="text-lg font-semibold text-red-500">{user[0].bloodType}</Text>
-  //       <Text className="text-sm text-gray-600">{user[0].description}</Text>
-  //       <View className="mt-2 bg-green-500 rounded-full px-3 py-1 self-start">
-  //         <Text className="text-white font-semibold">Disponible para donar</Text>
-  //       </View>
-  //     </View>
-  //   </AnimatedView>
-  // );
-
   const Card = ({ user, pan, panResponders }) => {
     if (!user) {
-      return null;
+      // return null;
+      return (<View className="p-4">
+        <Text className="text-xl font-bold">Sin resultados por mostrar</Text>
+      </View>)
     }
   
     return (
@@ -253,9 +223,9 @@ function Home() {
       >
         <Image source={{ uri: user.image }} className="w-full h-3/4 rounded-t-xl" />
         <View className="p-4">
-          <Text className="text-xl font-bold">{user.user}</Text>
+          <Text className="text-xl font-bold">{user.nombre}</Text>
           <Text className="text-lg font-semibold text-red-500">{user.sangre}</Text>
-          <Text className="text-sm text-gray-600">{user.municipio}</Text>
+          <Text className="text-sm text-gray-600">{user.municipio}, {user.estado}</Text>
           <View className="mt-2 bg-green-500 rounded-full px-3 py-1 self-start">
             <Text className="text-white font-semibold">{user.rol === 'donor' ? 'Donador' : 'Receptor'}</Text>
           </View>
@@ -263,8 +233,6 @@ function Home() {
       </AnimatedView>
     );
   };
-
-
 
   const panResponders = PanResponder.create({
     onMoveShouldSetPanResponder: () => true,
@@ -403,14 +371,12 @@ function Home() {
       //   />
       // </LinearGradient>
 
-
-
-
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      <SafeAreaView
+        // behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1 bg-gray-100"
       >
-        <TouchableOpacity onPress={() => setShowModalFilter(true)} className="bg-white p-4 border-b border-gray-200" style={styles.search}>
+        <StatusBar style="dark" />
+        <TouchableOpacity onPress={() => setShowModalFilter(true)} className="bg-white p-4 border-b border-gray-200">
           <View className="flex-row items-center bg-gray-100 rounded-full px-2 py-2 pr-5">
             <TouchableOpacity
               className="flex-1 ml-2 text-base"
@@ -426,40 +392,32 @@ function Home() {
           keyboardShouldPersistTaps="handled"
         >
           <View className="flex-1 items-center justify-center">
-            {users[currentIndex] && (
-              <Card user={users[currentIndex][0]} pan={pan} panResponders={panResponders} />
-            )}
-            <View className="flex-row justify-between w-full mt-8 mb-4 px-2">
-              <TouchableOpacity
-                className="bg-red-500 w-16 h-16 rounded-full items-center justify-center"
-                onPress={handleReject}
-              >
-                <X stroke="white" width={32} height={32} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                className="bg-green-500 w-16 h-16 rounded-full items-center justify-center"
-                onPress={handleMatch}
-              >
-                <Heart stroke="white" fill="white" width={32} height={32} />
-              </TouchableOpacity>
-            </View>
+            {users[currentIndex] 
+              ? (
+                <>
+                <Card user={users[currentIndex][0]} pan={pan} panResponders={panResponders} />
+                <View className="flex-row justify-between w-full mt-8 mb-4 px-2">
+                  <TouchableOpacity
+                    className="bg-red-500 w-16 h-16 rounded-full items-center justify-center"
+                    onPress={handleReject}
+                  >
+                    <X stroke="white" width={32} height={32} />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    className="bg-green-500 w-16 h-16 rounded-full items-center justify-center"
+                    onPress={handleMatch}
+                  >
+                    <Heart stroke="white" fill="white" width={32} height={32} />
+                  </TouchableOpacity>
+                </View>
+                </>
+                )
+              : <Card user={null} pan={pan} panResponders={panResponders} />
+            }
           </View>
         </ScrollView>
         {showModalFilter && <ModalFilters onClose={() => setShowModalFilter(false)}/>}
-      </KeyboardAvoidingView>
-
-
-
-
-
-
-
-
-
-
-
-
-      
+      </SafeAreaView>      
     );
   }
 }
