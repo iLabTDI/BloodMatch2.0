@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, Alert, Platform, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, Alert, Platform, ActivityIndicator, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SocialIcon } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
@@ -226,6 +226,7 @@ const LogIn = (props) => {
 
     return (
         <SafeAreaView className="flex-1 bg-red-50">
+            <StatusBar backgroundColor={"#FEF2F2"} barStyle={'dark-content'} />
             <ScrollView contentContainerClassName="flex-grow justify-center items-center p-2">
                 <View className="w-full max-w-md p-5">
                 <View className="mb-8 items-center">

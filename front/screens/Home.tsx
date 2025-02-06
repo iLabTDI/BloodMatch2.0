@@ -375,7 +375,7 @@ function Home() {
         // behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1 bg-gray-100"
       >
-        <StatusBar style="dark" />
+        <StatusBar backgroundColor={"#fff"} style="dark"/>
         <TouchableOpacity onPress={() => setShowModalFilter(true)} className="bg-white p-4 border-b border-gray-200">
           <View className="flex-row items-center bg-gray-100 rounded-full px-2 py-2 pr-5">
             <TouchableOpacity
