@@ -58,7 +58,7 @@ function Home() {
 
   useEffect(() => {
     async function fetchUserData() {
-      const getUserDates=getGlobalData("email")
+      const getUserDates = getGlobalData("dates");
       const tutorialValue = await getTutorialValue(getUserDates.Email);
       //console.log(tutorialValue);
       if (tutorialValue) {
@@ -81,24 +81,22 @@ function Home() {
     fetchData();
   }, [socket]);
 
-
-
-  const handleCreateNewRoom = (id:string,name:string) => {
+  const handleCreateNewRoom = (id: string, name: string) => {
     try {
       //i get the global user
-      const datesUser= getGlobalData("dates");
-      console.log("lo que imprimo es=", datesUser.id_user, "y", id,name);
+      const datesUser = getGlobalData("dates");
+      console.log("lo que imprimo es=", datesUser.id_user, "y", id, name);
       setNewGroup(datesUser.id_user);
 
-      // in this part i emit the current user and the id of the user that madev the match 
-      
+      // in this part i emit the current user and the id of the user that madev the match
+
       socket.emit("createNewGroup", {
         currentGroupName: datesUser.id_user,
-        currentIdGroupName:datesUser.FirstName,
+        currentIdGroupName: datesUser.FirstName,
         currentSecondGroup: id,
-        currentIdSecondName:name,
+        currentIdSecondName: name,
       });
- 
+
       Keyboard.dismiss();
     } catch (error) {
       //console.error("Error creating new group:", error);
@@ -130,7 +128,7 @@ function Home() {
           const dates = [
             {
               id_user: data[i].id_user,
-              Email:data[i].Email,
+              Email: data[i].Email,
               FirstName: data[i].FirstName,
               Blood_Type: data[i].Blood_Type,
               City: data[i].City,
@@ -154,7 +152,7 @@ function Home() {
     console.log("Deslizamiento hacia la derecha detectado", cardIndex);
     let matchedCard = tasks[cardIndex][0]; // aqui tengo la lista de listas para agarrar al usuario
     const card = matchedCard;
-    handleCreateNewRoom(card.id_user,card.FirstName);
+    handleCreateNewRoom(card.id_user, card.FirstName);
   };
 
   const swipeLeft = () => {
@@ -182,7 +180,7 @@ function Home() {
 
   const onClose = () => {
     async function updateTutorial() {
-      const generalDatesUser=getGlobalData("dates")
+      const generalDatesUser = getGlobalData("dates");
       //console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",generalDatesUser.Email)
       const result = await updateTutorialValue(generalDatesUser.Email);
       //console.log("Checando result: ", result);

@@ -1,25 +1,23 @@
 import Tutorial from "@/components/Tutorial";
 import { supabase } from "./supabase";
-import CryptoJS from 'crypto-js';
-export async function getDates(email:String, password:String) {
-    try {
-        const { data, error } = await supabase
-            .from("usuarios")
-            .select("*")
-            .eq("Email", email)
-            .eq("password", password);
-        if (error) {
-            //console.log(error);
-        } else {
-            //console.log(data);
-            return data;
-        }
-    } catch (e) {
-        //console.log(e);
+import CryptoJS from "crypto-js";
+export async function getDates(email: String, password: String) {
+  try {
+    const { data, error } = await supabase
+      .from("usuarios")
+      .select("*")
+      .eq("Email", email)
+      .eq("password", password);
+    if (error) {
+      //console.log(error);
+    } else {
+      //console.log(data);
+      return data;
     }
-  
+  } catch (e) {
+    //console.log(e);
+  }
 }
-
 
 export async function generaldates() {
   const { data, error } = await supabase.from("usuarios").select("*");
@@ -35,57 +33,57 @@ export async function generaldates() {
     return data;
   }
 }
-export const New_User = async (register:any) => {
+export const New_User = async (register: any) => {
   try {
     const password = register.password;
-    const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
-        const { data, error } = await supabase
-          .from('usuarios')
-          .insert([
-            {
-              Email: register.email,
-              FirstName: register.firstName, 
-              LastName: register.lastName, 
-              Birthdate: register.birthDate, 
-              Blood_Type: register.bloodType, 
-              Gender: register.gender, 
-              password:hashedPassword, 
-              State: register.state, 
-              City: register.municipality, 
-              Phone: register.phoneNumber,
-              UserName:"t",
-              url:register.uriImage,
-              tutorial:false,
-              role:register.bloodTypeRol
-             
+    const hashedPassword = CryptoJS.SHA256(password).toString(
+      CryptoJS.enc.Base64
+    );
+    const { data, error } = await supabase
+      .from("usuarios")
+      .insert([
+        {
+          Email: register.email,
+          FirstName: register.firstName,
+          LastName: register.lastName,
+          Birthdate: register.birthDate,
+          Blood_Type: register.bloodType,
+          Gender: register.gender,
+          password: hashedPassword,
+          State: register.state,
+          City: register.municipality,
+          Phone: register.phoneNumber,
+          UserName: "t",
+          url: register.uriImage,
+          tutorial: false,
+          role: register.bloodTypeRol,
+        },
+      ])
+      .select();
 
-            },
-          ])
-          .select();
-
-        if (error) {
-          //console.error('Error al insertar datos:', error);
-          return false
-        } else {
-          //console.log('Datos insertados con éxito:', data);
-          return true
-        }
-      } catch (error) {
-        //console.error('Error al insertar datos 1:', error.message);
-        return false
-      }
-    };
+    if (error) {
+      //console.error('Error al insertar datos:', error);
+      return false;
+    } else {
+      //console.log('Datos insertados con éxito:', data);
+      return true;
+    }
+  } catch (error) {
+    //console.error('Error al insertar datos 1:', error.message);
+    return false;
+  }
+};
 
 export const updateImages = async (filePath, formData) => {
-    try {
-        //console.log("el file path es ", filePath, "El forma", formData);
-        const { error } = await supabase.storage
-            .from("prueba")
-            .upload(filePath, formData);  
-        if (error) throw error;
-    } catch (error) {
-        //console.log(error);
-    }
+  try {
+    //console.log("el file path es ", filePath, "El forma", formData);
+    const { error } = await supabase.storage
+      .from("prueba")
+      .upload(filePath, formData);
+    if (error) throw error;
+  } catch (error) {
+    //console.log(error);
+  }
 };
 
 export async function getUrl(fileName) {
@@ -94,7 +92,7 @@ export async function getUrl(fileName) {
   return data;
 }
 
-export async function isExistingEmail(email:String) {
+export async function isExistingEmail(email: String) {
   try {
     // Consultar la tabla usuarios para verificar si el correo ya existe
     const { data, error } = await supabase
@@ -122,7 +120,7 @@ export async function isExistingEmail(email:String) {
   }
 }
 
-export async function handleSubmit(image:string) {
+export async function handleSubmit(image: string) {
   try {
     let publicUrl = "";
     //console.log("se enica", image);
@@ -154,13 +152,13 @@ export async function handleSubmit(image:string) {
   }
 }
 
-export async function getTutorialValue(email:string) {
+export async function getTutorialValue(email: string) {
   if (!email) {
-    //console.error("Se requiere un userName válido");
+    console.error("Se requiere un userName válido");
     return false;
   }
 
-  //console.log("el email es+", email);
+  console.log("el email es+", email);
 
   const { data, error } = await supabase
     .from("usuarios")
@@ -198,7 +196,7 @@ export async function verificateUser(usuario: string) {
   }
 }
 
-export async function updateTutorialValue(email:String) {
+export async function updateTutorialValue(email: String) {
   //console.log("hola tijuana 12",email)
   if (!email) {
     //console.error("email no es valido");
