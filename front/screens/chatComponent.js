@@ -1,10 +1,13 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View, Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { ChevronRight } from "react-native-feather"
+import { getUser } from "../lib/querys";
 
 export default function Chatcomponent({ item }) {
   const navigation = useNavigation();
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     console.log("el titeem es=",item)
@@ -12,6 +15,11 @@ export default function Chatcomponent({ item }) {
       console.log(" los items son=", item.messages[item.messages.length - 1]);
     }
 
+    async function getUserData(email){
+      let res = await getUser(email);
+      setUser(res[0]);
+    }
+    getUserData(item.currentSecondGroup);
   }, [item]);
 
   function handleNavigateToMessageScreen() {
@@ -22,66 +30,27 @@ export default function Chatcomponent({ item }) {
   }
 
   return (
-    <Pressable style={styles.chat} onPress={handleNavigateToMessageScreen}>
-      <View style={styles.circle}>
-        <FontAwesome name="group" size={24} color={"black"} />
-      </View>
-      <View style={styles.rightContainer}>
-        <View>
-          <Text style={styles.userName}>{item.currentSecondGroup}</Text>
-          <Text style={styles.message}>
-            {item && item.messages && item.messages.length > 0 
+    <Pressable className="flex-row items-center p-4 border-b border-gray-200" onPress={handleNavigateToMessageScreen}>
+      <Image source={{ uri: user?.url }} className="w-12 h-12 rounded-full mr-4" />
+      <View className="flex-1">
+        <View className="flex-row justify-between items-center">
+          <Text numberOfLines={1} className="font-bold text-lg text-gray-800 w-4/5 truncate">{user?.FirstName} {user?.LastName}</Text>
+          <Text className="text-sm text-gray-500">{item.timestamp}</Text>
+        </View>
+        <Text numberOfLines={1} className="text-gray-600 mt-1">
+          {item && item.messages && item.messages.length > 0 
               ? item.messages[item.messages.length - 1].text 
               : "Tap to start messaging"}
-          </Text>
-        </View>
-        <View>
-          <Text style={styles.time}>
-            {item && item.messages && item.messages.length > 0 
-              ? item.messages[item.messages.length - 1].time 
-              : "Now"}
-          </Text>
-        </View>
+        </Text>
+      </View>
+      <View className="flex-row items-center">
+        <Text className="text-sm text-gray-500 mr-1">
+          {item && item.messages && item.messages.length > 0 
+            ? item.messages[item.messages.length - 1].time 
+            : "Now"}
+        </Text>
+        <ChevronRight stroke="red" width={20} height={20} />
       </View>
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  chat: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    borderRadius: 5,
-    padding: 10,
-    backgroundColor: "#fff",
-    height: 80,
-    marginBottom: 10,
-  },
-  userName: {
-    fontSize: 18,
-    marginBottom: 5,
-    fontWeight: "bold",
-  },
-  message: {
-    fontSize: 14,
-    opacity: 0.8,
-  },
-  rightContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    flex: 1,
-  },
-  time: {
-    opacity: 0.6,
-  },
-  circle: {
-    width: 50,
-    borderRadius: 50,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 2,
-    marginRight: 10,
-  },
-});

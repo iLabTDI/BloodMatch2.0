@@ -34,7 +34,7 @@ if (!fontsLoaded) {
     return null;
   }
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1}}>
     <themeContext.Provider value = {theme === true ? darkMode.dark : darkMode.light}>
 
       {/*{isAuthenticated ? AuthNavigator : DrawerNavigation} */}

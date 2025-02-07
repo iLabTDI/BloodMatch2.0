@@ -88,6 +88,7 @@ export default function TabNavigator() {
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="facebook-messenger" color={color} size={size} />
                     ),
+                    headerShown: false
                     // tabBarBadge: false,
                     // tabBarBadgeStyle: { backgroundColor: 'blue' }
                 }} 

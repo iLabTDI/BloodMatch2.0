@@ -19,6 +19,15 @@ export async function getDates(email, password) {
     }
 }
 
+export async function getUser(email:string){
+  const {data,error }= await supabase.from("usuarios").select("*").eq("Email",email)
+  if(error){
+    console.log("was an error",error)
+    return false;
+  }
+  return data;
+}
+
 export async function generaldates() {
     const { data, error } = await supabase.from("usuarios").select("*");
 
