@@ -8,6 +8,36 @@ import DeckSwiper from 'react-native-deck-swiper';
 import { socket } from "../util/connectionChat";
 import { getGlobalData } from "../backend/querys/inserts/New_email";
 import { generaldates } from "../lib/querys";
+import * as Notifications from "expo-notifications";
+
+// Configurar el manejador de notificaciones
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+//Pedir permisos para enviar notificaciones al usuario y programar una notificación
+  const scheduleNotifications = async () => {
+    try {
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permiso de notificación no otorgado");
+        return;
+      }
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Nuevo match",
+          body: "Felicidades tienes un nuevo match, revisa tu bandeja de mensajes",
+        },
+        trigger: { seconds: 2 },
+      });
+      console.log("Notificación programada");
+    } catch (error) {
+      console.error("Error al programar notificaciones:", error);
+    }
+  };
 
 interface TaskInterface {
   user: string;
@@ -57,7 +87,9 @@ function Home() {
       setNewGroup(usuario);
 
       socket.emit("createNewGroup", { currentGroupName: usuario, currentSecondGroup: user });
+
       Keyboard.dismiss();
+      scheduleNotifications();
     } catch (error) {
       console.error("Error creating new group:", error);
     }

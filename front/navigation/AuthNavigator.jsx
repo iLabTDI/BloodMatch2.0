@@ -16,8 +16,7 @@ import Termycon from '../screens/terminos';
 import Privacidad from '../screens/Privacidad';
 import NewReg from '../screens/New-reg';
 import Messagescreen from '../screens/Messagescreen';
-import notificaciones from '../screens/pruebaNotificaciones';
-import pruebaNotificaciones from '../screens/pruebaNotificaciones';
+import WelcomeScreen from '../screens/WelcomeScreen';
 
 
 
@@ -27,11 +26,6 @@ export default function AuthNavigator() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
 
-            <Stack.Screen
-                name = 'pruebaNotificaciones'
-                component = { pruebaNotificaciones }
-                options={{ headerShown: false}} 
-            /> 
             <Stack.Screen
                 name = 'Login'
                 component = { Login }
