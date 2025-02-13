@@ -23,7 +23,7 @@ import bcrypt from "bcryptjs";
 export async function getDates(email) {
   try {
       const { data, error } = await supabase
-          .from("usuarios")
+          .from("users")
           .select("*")
           .eq("Email", email)
           .single(); // Para obtener un solo usuario
@@ -32,7 +32,6 @@ export async function getDates(email) {
           console.log("Error al obtener datos:", error);
           return null;
       }
-
       return data;
   } catch (e) {
       console.log("Error en getDates:", e);
@@ -42,7 +41,7 @@ export async function getDates(email) {
 
 
 export async function getUser(email:string){
-  const {data,error }= await supabase.from("usuarios").select("*").eq("Email",email)
+  const {data,error }= await supabase.from("users").select("*").eq("Email",email)
   if(error){
     console.log("was an error",error)
     return false;
@@ -51,7 +50,7 @@ export async function getUser(email:string){
 }
 
 export async function generaldates() {
-    const { data, error } = await supabase.from("usuarios").select("*");
+    const { data, error } = await supabase.from("users").select("*");
 
     console.log("los usuarios que esta agarrando son estos ", data);
 
@@ -72,40 +71,38 @@ function hashPassword(password) {
 
 export const New_User = async (
     Email,
-    firstName,
-    lastName,
-    date,
-    type,
-    typeRol,
-    gen,
-    password,
-    state,
-    city,
-    phone,
-    user,
-    url
+    FirstName,
+    LastName,
+    Date,
+    Type,
+    TypeRol,
+    Gen,
+    Password,
+    State,
+    City,
+    Phone,
+    Url
 ) => {
     try {
-      const hashedPassword = await hashPassword(password);
+      const hashedPassword = await hashPassword(Password);
         const { data, error } = await supabase
-            .from("usuarios")
+            .from("users")
             .insert([
                 {
-                    Birthdate: date,
-                    Blood_Type: type,
-                    City: city,
+                    Birthdate: Date,
+                    Blood_Type: Type,
+                    City: City,
                     Email: Email,
-                    FirstName: firstName,
-                    Gender: gen,
-                    LastName: lastName,
-                    Phone: phone,
+                    FirstName: FirstName,
+                    Gender: Gen,
+                    LastName: LastName,
+                    Phone: Phone,
                     Situation: null,
-                    State: state,
-                    UserName: user,
-                    password: hashedPassword,
-                    role: typeRol,
-                    tutorial: false,
-                    url: url,
+                    State: State,
+                    Password: hashedPassword,
+                    Role: TypeRol,
+                    Tutorial: false,
+                    Url: Url,
                 },
             ])
             .select();
@@ -145,7 +142,7 @@ export async function isExistingEmail(email) {
     try {
         // Consultar la tabla usuarios para verificar si el correo ya existe
         const { data, error } = await supabase
-        .from("usuarios")
+        .from("users")
         .select("Email")
         .eq("Email", email); 
         
@@ -201,26 +198,26 @@ export async function handleSubmit(image) {
   }
 }
 
-export async function getTutorialValue(userName:any) {
-  if (!userName) {
-    console.error("Se requiere un userName válido");
+export async function getTutorialValue(email:any) {
+  if (!email) {
+    console.error("Se requiere un email válido");
     return false;
   }
 
-  console.log("el usuario es+",userName)
+  console.log("el usuario es+",email)
 
   const { data, error } = await supabase
-    .from("usuarios")
-    .select("tutorial")
-    .eq("UserName", userName)
+    .from("users")
+    .select("Tutorial")
+    .eq("Email", email)
     .single();
 
   if (error) {
     console.error("Error al consultar estadoTutorial:", error.message);
     return false;
   }
-  if(data.tutorial===false){
-    console.log("el tuto es",data.tutorial)
+  if(data.Tutorial===false){
+    console.log("el tuto es",data.Tutorial)
     return false
   }else{
     return true
@@ -230,31 +227,31 @@ export async function getTutorialValue(userName:any) {
 }
 
 
-export async function verificateUser(usuario:string){
-    const {data,error }= await supabase.from("usuarios").select("UserName").eq("UserName",usuario)
+export async function verificateUser(email:string){
+    const {data,error }= await supabase.from("users").select("Email").eq("Email",email)
     if(error){
       console.log("was an error",error)
       return false;
     }
     if(data.length>0){
-      console.log ("sicces",data[0].UserName)
+      console.log ("sicces",data[0].Email)
       return true;
     }
   if (data) {
-    return data.tutorial === null ? false : data.tutorial;
+    return data.Tutorial === null ? false : data.Tutorial;
   }
 }
 
-export async function updateTutorialValue(userName) {
-  if (!userName) {
-    console.error("UserName no es valido");
+export async function updateTutorialValue(email) {
+  if (!email) {
+    console.error("email no es valido");
     return null;
   }
   try {
     const { data, error } = await supabase
-      .from("usuarios")
-      .update({ tutorial: true })
-      .eq("UserName", userName)
+      .from("users")
+      .update({ Tutorial: true })
+      .eq("Email", email)
       .select();
 
     if (error) {

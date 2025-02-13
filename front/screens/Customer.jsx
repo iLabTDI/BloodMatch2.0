@@ -27,7 +27,7 @@ const Customer = ({  }) => {
       });
       
       if (!result.cancelled) {
-        const usuario = getGlobalData('usuario');
+        const email = getGlobalData('email');
         
         // Subir la imagen y obtener el nombre del archivo
         const fileName = await handleSubmit(result.assets[0].uri);
@@ -48,9 +48,9 @@ const Customer = ({  }) => {
 
         // Actualizar la URL de la imagen en la base de datos de usuarios
         const { data, error } = await supabase
-          .from('usuarios') 
-          .update({ "url": imageUrl }) 
-          .eq('UserName', usuario); 
+          .from('users') 
+          .update({ "Url": imageUrl }) 
+          .eq('Email', email); 
 
         if (error) {
           throw error;
@@ -68,12 +68,12 @@ const Customer = ({  }) => {
   useEffect(() => {
 
     const fetchData = async () => {
-      const usuario = getGlobalData('email');
-      console.log(" lo que imprime es",usuario);
+      const email = getGlobalData('email');
+      console.log(" lo que imprime es",email);
       const { data, error } = await supabase
-        .from('usuarios') // Nombre de la tabla de usuarios
+        .from('users') // Nombre de la tabla de usuarios
         .select('*')
-        .eq('Email',usuario);
+        .eq('Email',email);
   
       if (error) {
         console.error('Error fetching user:', error.message);
@@ -83,7 +83,7 @@ const Customer = ({  }) => {
           
           setUser(data[0]);
          const usuarioEncontrado = data[0];
-         const urlEncontrado = usuarioEncontrado.url;
+         const urlEncontrado = usuarioEncontrado.Url;
          console.log("el url que se encontro es=",urlEncontrado);
 
          setImage({ uri: urlEncontrado}); //  in this part  i get the url from the the image

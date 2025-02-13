@@ -31,7 +31,7 @@ export default function Chatcomponent({ item }) {
 
   return (
     <Pressable className="flex-row items-center p-4 border-b border-gray-200" onPress={handleNavigateToMessageScreen}>
-      <Image source={{ uri: user?.url }} className="w-12 h-12 rounded-full mr-4" />
+      <Image source={{ uri: user?.Url }} className="w-12 h-12 rounded-full mr-4" />
       <View className="flex-1">
         <View className="flex-row justify-between items-center">
           <Text numberOfLines={1} className="font-bold text-lg text-gray-800 w-4/5 truncate">{user?.FirstName} {user?.LastName}</Text>

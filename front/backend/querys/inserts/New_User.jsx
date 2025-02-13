@@ -6,7 +6,7 @@ const New_User = async ( Email,firstName,lastName,date,type,gen,password,state,c
         console.log("el email es",Email)
         
         const { data, error } = await supabase
-          .from('usuarios')
+          .from('users')
           .insert([
             {
               Email: Email,
@@ -15,12 +15,11 @@ const New_User = async ( Email,firstName,lastName,date,type,gen,password,state,c
               Birthdate: date, 
               Blood_Type: type, 
               Sexo: gen, 
-              password:password, 
+              Password:password, 
               State: state, 
               City: city, 
               Phone: phone,
-              UserName: user,
-              url:url
+              Url:url
              
 
             },

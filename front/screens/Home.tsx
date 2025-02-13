@@ -108,12 +108,12 @@ function Home() {
   const handleCreateNewRoom = (user) => {
     try {
       //i get the global user
-      const usuario = getGlobalData("usuario");
-      console.log("lo que imprimo es=", usuario, "y", user);
-      setNewGroup(usuario);
+      const email = getGlobalData("email");
+      console.log("lo que imprimo es=", email, "y", user);
+      setNewGroup(email);
 
       socket.emit("createNewGroup", {
-        currentGroupName: usuario,
+        currentGroupName: email,
         currentSecondGroup: user,
       });
       Keyboard.dismiss();
@@ -131,35 +131,35 @@ function Home() {
       console.log("la longitud de la lista es", show);
       const datos = data.map((user) => ({
         id: user.Email,
-        user: user.UserName,
         sangre: user.Blood_Type,
         municipio: user.City,
         descripcion: user.Situation,
-        rol: user.role,
+        rol: user.Role,
         estado: user.State,
-        nombre: user.FirstName
+        nombre: user.FirstName,
+        email: user.Email
       }));
       console.log("los datos son", datos);
       while (i <= show - 1) {
         console.log(i);
-        let dat = getGlobalData("usuario");
+        let dat = getGlobalData("email");
         console.log("el usuario es=", dat);
-        console.log("data", data[i].UserName);
-        if (dat === data[i].UserName) {
+        console.log("data", data[i].Email);
+        if (dat === data[i].Email) {
           console.log("hola");
           i++;
         } else {
           const dates = [
             {
               id: data[i].Email,
-              user: data[i].UserName,
               sangre: data[i].Blood_Type,
               municipio: data[i].City,
               descripcion: data[i].Situation,
-              image: data[i].url,
-              rol: data[i].role,
+              image: data[i].Url,
+              rol: data[i].Role,
               estado: data[i].State,
-              nombre: data[i].FirstName
+              nombre: data[i].FirstName,
+              email: data[i].Email
             },
           ];
 
@@ -177,7 +177,7 @@ function Home() {
   const swipeRight = (cardIndex) => {
     console.log("Deslizamiento hacia la derecha detectado", cardIndex);
     let matchedCard = users[cardIndex][0]; // aqui tengo la lista de listas para agarrar al usuario
-    const card = matchedCard.user;
+    const card = matchedCard.email;
     console.log("loque agarra de la carta es", card);
     handleCreateNewRoom(card);
   };
@@ -246,7 +246,7 @@ function Home() {
           setCurrentIndex(currentIndex + 1);
           pan.setValue({ x: 0, y: 0 });
         });
-        console.log(`Match con ${users[currentIndex][0].user}`);
+        console.log(`Match con ${users[currentIndex][0].email}`);
         swipeRight(currentIndex);
       } else if (gesture.dx < -120) {
         Animated.spring(pan, {
@@ -256,7 +256,7 @@ function Home() {
           setCurrentIndex(currentIndex + 1);
           pan.setValue({ x: 0, y: 0 });
         });
-        console.log(`Reject  ${users[currentIndex][0].user}`);
+        console.log(`Reject  ${users[currentIndex][0].email}`);
         swipeLeft();
       } else {
         Animated.spring(pan, {
@@ -276,7 +276,7 @@ function Home() {
       setCurrentIndex(currentIndex + 1);
       pan.setValue({ x: 0, y: 0 });
     });
-    console.log(`Match con ${users[currentIndex][0].user}`);
+    console.log(`Match con ${users[currentIndex][0].email}`);
     swipeRight(currentIndex);
   };
 
@@ -289,7 +289,7 @@ function Home() {
       setCurrentIndex(currentIndex + 1);
       pan.setValue({ x: 0, y: 0 });
     });
-    console.log(`Reject  ${users[currentIndex][0].user}`);
+    console.log(`Reject  ${users[currentIndex][0].email}`);
     swipeLeft();
   };
 

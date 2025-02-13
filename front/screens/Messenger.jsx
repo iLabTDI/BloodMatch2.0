@@ -35,7 +35,7 @@ const Messenger = ({ navigation }) => {
 
     const verification = async () => {
         try {
-            const usuario = getGlobalData("usuario");
+            const usuario = getGlobalData("email");
 
             socket.emit("getAllGroups");
             socket.on("groupList", (groups) => {
@@ -101,7 +101,7 @@ const Messenger = ({ navigation }) => {
         }
     }, [allChatRooms]);
 
-    const user = getGlobalData("usuario");
+    const user = getGlobalData("email");
 
     function filteredChatRooms() {
         const result = allChatRooms.map((group) => {

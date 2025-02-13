@@ -50,8 +50,8 @@ export default function Messagescreen({ navigation, route }) {
 
 
   useEffect(()=>{
-    const usuario=getGlobalData("usuario");
-    console.log("El usurio que encontro es=",getGlobalData("usuario"))
+    const usuario=getGlobalData("email");
+    console.log("El usurio que encontro es=",getGlobalData("email"))
     setCurrentUser(usuario)
     
     socket.emit('findGroup', currentGroupID)

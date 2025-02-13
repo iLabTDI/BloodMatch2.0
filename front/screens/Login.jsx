@@ -31,6 +31,7 @@ const LogIn = (props) => {
     const [seePassword, setSeePassword] = useState(false);
     const [showPicker, setShowPicker] = useState(false);
     const [isLoadingLogIn, setIsLoadingLogIn] = useState(false);
+    const [isLoadingRegister, setIsLoadingRegister] = useState(false);
     const [isImageLoading, setIsImageLoading] = useState(false);
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const [municipios, setMunicipios] = useState([]);  
@@ -66,7 +67,7 @@ const LogIn = (props) => {
             const usuario = await getDates(email.trim());
     
             if (usuario) {
-                const passwordMatch = await bcrypt.compare(password, usuario.password);
+                const passwordMatch = await bcrypt.compare(password, usuario.Password);
     
                 if (passwordMatch) {
                     setGlobalData('email', email);
@@ -169,6 +170,7 @@ const LogIn = (props) => {
     }
 
     const handleSubmitRegister = async () => {
+        setIsLoadingRegister(true);
         let validateFields = [vFirstName = validations.firstName(register.firstName),
         vLastName = validations.lastName(register.lastName),
         vBirthDate = validations.birthDate(register.birthDate),
@@ -191,7 +193,6 @@ const LogIn = (props) => {
         } else {
             // Register new user 
             try {
-                let user = register.email.trim();
                 await New_User(
                     register.email.trim(),
                     register.firstName.trim(),
@@ -204,7 +205,6 @@ const LogIn = (props) => {
                     register.state.trim(),
                     register.municipality.trim(),
                     register.phoneNumber.trim(),
-                    user,
                     register.uriImage.trim()
                 );
 
@@ -236,6 +236,7 @@ const LogIn = (props) => {
                 setIsModalVisible(true);   
             }
         }
+        setIsLoadingRegister(false);
     }
 
     return (
@@ -304,8 +305,14 @@ const LogIn = (props) => {
                             }
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity className="bg-red-500 rounded-full py-3 px-4 mb-4" onPress={() => DoSignIn()}>
-                            <Text className="text-white text-center font-semibold">{isLoadingLogIn ? "Cargando..." : "Iniciar sesión"}</Text>
+                        <TouchableOpacity 
+                            className={`rounded-full py-3 px-4 mb-4 ${isLoadingLogIn ? "bg-red-300" : "bg-red-500"}`}
+                            onPress={() => DoSignIn()}
+                            disabled={isLoadingLogIn}
+                        >
+                            <Text className="text-white text-center font-semibold">
+                                {isLoadingLogIn ? "Cargando..." : "Iniciar sesión"}
+                            </Text>
                         </TouchableOpacity>
                         <TouchableOpacity  onPress={() => { navigation.navigate('new-reg') }}>
                             <Text className="text-red-500 text-center mb-4">¿Olvidaste tu contraseña?</Text>
@@ -531,10 +538,11 @@ const LogIn = (props) => {
                         </View>
 
                         <TouchableOpacity 
-                            className="bg-red-500 rounded-full py-3 px-4 mb-4"
+                            className={`rounded-full py-3 px-4 mb-4 ${isLoadingRegister ? "bg-red-300" : "bg-red-500"}`}
                             onPress={handleSubmitRegister}
+                            disabled={isLoadingRegister}
                         >
-                            <Text className="text-white text-center font-semibold">Comienza a ayudar</Text>
+                            <Text className="text-white text-center font-semibold">{isLoadingRegister ? "Cargando..." : "Comienza a ayudar"}</Text>
                         </TouchableOpacity>
                         </>
                     )}
