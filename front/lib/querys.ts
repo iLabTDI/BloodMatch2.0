@@ -1,23 +1,45 @@
 import Tutorial from "@/components/Tutorial";
 import { supabase } from "./supabase";
+import bcrypt from "bcryptjs";
 
-export async function getDates(email, password) {
-    try {
-        const { data, error } = await supabase
-            .from("usuarios")
-            .select("*")
-            .eq("Email", email)
-            .eq("password", password);
-        if (error) {
-            console.log(error);
-        } else {
-            console.log(data);
-            return data;
-        }
-    } catch (e) {
-        console.log(e);
-    }
+// export async function getDates(email, password) {
+//     try {
+//         const { data, error } = await supabase
+//             .from("usuarios")
+//             .select("*")
+//             .eq("Email", email)
+//             .eq("password", password);
+//         if (error) {
+//             console.log(error);
+//         } else {
+//             console.log(data);
+//             return data;
+//         }
+//     } catch (e) {
+//         console.log(e);
+//     }
+// }
+
+export async function getDates(email) {
+  try {
+      const { data, error } = await supabase
+          .from("usuarios")
+          .select("*")
+          .eq("Email", email)
+          .single(); // Para obtener un solo usuario
+
+      if (error) {
+          console.log("Error al obtener datos:", error);
+          return null;
+      }
+
+      return data;
+  } catch (e) {
+      console.log("Error en getDates:", e);
+      return null;
+  }
 }
+
 
 export async function getUser(email:string){
   const {data,error }= await supabase.from("usuarios").select("*").eq("Email",email)
@@ -43,6 +65,11 @@ export async function generaldates() {
     }
 }
 
+function hashPassword(password) {
+  const salt = bcrypt.genSaltSync(10);
+  return bcrypt.hashSync(password, salt);
+}
+
 export const New_User = async (
     Email,
     firstName,
@@ -59,6 +86,7 @@ export const New_User = async (
     url
 ) => {
     try {
+      const hashedPassword = await hashPassword(password);
         const { data, error } = await supabase
             .from("usuarios")
             .insert([
@@ -74,7 +102,7 @@ export const New_User = async (
                     Situation: null,
                     State: state,
                     UserName: user,
-                    password: password,
+                    password: hashedPassword,
                     role: typeRol,
                     tutorial: false,
                     url: url,

@@ -11,10 +11,12 @@ import { useTranslation } from "react-i18next";
 const PlaceImage = require('../assets/logotipo.png');
 import { getDates } from '../lib/querys';
 import  { setGlobalData } from "../backend/querys/inserts/New_email";
+import bcrypt from "bcryptjs";
 
 import { handleSubmit,getUrl } from "../lib/querys";
 import validations from "../helper/validations.js";
 import { New_User } from "../lib/querys";
+import estadosMunicipios from "../assets/estados_municipios.json"; 
 
 const LogIn = (props) => {
 
@@ -28,8 +30,10 @@ const LogIn = (props) => {
     const [activeTab, setActiveTab] = useState('login');
     const [seePassword, setSeePassword] = useState(false);
     const [showPicker, setShowPicker] = useState(false);
+    const [isLoadingLogIn, setIsLoadingLogIn] = useState(false);
     const [isImageLoading, setIsImageLoading] = useState(false);
     const [isImageLoaded, setIsImageLoaded] = useState(false);
+    const [municipios, setMunicipios] = useState([]);  
 
     // Modal in error case
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -57,14 +61,22 @@ const LogIn = (props) => {
     });
 
     const DoSignIn = async () => {
+        setIsLoadingLogIn(true);
         try {
-           const data = await getDates(email.trim(), password.trim());
-           const usuario = data[0];
-            if (usuario && usuario.password === password) {
-                // setGlobalData('usuario', ema);
-                setGlobalData('email', email);
-                navigation.push('Home');
-              } else {
+            const usuario = await getDates(email.trim());
+    
+            if (usuario) {
+                const passwordMatch = await bcrypt.compare(password, usuario.password);
+    
+                if (passwordMatch) {
+                    setGlobalData('email', email);
+                    navigation.push('Home');
+                } else {
+                    setTitleModal("Error");
+                    setTextModal("Correo y/o contraseña incorrectos");
+                    setIsModalVisible(true);
+                }
+            } else {
                 setTitleModal("Error");
                 setTextModal("Correo y/o contraseña incorrectos");
                 setIsModalVisible(true);
@@ -74,9 +86,11 @@ const LogIn = (props) => {
             setTitleModal("Error");
             setTextModal("Error al intentar iniciar sesión");
             setIsModalVisible(true);
-            // alert.apply("error")
         }
+        setIsLoadingLogIn(false);
     };
+    
+
        
     const toggleModal = () => setIsModalVisible(!isModalVisible);
 
@@ -291,7 +305,7 @@ const LogIn = (props) => {
                             </TouchableOpacity>
                         </View>
                         <TouchableOpacity className="bg-red-500 rounded-full py-3 px-4 mb-4" onPress={() => DoSignIn()}>
-                            <Text className="text-white text-center font-semibold">Iniciar sesión</Text>
+                            <Text className="text-white text-center font-semibold">{isLoadingLogIn ? "Cargando..." : "Iniciar sesión"}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity  onPress={() => { navigation.navigate('new-reg') }}>
                             <Text className="text-red-500 text-center mb-4">¿Olvidaste tu contraseña?</Text>
@@ -363,28 +377,36 @@ const LogIn = (props) => {
                             <Text className={`text-center ${register.gender === 'male' ? 'text-white' : 'text-gray-600'}`}>Soy hombre</Text>
                             </TouchableOpacity>
                         </View>
-        
-                        <View className='flex-row justify-between'>
+
+                        <View className="flex-row justify-between">
                             <View className="bg-gray-100 rounded-full mb-4 w-[48%]">
                                 <Picker
                                     selectedValue={register.state}
-                                    onValueChange={(itemValue) => handleInputChange('state',itemValue)}
-                                    style={{color: 'gray', height: 52}}
+                                    onValueChange={(itemValue) => {
+                                        handleInputChange("state", itemValue);
+                                        setMunicipios(Array.isArray(estadosMunicipios[itemValue]) ? estadosMunicipios[itemValue] : []);
+                                        handleInputChange("municipality", ""); 
+                                    }}
+                                    style={{ color: "gray", height: 52 }}
                                 >
-                                    <Picker.Item label="Estado" value="" style={{fontSize: 15}}/>
-                                    <Picker.Item label="Jalisco" value="Jalisco" />
-                                    <Picker.Item label="Oaxaca" value="Oaxaca" />
+                                    <Picker.Item label="Estado" value="" />
+                                    {Object.keys(estadosMunicipios).map((estado) => (
+                                        <Picker.Item key={{estado}} label={estado} value={estado} />
+                                    ))}
                                 </Picker>
                             </View>
+
                             <View className="bg-gray-100 rounded-full mb-4 w-[48%]">
                                 <Picker
                                     selectedValue={register.municipality}
-                                    onValueChange={(itemValue) => handleInputChange('municipality',itemValue)}
-                                    style={{color: 'gray', height: 52 }}
+                                    onValueChange={(itemValue) => handleInputChange("municipality", itemValue)}
+                                    style={{ color: "gray", height: 52 }}
+                                    enabled={municipios.length > 0}
                                 >
-                                    <Picker.Item label="Municipio" value="" style={{fontSize: 15}}/>
-                                    <Picker.Item label="Tonala" value="Tonala" />
-                                    <Picker.Item label="Guadalajara" value="Guadalajara" />
+                                    <Picker.Item label="Municipio" value="" />
+                                    {municipios.map((municipio) => (
+                                        <Picker.Item key={{municipio}} label={municipio} value={municipio} />
+                                    ))}
                                 </Picker>
                             </View>
                         </View>
