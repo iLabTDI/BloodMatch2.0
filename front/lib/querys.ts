@@ -216,14 +216,12 @@ export async function getTutorialValue(email:any) {
     console.error("Error al consultar estadoTutorial:", error.message);
     return false;
   }
-  if(data.Tutorial===false){
+  if(data.Tutorial==="false"){
     console.log("el tuto es",data.Tutorial)
     return false
   }else{
     return true
   }
-
- 
 }
 
 
