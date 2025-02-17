@@ -101,7 +101,14 @@ export default function TabNavigator() {
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="account-outline" color={color} size={size} />
                     ),
-                    headerShown: false
+                    headerShown: true,
+                    headerStyle: {
+                        backgroundColor: "#EF4444",
+                        elevation: 0, // Quita la sombra en Android
+                        shadowOpacity: 0, // Quita la sombra en iOS
+                    },
+                    headerTintColor: "#FFFFFF",
+                    headerTitleAlign: "center",
                 }} 
             />
             <Tab.Screen
@@ -112,6 +119,14 @@ export default function TabNavigator() {
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="cog" color={color} size={size} />
                     ),
+                    headerShown: true,
+                    headerStyle: {
+                        backgroundColor: "#EF4444",
+                        elevation: 0, 
+                        shadowOpacity: 0,
+                    },
+                    headerTintColor: "#FFFFFF",
+                    headerTitleAlign: "center",
                 }} 
             />
              

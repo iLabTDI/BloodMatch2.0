@@ -24,7 +24,10 @@ import { getGlobalData, getAllGlobalData } from "../backend/querys/inserts/New_e
 import { generaldates, getTutorialValue, updateTutorialValue } from "../lib/querys";
 import Tutorial from "../components/Tutorial";
 import ModalFilters from '../components/ModalFilters'
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
+import CustomNotification from "../components/customNotification";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 interface TaskInterface {
   user: string;
@@ -53,6 +56,8 @@ function Home() {
 
   const [showModalFilter, setShowModalFilter] = useState(false);
   const pan = useState(new Animated.ValueXY())[0];
+
+  const navigation = useNavigation();
 
   useFocusEffect(
     useCallback(() => {
@@ -96,6 +101,12 @@ function Home() {
     fetchUserData();
     fetchData();
   }, []);
+
+  useEffect(() => {
+    navigation.setOptions({
+      tabBarStyle: showTutorial ? { display: "none" } : undefined,
+    });
+  }, [showTutorial]);
 
   useEffect(() => {
     socket.emit("getAllGroups");
@@ -180,6 +191,17 @@ function Home() {
     const card = matchedCard.email;
     console.log("loque agarra de la carta es", card);
     handleCreateNewRoom(card);
+
+    Toast.show({
+      type: "my_custom_toast",
+      text1: "!Hiciste Match!",
+      text2: "Se creó un chat. Dirígete a Mensajes",
+      position: "bottom",
+      props: {
+        iconClose: <AntDesign name="close" size={24} color="white" />,
+        iconHeart: <AntDesign name="heart" size={24} color="red" />,
+      },
+    });
   };
 
   const swipeLeft = () => {
@@ -396,6 +418,7 @@ function Home() {
               ? (
                 <>
                 <Card user={users[currentIndex][0]} pan={pan} panResponders={panResponders} />
+                <CustomNotification />
                 <View className="flex-row justify-between w-full mt-8 mb-4 px-2">
                   <TouchableOpacity
                     className="bg-red-500 w-16 h-16 rounded-full items-center justify-center"
