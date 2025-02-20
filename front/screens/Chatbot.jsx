@@ -1,115 +1,241 @@
-import React, { useState } from "react";
+// import { useState, useRef, useEffect } from "react";
+// import {
+//   View,
+//   Text,
+//   Image,
+//   TextInput,
+//   TouchableOpacity,
+//   ScrollView,
+//   KeyboardAvoidingView,
+//   Platform,
+// } from "react-native";
+// import { Send } from "react-native-feather";
+// import {useChatbot} from "@/hooks/useChatBot";
+
+// const initialMessages = [
+//   {
+//     id: "1",
+//     type: "bot",
+//     text: "¡Hola! Soy el asistente de BloodMatch. ¿En qué puedo ayudarte hoy?",
+//   },
+// ];
+
+// const ChatbotScreen = () => {
+//   const { response, loading, error, sendMessage } = useChatbot();
+
+//   const [messages, setMessages] = useState(initialMessages);
+//   const [inputText, setInputText] = useState("");
+//   const [isTyping, setIsTyping] = useState(false);
+//   const scrollViewRef = useRef();
+
+//   const handleSend = () => {
+//     if (inputText.trim() === "") return;
+
+//     // Agregar mensaje del usuario
+//     const userMessage = {
+//       id: String(messages.length + 1),
+//       type: "user",
+//       text: inputText.trim(),
+//     }
+
+//     setMessages((prev) => [...prev, userMessage]);
+//     setInputText("");
+//     setIsTyping(true);
+
+//     // Simular respuesta del chatbot
+//     setTimeout(() => {
+//       const botMessage = {
+//         id: String(messages.length + 2),
+//         type: "bot",
+//         text: "Gracias por tu mensaje. Estoy aquí para ayudarte con cualquier duda sobre donaciones de sangre.",
+//       }
+//       setMessages((prev) => [...prev, botMessage])
+//       setIsTyping(false)
+//     }, 2000)
+//   }
+
+//   useEffect(() => {
+//     // Scroll al último mensaje
+//     scrollViewRef.current?.scrollToEnd({ animated: true })
+//   }, [messages]);
+
+//   const renderMessage = (message) => (
+//     <View
+//       key={message.id}
+//       className={`flex-row ${message.type === "user" ? "justify-end" : "justify-start"} mb-4`}
+//     >
+//       {message.type === "bot" && (
+//         <Image source={require("../assets/logotipo.png")} className="w-8 h-8 rounded-full mr-2" />
+//       )}
+//       <View
+//         className={`px-4 py-2 rounded-2xl max-w-[80%] ${message.type === "user" ? "bg-red-500" : "bg-gray-200"}`}
+//       >
+//         <Text className={message.type === "user" ? "text-white" : "text-gray-800"}>{message.text}</Text>
+//       </View>
+//       {message.type === "user" && (
+//         <Image source={require("../images/logo.png")} className="w-8 h-8 rounded-full ml-2" />
+//       )}
+//     </View>
+//   );
+
+//   return (
+//     <View className="flex-1 bg-white">
+//       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} className="flex-1">
+//         <ScrollView ref={scrollViewRef} className="flex-1 p-4" contentContainerStyle={{ flexGrow: 1 }}>
+//           {messages.map(renderMessage)}
+//           {isTyping && (
+//             <View className="flex-row items-center mb-4">
+//               <Image source={require("../assets/logotipo.png")} className="w-8 h-8 rounded-full mr-2" />
+//               <View className="bg-gray-200 p-3 rounded-2xl">
+//                 {/* <RedLoader /> */}
+//                 <Text>Cargando...</Text>
+//               </View>
+//             </View>
+//           )}
+//         </ScrollView>
+
+//         <View className="border-t border-gray-200 p-4">
+//           <View className="flex-row items-center">
+//             <TextInput
+//               className="flex-1 bg-gray-100 rounded-full px-4 py-2 mr-2"
+//               placeholder="Escribe tu mensaje..."
+//               value={inputText}
+//               onChangeText={setInputText}
+//               multiline
+//             />
+//             <TouchableOpacity
+//               onPress={handleSend}
+//               className="bg-red-500 w-10 h-10 rounded-full items-center justify-center"
+//             >
+//               <Send stroke="white" width={20} height={20} />
+//             </TouchableOpacity>
+//           </View>
+//         </View>
+//       </KeyboardAvoidingView>
+//     </View>
+//   );
+// }
+
+// export default ChatbotScreen;
+
+import { useState, useRef, useEffect } from "react";
 import {
   View,
-  Platform,
-  KeyboardAvoidingView,
-  StyleSheet,
-  TouchableOpacity,
   Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
-import { GiftedChat } from "react-native-gifted-chat";
-import handleGenericAPIRequest from "./api";
+import { Send } from "react-native-feather";
+import { useChatbot } from "@/hooks/useChatBot";
 
-const Chat = () => {
-  const [messages, setMessages] = useState([]);
+const initialMessages = [
+  {
+    id: String(Date.now()), // ID único
+    type: "bot",
+    text: "¡Hola! Soy el asistente de BloodMatch. ¿En qué puedo ayudarte hoy?",
+  },
+];
 
-  const fetchData = async (message) => {
-    try {
-      const answer = await handleGenericAPIRequest(message);
-      console.log("Respuesta del bot: " + answer);
+const ChatbotScreen = () => {
+  const { response, loading, error, sendMessage } = useChatbot();
+  const [messages, setMessages] = useState(initialMessages);
+  const [inputText, setInputText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const scrollViewRef = useRef();
 
+  const handleSend = async () => {
+    if (inputText.trim() === "") return;
+
+    // Mensaje del usuario
+    const userMessage = {
+      id: String(Date.now()), // ID único
+      type: "user",
+      text: inputText.trim(),
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInputText("");
+    setIsTyping(true);
+
+    // Enviar mensaje al chatbot
+    await sendMessage(inputText.trim());
+    console.log("ReSPONSEEEEEEEEEEEEEEEE: ",response);
+
+    // Agregar respuesta del chatbot cuando esté lista
+    // setTimeout(() => {
       const botMessage = {
-        _id: Math.round(Math.random() * 1000000),
-        text: answer,
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "Bot",
-          avatar: require("../assets/logotipo.png"),
-        },
+        id: String(Date.now()), // ID único
+        type: "bot",
+        text: response ? response : "Lo siento, no entendí tu mensaje.",
       };
-
-      setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, [botMessage])
-      );
-    } catch (e) {
-      console.error("Error al procesar el mensaje: " + e);
-    }
+      setMessages((prev) => [...prev, botMessage]);
+      setIsTyping(false);
+    // }, 2000);
   };
 
-  const onSend = (newMessages = []) => {
-    const messageText = newMessages[0].text;
-    console.log("Mensaje enviado: " + messageText);
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, newMessages)
-    );
+  useEffect(() => {
+    // Scroll al último mensaje
+    scrollViewRef.current?.scrollToEnd({ animated: true });
+  }, [messages]);
 
-    fetchData(messageText);
-  };
-
-  const renderSend = (props) => {
-    return (
-      <TouchableOpacity
-        style={styles.sendButton}
-        onPress={() => {
-          if (props.text && props.onSend) {
-            props.onSend({ text: props.text.trim() }, true);
-          }
-        }}
+  const renderMessage = (message) => (
+    <View
+      key={message.id}
+      className={`flex-row ${message.type === "user" ? "justify-end" : "justify-start"} mb-4`}
+    >
+      {message.type === "bot" && (
+        <Image source={require("../assets/logotipo.png")} className="w-8 h-8 rounded-full mr-2" />
+      )}
+      <View
+        className={`px-4 py-2 rounded-2xl max-w-[80%] ${message.type === "user" ? "bg-red-500" : "bg-gray-200"}`}
       >
-        <Text style={styles.sendText}>Enviar</Text>
-      </TouchableOpacity>
-    );
-  };
+        <Text className={message.type === "user" ? "text-white" : "text-gray-800"}>{message.text}</Text>
+      </View>
+      {message.type === "user" && (
+        <Image source={require("../images/logo.png")} className="w-8 h-8 rounded-full ml-2" />
+      )}
+    </View>
+  );
 
   return (
-    <View style={styles.background}>
-      <View style={styles.container}>
-        <KeyboardAvoidingView
-          style={styles.flex}
-          behavior={Platform.OS === "ios" ? "padding" : null}
-          keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
-        >
-          <GiftedChat
-            messages={messages}
-            onSend={onSend}
-            user={{
-              _id: 1,
-            }}
-            renderSend={renderSend}
-            alwaysShowSend
-            scrollToBottom
-          />
-        </KeyboardAvoidingView>
-      </View>
+    <View className="flex-1 bg-white">
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} className="flex-1">
+        <ScrollView ref={scrollViewRef} className="flex-1 p-4" contentContainerStyle={{ flexGrow: 1 }}>
+          {messages.map(renderMessage)}
+          {isTyping && (
+            <View className="flex-row items-center mb-4">
+              <Image source={require("../assets/logotipo.png")} className="w-8 h-8 rounded-full mr-2" />
+              <View className="bg-gray-200 p-3 rounded-2xl">
+                <Text>Cargando...</Text>
+              </View>
+            </View>
+          )}
+        </ScrollView>
+
+        <View className="border-t border-gray-200 p-4">
+          <View className="flex-row items-center">
+            <TextInput
+              className="flex-1 bg-gray-100 rounded-full px-4 py-2 mr-2"
+              placeholder="Escribe tu mensaje..."
+              value={inputText}
+              onChangeText={setInputText}
+              multiline
+            />
+            <TouchableOpacity
+              onPress={handleSend}
+              className="bg-red-500 w-10 h-10 rounded-full items-center justify-center"
+            >
+              <Send stroke="white" width={20} height={20} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    backgroundColor: "#ADD8E6",  // Azul bajito
-  },
-  container: {
-    flex: 1,
-  },
-  flex: {
-    flex: 1,
-  },
-  sendButton: {
-    backgroundColor: "#703efe",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 25,
-    alignItems: "center",
-    justifyContent: "center",
-    marginHorizontal: 8,
-  },
-  sendText: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
-});
-
-export default Chat;
+export default ChatbotScreen;

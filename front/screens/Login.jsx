@@ -304,7 +304,7 @@ const LogIn = (props) => {
                             disabled={isLoadingLogIn}
                         >
                             <Text className="text-white text-center font-semibold">
-                                {isLoadingLogIn ? t("loading") : t("login")}
+                                {isLoadingLogIn ? t("loading") : t("log_in")}
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity  onPress={() => { navigation.navigate('new-reg') }}>

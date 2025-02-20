@@ -48,12 +48,14 @@
       "router": {
         "origin": false
       },
-      "supabaseUrl": "https://abgspujwyujtccknqenr.supabase.co",
-      "supabaseAnonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFiZ3NwdWp3eXVqdGNja25xZW5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTA0MzU5NzgsImV4cCI6MjAyNjAxMTk3OH0.NOjPxUVPBYztUlLCl6CBYg9vIrl9I58zD6bolUzqYfs",
+      "supabaseUrl": "https://bzkasdpzbcjajoplfxyw.supabase.co",
+      "supabaseAnonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6a2FzZHB6YmNqYWpvcGxmeHl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzkyODA1OTAsImV4cCI6MjA1NDg1NjU5MH0.42Oxtt82KlvOBKiDJfTHqsMB7BhCGcypp_rp08H63-s",
       "google": "AIzaSyAeuINf12oVscVv8i1koH0_3QQkbd36_eo",
       "eas": {
         "projectId": "b2a573a2-8380-4092-bc56-8350443770a8"
-      }
+      },
+      "CHATBOT_API_URL": "https://api.stack-ai.com/inference/v0/run/cd977e32-3fec-4f93-a961-81a1002e492a/67b4c7bd43ffc313428d3b5d",
+      "CHAtBOT_TOKEN": "Bearer 714aba56-69e4-4fc7-84ca-3dd96dbbf50a"
     }
   }
 }

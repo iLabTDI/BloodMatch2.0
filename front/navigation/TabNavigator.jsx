@@ -53,7 +53,14 @@ export default function TabNavigator() {
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="robot-love" color={color} size={size} />
                     ),
-                    headerShown: false
+                    headerShown: true,
+                    headerStyle: {
+                        backgroundColor: "#EF4444",
+                        elevation: 0, 
+                        shadowOpacity: 0,
+                    },
+                    headerTintColor: "#FFFFFF",
+                    headerTitleAlign: "center",
                 }} 
             />
             {/* mapa viejito no funciona cuando se buldea la aplicacion
