@@ -10,15 +10,19 @@ import {supabase}from '../lib/supabase'
 import { handleSubmit } from "../lib/querys";
 import { getGlobalData } from '../backend/querys/inserts/New_email';
 
+import RedLoader from "@/components/RedLoader";
+
 const Customer = ({  }) => {
   const theme = useContext(themeContext);
   const { t } = useTranslation();
   const [user, setUser] = useState(null);
-  const [image, setImage] = useState(require('../images/loader.gif'));
+  const [image, setImage] = useState();
+
+  const [isLoading, setIsLoading] = useState(false);
 
 // function where i  open the gallery
   const pickImage = async () => {
-    setImage(require('../images/loader.gif'));
+    // setImage();
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -68,6 +72,7 @@ const Customer = ({  }) => {
   useEffect(() => {
 
     const fetchData = async () => {
+      setIsLoading(true);
       const email = getGlobalData('email');
       console.log(" lo que imprime es",email);
       const { data, error } = await supabase
@@ -82,18 +87,17 @@ const Customer = ({  }) => {
         if (data && data.length > 0) {
           
           setUser(data[0]);
-         const usuarioEncontrado = data[0];
-         const urlEncontrado = usuarioEncontrado.Url;
-         console.log("el url que se encontro es=",urlEncontrado);
-
-         setImage({ uri: urlEncontrado}); //  in this part  i get the url from the the image
+          const usuarioEncontrado = data[0];
+          const urlEncontrado = usuarioEncontrado.Url;
+          console.log("el url que se encontro es=",urlEncontrado);
+          setImage({ uri: urlEncontrado}); //  in this part  i get the url from the the image
         } else {
           console.log(data)
           console.error('No user data fousnd');
         }
       }
+      setIsLoading(false);
     };
-  
     fetchData();
   }, []);
   
@@ -112,39 +116,43 @@ const Customer = ({  }) => {
   return (
     <SafeAreaView className="flex-1 bg-gray-100">
       <StatusBar backgroundColor={"#fff"} style="dark"/>
+
         <View className="items-center pt-8 pb-6 bg-red-500">
-          <View className="relative border-4 border-white rounded-full">
+          {isLoading 
+          ? <RedLoader/>
+          : (<View className="relative border-4 border-white rounded-full">
             <Image source={image} className="w-32 h-32 rounded-full border-4 border-white" />
             <TouchableOpacity
               onPress={pickImage}
               className="absolute bottom-0 right-0 bg-white p-2 rounded-full shadow-md"
-            >
+              >
               <Camera stroke="#FF4136" width={20} height={20} />
             </TouchableOpacity>
-          </View>
-          <Text className="mt-4 text-2xl font-bold text-white">{user?.FirstName} {user?.LastName}</Text>
+          </View>)
+          }
+          <Text className="mt-8 text-2xl font-bold text-white">{isLoading ? "..." : (`${user?.FirstName} ${user?.LastName}`)}</Text> 
         </View>
 
         <View className="px-4 py-6">
           <ProfileItem 
             icon={Mail} 
             label="Correo" 
-            value={user?.Email}
+            value={isLoading ? "..." : user?.Email}
           />
           <ProfileItem 
             icon={User} 
             label="Género" 
-            value={(user?.Gender === "male") ? "Masculino" : "Femenino"}
+            value={isLoading ? "..." : ((user?.Gender === "male") ? "Masculino" : "Femenino")} 
           />
           <ProfileItem 
             icon={Droplet} 
             label="Tipo de sangre" 
-            value={user?.Blood_Type} 
+            value={isLoading ? "..." : user?.Blood_Type} 
           />
           <ProfileItem 
             icon={MapPin} 
             label="Ubicación" 
-            value={`${user?.City}, ${user?.State}`} 
+            value={isLoading ? "..." : (`${user?.City}, ${user?.State}`)} 
           />
         </View>
         {/* <TouchableOpacity className="mx-4 bg-red-500 py-3 px-6 rounded-full items-center">

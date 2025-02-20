@@ -38,7 +38,7 @@ export default function TabNavigator() {
                 name = 'Home_Tab'
                 component = { Home }
                 options={{ 
-                    tabBarLabel: 'Inicio',
+                    tabBarLabel: t("home"),
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="home" color={color} size={size} />
                     ),
@@ -49,7 +49,7 @@ export default function TabNavigator() {
                 name = 'Chatbot'
                 component = { Chatbot }
                 options={{ 
-                    tabBarLabel: 'Chatbot',
+                    tabBarLabel: t("chat_bot"),
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="robot-love" color={color} size={size} />
                     ),
@@ -74,7 +74,7 @@ export default function TabNavigator() {
                 name = 'Location'
                 component = { Location }
                 options={{ 
-                    tabBarLabel: 'Mapa',
+                    tabBarLabel: t("map"),
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="map-marker-radius" color={color} size={size} />
                     ),
@@ -84,7 +84,7 @@ export default function TabNavigator() {
                 name = 'Messenger'
                 component = { Messenger }
                 options={{ 
-                    tabBarLabel: 'Mensajes',
+                    tabBarLabel: t("messenger"),
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="facebook-messenger" color={color} size={size} />
                     ),
@@ -94,10 +94,10 @@ export default function TabNavigator() {
                 }} 
             />
             <Tab.Screen
-                name = {t("profile")}
+                name = "profile"
                 component = { Customer }
                 options={{ 
-                    tabBarLabel: 'Perfil',
+                    tabBarLabel: t("profile"),
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="account-outline" color={color} size={size} />
                     ),
@@ -112,10 +112,10 @@ export default function TabNavigator() {
                 }} 
             />
             <Tab.Screen
-                name = {t("confi")}
+                name = "confi"
                 component = { Setting }
                 options={{  
-                    tabBarLabel: 'Ajustes',
+                    tabBarLabel: t("settings"),
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="cog" color={color} size={size} />
                     ),

@@ -41,7 +41,7 @@ export default function AuthNavigator() {
       />
       <Stack.Screen name="Messenger" component={Messenger} />
       <Stack.Screen
-        name={t("profile")}
+        name="profile"
         component={Customers}
         //options={{ headerShown: false}}
       />
@@ -51,7 +51,7 @@ export default function AuthNavigator() {
         //options={{ headerShown: false}}
       />
       <Stack.Screen
-        name={t("themesel")}
+        name="themesel"
         component={Tema}
         //options={{ headerShown: false}}
       />
@@ -61,7 +61,7 @@ export default function AuthNavigator() {
         //options={{ headerShown: false}}
       />
       <Stack.Screen
-        name={t("termycondi")}
+        name="termycondi"
         component={Termycon}
         //options={{ headerShown: false}}
       />

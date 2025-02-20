@@ -1,7 +1,10 @@
 import React from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { useTranslation } from "react-i18next";
 
 const Modal = ({ isVisible, onClose, children }) => {
+    const { t } = useTranslation();
+
     if (!isVisible) return null;
 
     return (
@@ -19,7 +22,7 @@ const Modal = ({ isVisible, onClose, children }) => {
                         onPress={onClose}
                         className="mt-4 bg-red-500 py-2 px-4 rounded-full self-end"
                     >
-                        <Text className="text-white font-bold">Cerrar</Text>
+                        <Text className="text-white font-bold">{t("close")}</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

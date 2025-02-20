@@ -73,19 +73,19 @@ const LogIn = (props) => {
                     setGlobalData('email', email);
                     navigation.push('Home');
                 } else {
-                    setTitleModal("Error");
-                    setTextModal("Correo y/o contraseña incorrectos");
+                    setTitleModal(t("error"));
+                    setTextModal(t("error_email_pass"));
                     setIsModalVisible(true);
                 }
             } else {
-                setTitleModal("Error");
-                setTextModal("Correo y/o contraseña incorrectos");
+                setTitleModal(t("error"));
+                setTextModal(t("error_email_pass"));
                 setIsModalVisible(true);
             }
         } catch (error) {
             console.error("Error en el inicio de sesión:", error);
-            setTitleModal("Error");
-            setTextModal("Error al intentar iniciar sesión");
+            setTitleModal(t("error"));
+            setTextModal(t("error_login"));
             setIsModalVisible(true);
         }
         setIsLoadingLogIn(false);
@@ -144,8 +144,8 @@ const LogIn = (props) => {
                 if (imageUrl.length > 0) {
                     setIsImageLoaded(true);
                 } else {
-                    setTitleModal("Error");
-                    setTextModal("No se puede guardar la imagen!");
+                    setTitleModal(t("error"));
+                    setTextModal(t("error_image"));
                     setIsModalVisible(true);
                 }
             }
@@ -157,15 +157,8 @@ const LogIn = (props) => {
     };
 
     const handleInfoPassword = () => {
-        setTitleModal("Caracteristicas necesarias de la contraseña: ");
-        setTextModal(`
-        - Debe tener al menos 8 caracteres
-        - Debe incluir al menos una letra mayúscula
-        - Debe incluir al menos una letra minúscula
-        - Debe tener al menos un número 
-        - Debe tener al menos un símbolo especial
-        - No debe tener espacios
-        `);
+        setTitleModal(t("characteristics_pass_title"));
+        setTextModal(t("characteristics_pass"));
         setIsModalVisible(true);
     }
 
@@ -187,7 +180,7 @@ const LogIn = (props) => {
         const firstError = validateFields.find(el => el.message);
 
         if (firstError) {
-            setTitleModal("Error");
+            setTitleModal(t("error"));
             setTextModal(firstError.message);
             setIsModalVisible(true);
         } else {
@@ -208,8 +201,8 @@ const LogIn = (props) => {
                     register.uriImage.trim()
                 );
 
-                setTitleModal("Éxito");
-                setTextModal("El formulario se envió correctamente");
+                setTitleModal(t("success"));
+                setTextModal(t("success_form_submit"));
                 setIsModalVisible(true); 
                 setRegister({
                     firstName: "",
@@ -231,8 +224,8 @@ const LogIn = (props) => {
                 setIsImageLoaded(false);
                 setActiveTab('login');
             } catch (error) {
-                setTitleModal("Error");
-                setTextModal("Error al intentar registrar nuevo usuario, por favor intentalo mas tarde");
+                setTitleModal(t("error"));
+                setTextModal(t("error_form_submit"));
                 setIsModalVisible(true);   
             }
         }
@@ -259,7 +252,7 @@ const LogIn = (props) => {
                         onPress={() => setActiveTab('login')}
                     >
                         <Text className={`text-center font-semibold ${activeTab === 'login' ? 'text-white' : 'text-gray-600'}`}>
-                            {t("log-in")}
+                            {t("log_in")}
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -267,7 +260,7 @@ const LogIn = (props) => {
                         onPress={() => setActiveTab('register')}
                     >
                         <Text className={`text-center font-semibold ${activeTab === 'register' ? 'text-white' : 'text-gray-600'}`}>
-                            {t("rgst")}
+                            {t("register")}
                         </Text>
                     </TouchableOpacity>
                     </View>
@@ -278,10 +271,10 @@ const LogIn = (props) => {
                     {activeTab === 'login' ? (
                         <>
                         <Text className="text-2xl font-bold text-gray-800 mb-6 text-center">
-                            ¡Conéctate para salvar vidas!
+                            {t("title_login")}
                         </Text>
                         <TextInput
-                            placeholder="Correo"
+                            placeholder={t("email")}
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4"
                             keyboardType="email-address"
                             value={email}
@@ -289,7 +282,7 @@ const LogIn = (props) => {
                         />
                         <View className='flex-row max-w-full items-center bg-gray-100 rounded-full px-4 mb-6'>
                             <TextInput
-                                placeholder="Contraseña"
+                                placeholder={t("password")}
                                 className=" w-11/12 py-3"
                                 secureTextEntry={!seePassword}
                                 value={password}
@@ -311,11 +304,11 @@ const LogIn = (props) => {
                             disabled={isLoadingLogIn}
                         >
                             <Text className="text-white text-center font-semibold">
-                                {isLoadingLogIn ? "Cargando..." : "Iniciar sesión"}
+                                {isLoadingLogIn ? t("loading") : t("login")}
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity  onPress={() => { navigation.navigate('new-reg') }}>
-                            <Text className="text-red-500 text-center mb-4">¿Olvidaste tu contraseña?</Text>
+                            <Text className="text-red-500 text-center mb-4">{t("forgot_password")}</Text>
                         </TouchableOpacity>
                         <View className="flex-row justify-center space-x-4 mb-4">
                             <SocialIcon type="google" />
@@ -327,18 +320,18 @@ const LogIn = (props) => {
                         // Register
                         <>
                         <Text className="text-2xl font-bold text-gray-800 mb-6 text-center">
-                            Únete a la comunidad BloodMatch
+                            {t("title_register")}
                         </Text>
                         
                         <TextInput
-                            placeholder="Nombre(s)"
+                            placeholder={t("name")}
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4"
                             value={register.firstName}
                             onChangeText={(value) => handleInputChange("firstName", value)}
                         />
 
                         <TextInput
-                            placeholder="Apellidos"
+                            placeholder={t("last_name")}
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4"
                             value={register.lastName}
                             onChangeText={(value) => handleInputChange("lastName", value)}
@@ -357,7 +350,7 @@ const LogIn = (props) => {
                             <Text className="text-black/60">
                                 {register.birthDate
                                 ? register.birthDate.toLocaleDateString("es-ES", { year: "numeric", month: "long", day: "numeric" })
-                                : "Fecha de nacimiento"}
+                                : t("dob")}
                             </Text>
                             <FontAwesome5 name="calendar-alt" size={24} color="gray"/>
                             {showPicker &&
@@ -375,13 +368,13 @@ const LogIn = (props) => {
                                 className={`flex-1 py-2 px-4 rounded-full mr-2 ${register.gender === 'female' ? 'bg-red-500' : 'bg-gray-200'}`}
                                 onPress={() => handleInputChange('gender', 'female')}
                             >
-                            <Text className={`text-center ${register.gender === 'female' ? 'text-white' : 'text-gray-600'}`}>Soy mujer</Text>
+                            <Text className={`text-center ${register.gender === 'female' ? 'text-white' : 'text-gray-600'}`}>{t("i_am_a_woman")}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 className={`flex-1 py-2 px-4 rounded-full ml-2 ${register.gender === 'male' ? 'bg-red-500' : 'bg-gray-200'}`}
                                 onPress={() => handleInputChange('gender','male')}
                             >
-                            <Text className={`text-center ${register.gender === 'male' ? 'text-white' : 'text-gray-600'}`}>Soy hombre</Text>
+                            <Text className={`text-center ${register.gender === 'male' ? 'text-white' : 'text-gray-600'}`}>{t("i_am_a_man")}</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -396,7 +389,7 @@ const LogIn = (props) => {
                                     }}
                                     style={{ color: "gray", height: 52 }}
                                 >
-                                    <Picker.Item label="Estado" value="" />
+                                    <Picker.Item label={t("state")} value="" />
                                     {Object.keys(estadosMunicipios).map((estado) => (
                                         <Picker.Item key={{estado}} label={estado} value={estado} />
                                     ))}
@@ -410,7 +403,7 @@ const LogIn = (props) => {
                                     style={{ color: "gray", height: 52 }}
                                     enabled={municipios.length > 0}
                                 >
-                                    <Picker.Item label="Municipio" value="" />
+                                    <Picker.Item label={t("municipality")} value="" />
                                     {municipios.map((municipio) => (
                                         <Picker.Item key={{municipio}} label={municipio} value={municipio} />
                                     ))}
@@ -419,14 +412,14 @@ const LogIn = (props) => {
                         </View>
                         
                         <TextInput
-                            placeholder="Numero telefonico"
+                            placeholder={t("phone_number")}
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4"
                             value={register.phoneNumber}
                             onChangeText={(value) => handleInputChange('phoneNumber',value)}
                         />
         
                         <TextInput
-                            placeholder="Correo electrónico"
+                            placeholder={t("email")}
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4"
                             keyboardType="email-address"
                             value={register.email}
@@ -435,7 +428,7 @@ const LogIn = (props) => {
 
                         <View className='bg-gray-100 rounded-full px-4 mb-4 flex-row justify-between items-center'>
                             <TextInput
-                                placeholder="Contraseña"
+                                placeholder={t("password")}
                                 className="w-3/4"
                                 secureTextEntry
                                 value={register.password}
@@ -447,7 +440,7 @@ const LogIn = (props) => {
                         </View>
 
                         <TextInput
-                            placeholder="Confirmar contraseña"
+                            placeholder={t("confirm_password")}
                             className="bg-gray-100 rounded-full py-3 px-4 mb-4"
                             secureTextEntry
                             value={register.passwordConfirm}
@@ -459,13 +452,13 @@ const LogIn = (props) => {
                                 className={`flex-1 py-2 px-4 rounded-full mr-2 ${register.bloodTypeRol === 'donor' ? 'bg-red-500' : 'bg-gray-200'}`}
                                 onPress={() => handleInputChange('bloodTypeRol', 'donor')}
                             >
-                            <Text className={`text-center ${register.bloodTypeRol === 'donor' ? 'text-white' : 'text-gray-600'}`}>Donador</Text>
+                            <Text className={`text-center ${register.bloodTypeRol === 'donor' ? 'text-white' : 'text-gray-600'}`}>{t("donor")}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 className={`flex-1 py-2 px-4 rounded-full ml-2 ${register.bloodTypeRol === 'recipient' ? 'bg-red-500' : 'bg-gray-200'}`}
                                 onPress={() => handleInputChange('bloodTypeRol', 'recipient')}	
                             >
-                            <Text className={`text-center ${register.bloodTypeRol === 'recipient' ? 'text-white' : 'text-gray-600'}`}>Receptor</Text>
+                            <Text className={`text-center ${register.bloodTypeRol === 'recipient' ? 'text-white' : 'text-gray-600'}`}>{t("recipient")}</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -475,7 +468,7 @@ const LogIn = (props) => {
                                 onValueChange={(itemValue) => handleInputChange('bloodType',itemValue)}
                                 style={{color: 'gray', height: 52 }}
                             >
-                                <Picker.Item label="Grupo sanguíneo" value="" style={{fontSize: 15}}/>
+                                <Picker.Item label={t("blood_type")} value="" style={{fontSize: 15}}/>
                                 <Picker.Item label="A+" value="A+" />
                                 <Picker.Item label="A-" value="A-" />
                                 <Picker.Item label="B+" value="B+" />
@@ -493,8 +486,8 @@ const LogIn = (props) => {
                         >
                             <Text className="text-black/60">{
                                 isImageLoaded 
-                                ? "Imagen cargada"
-                                : "Imagen de perfil"
+                                ? t("profile_image_success")
+                                : t("profile_image")
                             }</Text>
                             <FontAwesome5 name="upload" size={24} color="gray" />
                         </TouchableOpacity>
@@ -525,14 +518,14 @@ const LogIn = (props) => {
                             </TouchableOpacity>
 
                             <Text className="text-gray-600 h-full">
-                                Acepto los
+                                {t("accept_the")}
                             </Text>
                             <TouchableOpacity 
-                                onPress={() => navigation.push(t("termycondi"))}
+                                onPress={() => navigation.push("termycondi")}
                                 className='ml-1 h-full'
                             > 
                                 <Text className="text-red-500">
-                                    términos y condiciones
+                                    {t("terms")}
                                 </Text>
                             </TouchableOpacity>
                         </View>
@@ -542,7 +535,7 @@ const LogIn = (props) => {
                             onPress={handleSubmitRegister}
                             disabled={isLoadingRegister}
                         >
-                            <Text className="text-white text-center font-semibold">{isLoadingRegister ? "Cargando..." : "Comienza a ayudar"}</Text>
+                            <Text className="text-white text-center font-semibold">{isLoadingRegister ? t("loading") : t("start_helping")}</Text>
                         </TouchableOpacity>
                         </>
                     )}
@@ -550,7 +543,7 @@ const LogIn = (props) => {
                 </View>
         
                 <Text className="text-center text-gray-600 mt-6">
-                    Unirte a BloodMatch es un paso hacia salvar vidas.
+                    {t("footer_login")}
                 </Text>
                 </View>
 

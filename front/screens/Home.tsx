@@ -17,7 +17,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styled } from 'nativewind';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import { Heart, X} from 'react-native-feather';
+import { Heart, Loader, X} from 'react-native-feather';
 import Constants from 'expo-constants';
 import { socket } from "../util/connectionChat";
 import { getGlobalData, getAllGlobalData } from "../backend/querys/inserts/New_email";
@@ -25,9 +25,11 @@ import { generaldates, getTutorialValue, updateTutorialValue } from "../lib/quer
 import Tutorial from "../components/Tutorial";
 import ModalFilters from '../components/ModalFilters'
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 import Toast from "react-native-toast-message";
 import CustomNotification from "../components/customNotification";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import RedLoader from "../components/RedLoader";
 
 interface TaskInterface {
   user: string;
@@ -54,20 +56,23 @@ function Home() {
   const [users, setUsers] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [showModalFilter, setShowModalFilter] = useState(false);
   const pan = useState(new Animated.ValueXY())[0];
 
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
         Alert.alert(
-          "Salir de la aplicación",
-          "¿Estás seguro de que quieres salir?",
+          t("exit_app"),
+          t("exit_app_confirm"),
           [
-            { text: "Cancelar", style: "cancel" },
-            { text: "Salir", onPress: () => BackHandler.exitApp() }
+            { text: t("cancel"), style: "cancel" },
+            { text: t("exit"), onPress: () => BackHandler.exitApp() }
           ]
         );
         return true; 
@@ -104,7 +109,7 @@ function Home() {
 
   useEffect(() => {
     navigation.setOptions({
-      tabBarStyle: showTutorial ? { display: "none" } : undefined,
+      tabBarStyle: showTutorial ? { height: 0 } : { height: 60 }
     });
   }, [showTutorial]);
 
@@ -134,6 +139,7 @@ function Home() {
   };
 
   const getDatabase = async () => {
+    setIsLoading(true);
     try {
       const data = await generaldates();
       const list = [];
@@ -178,11 +184,12 @@ function Home() {
           list.push(dates);
         }
       }
-
+      setIsLoading(false);
       return list;
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   };
 
   const swipeRight = (cardIndex) => {
@@ -194,8 +201,8 @@ function Home() {
 
     Toast.show({
       type: "my_custom_toast",
-      text1: "!Hiciste Match!",
-      text2: "Se creó un chat. Dirígete a Mensajes",
+      text1: t("made_a_match"),
+      text2: t("chat_created"),
       position: "bottom",
       props: {
         iconClose: <AntDesign name="close" size={24} color="white" />,
@@ -204,10 +211,22 @@ function Home() {
     });
   };
 
+  // const swipeLeft = () => {
+  //   console.log("Deslizamiento hacia la izquierda detectado");
+  //   setCurrentIndex((prevIndex) => prevIndex + 1);
+  // };
+
   const swipeLeft = () => {
     console.log("Deslizamiento hacia la izquierda detectado");
-    setCurrentIndex((prevIndex) => prevIndex + 1);
+  
+    Animated.spring(pan, {
+      toValue: { x: -SCREEN_WIDTH - 100, y: 0 },
+      useNativeDriver: false,
+    }).start(() => {
+      pan.setValue({ x: 0, y: 0 });
+    });
   };
+  
 
   const renderCard = (task: TaskInterface) => {
     if (!task) {
@@ -231,7 +250,7 @@ function Home() {
     if (!user) {
       // return null;
       return (<View className="p-4">
-        <Text className="text-xl font-bold">Sin resultados por mostrar</Text>
+        <Text className="text-xl font-bold">{t("no_results")}</Text>
       </View>)
     }
   
@@ -249,7 +268,7 @@ function Home() {
           <Text className="text-lg font-semibold text-red-500">{user.sangre}</Text>
           <Text className="text-sm text-gray-600">{user.municipio}, {user.estado}</Text>
           <View className="mt-2 bg-green-500 rounded-full px-3 py-1 self-start">
-            <Text className="text-white font-semibold">{user.rol === 'donor' ? 'Donador' : 'Receptor'}</Text>
+            <Text className="text-white font-semibold">{user.rol === 'donor' ? t("donor") : t("recipient")}</Text>
           </View>
         </View>
       </AnimatedView>
@@ -329,70 +348,6 @@ function Home() {
     return <Tutorial onClose={onClose} />;
   } else {
     return (
-      // <LinearGradient
-      //   colors={["white", theme.background]}
-      //   style={styles.container}
-      // >
-      //   <StatusBar style="auto" />
-      //   <Text style={styles.title}>Ayuda a: </Text>
-      //   <DeckSwiper
-      //     ref={swiperRef}
-      //     cards={tasks}
-      //     renderCard={renderCard}
-      //     onSwipedRight={(cardIndex) => swipeRight(cardIndex)}
-      //     onSwipedLeft={swipeLeft}
-      //     backgroundColor="transparent"
-      //     stackSize={2}
-      //     stackSeparation={15}
-      //     animateOverlayLabelsOpacity
-      //     animateCardOpacity
-      //     disableBottomSwipe
-      //     disableTopSwipe
-      //     infinite
-      //     overlayLabels={{
-      //       left: {
-      //         element: (
-      //           <Image
-      //             source={require("../images/next.png")}
-      //             style={styles.overlayImage}
-      //           />
-      //         ),
-      //         style: {
-      //           wrapper: {
-      //             flexDirection: "column",
-      //             alignItems: "flex-end",
-      //             justifyContent: "flex-start",
-      //             marginTop: 0,
-      //             marginLeft: -25,
-      //           },
-      //         },
-      //       },
-      //       right: {
-      //         element: (
-      //           <Image
-      //             source={require("../images/donate.png")}
-      //             style={styles.overlayImage}
-      //           />
-      //         ),
-      //         style: {
-      //           label: {
-      //             backgroundColor: "blue",
-      //             color: "white",
-      //             fontSize: 24,
-      //           },
-      //           wrapper: {
-      //             flexDirection: "column",
-      //             alignItems: "flex-start",
-      //             justifyContent: "flex-start",
-      //             marginTop: 0,
-      //             marginLeft: 25,
-      //           },
-      //         },
-      //       },
-      //     }}
-      //   />
-      // </LinearGradient>
-
       <SafeAreaView
         // behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1 bg-gray-100"
@@ -404,7 +359,7 @@ function Home() {
               className="flex-1 ml-2 text-base"
               onPress={() => setShowModalFilter(true)}
             >
-              <Text className="text-[#9CA3AF]">Buscar donantes o receptores según ...</Text>
+              <Text className="text-[#9CA3AF]">{t("search_by")}</Text>
             </TouchableOpacity> 
             <FontAwesome5 name="sliders-h" size={24} color="black" />
           </View>
@@ -414,7 +369,8 @@ function Home() {
           keyboardShouldPersistTaps="handled"
         >
           <View className="flex-1 items-center justify-center">
-            {users[currentIndex] 
+            {isLoading ? <RedLoader/> : 
+            (users[currentIndex] 
               ? (
                 <>
                 <Card user={users[currentIndex][0]} pan={pan} panResponders={panResponders} />
@@ -435,7 +391,7 @@ function Home() {
                 </View>
                 </>
                 )
-              : <Card user={null} pan={pan} panResponders={panResponders} />
+              : <Card user={null} pan={pan} panResponders={panResponders} />)
             }
           </View>
         </ScrollView>

@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { Picker } from '@react-native-picker/picker';
+import { useTranslation } from "react-i18next";
 
 const ModalFilters = ({onClose}) => {
     const [filterCategory, setFilterCategory] = useState(null);
     const [filter, setFilter] = useState("");
+
+    const { t } = useTranslation();
 
     return (
         <View className="absolute top-0 left-0 right-0 bottom-0 bg-black/50">
@@ -16,22 +19,22 @@ const ModalFilters = ({onClose}) => {
                 }}
             >
                 <View className="bg-white rounded-lg p-6 w-5/6 max-w-sm">
-                    <Text className="font-bold text-2xl mb-4">Buscar por:</Text>
+                    <Text className="font-bold text-2xl mb-4">{t("search")}</Text>
 
                     <Picker
-                        selectedValue={"Selecciona una categoría"}
+                        selectedValue={t("select_a_category")}
                         onValueChange={(itemValue) => setFilterCategory(itemValue)}
                     >
-                        <Picker.Item label="Selecciona una categoría" value="" />
-                        <Picker.Item label="Grupo sanguíneo" value="Grupo sanguíneo" />
-                        <Picker.Item label="Sexo" value="Sexo" />
-                        <Picker.Item label="Edad" value="Edad" />
-                        <Picker.Item label="Mi municipio" value="Mi municipio" />
-                        <Picker.Item label="Mi estado" value="Mi estado" />
+                        <Picker.Item label={t("select_a_category")} value="" />
+                        <Picker.Item label={t("blood_type")} value="blood_type" />
+                        <Picker.Item label={t("gender")} value="gender" />
+                        <Picker.Item label={t("age")} value="age" />
+                        <Picker.Item label={t("my_municipality")} value="my_municipality" />
+                        <Picker.Item label={t("my_state")} value="my_state" />
                     </Picker>
 
                     {
-                        filterCategory === "Grupo sanguíneo" ? (
+                        filterCategory === "blood_type" ? (
                             <Picker
                                 selectedValue={"A+"}
                                 onValueChange={(itemValue) => setFilter(itemValue)}
@@ -46,16 +49,16 @@ const ModalFilters = ({onClose}) => {
                                 <Picker.Item label="O-" value="O-" />
                             </Picker>
                         ) : 
-                        filterCategory === "Sexo" ? (
+                        filterCategory === "gender" ? (
                             <Picker
-                                selectedValue={"Masculino"}
+                                selectedValue={t("male")}
                                 onValueChange={(itemValue) => setFilter(itemValue)}
                             >
-                                <Picker.Item label="Masculino" value="Masculino" />
-                                <Picker.Item label="Femenino" value="Femenino" />
+                                <Picker.Item label={t("male")} value="male" />
+                                <Picker.Item label={t("female")} value="female" />
                             </Picker>
                         ) : 
-                        filterCategory === "Edad" ? (
+                        filterCategory === "age" ? (
                             <Picker
                                 selectedValue={"18-25"}
                                 onValueChange={(itemValue) => setFilter(itemValue)}
@@ -67,11 +70,11 @@ const ModalFilters = ({onClose}) => {
                                 <Picker.Item label="56+" value="56+" />
                             </Picker>
                         ) : 
-                        filterCategory === "Mi municipio" ? (
-                            <Text>Filtrar por municipio</Text>
+                        filterCategory === "my_municipality" ? (
+                            <Text>{t("filter_by_municipality")}</Text>
                         ) : 
-                        filterCategory === "Mi estado" ? (
-                            <Text>Filtrar por estado</Text>
+                        filterCategory === "my_state" ? (
+                            <Text>{t("filter_by_state")}</Text>
                         ) : null 
                     }
 
@@ -82,13 +85,13 @@ const ModalFilters = ({onClose}) => {
                             onPress={onClose}
                             className="mt-4 bg-slate-400 py-2 px-4 rounded-full self-end"
                         >
-                            <Text className="text-white font-bold">Cancelar</Text>
+                            <Text className="text-white font-bold">{t("cancel")}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={onClose}
                             className="mt-4 bg-red-500 py-2 px-4 rounded-full self-end"
                         >
-                            <Text className="text-white font-bold">Aceptar</Text>
+                            <Text className="text-white font-bold">{t("accept")}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

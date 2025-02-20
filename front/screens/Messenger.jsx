@@ -20,6 +20,8 @@ import { getGlobalData } from "../backend/querys/inserts/New_email";
 import { useFocusEffect } from "@react-navigation/native";
 import Constants from 'expo-constants';
 
+import RedLoader from "@/components/RedLoader";
+
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
@@ -28,6 +30,8 @@ const Messenger = ({ navigation }) => {
     const [filterData, setfilterData] = useState([]);
     const [search, setsearch] = useState("");
     const [allChatRooms, setAllChatRooms] = useState([]);
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleFindGroup = (id) => {
         socket.emit("encontrar", id);
@@ -136,31 +140,34 @@ const Messenger = ({ navigation }) => {
     }
 
     //Funcion para obtener el texto del buscador e ir cambiando el contenido del flatlist
-    const searchFilter3 = (text) => {
-        if (text) {
-            const newData = filterData.filter((item) => {
-                const itemData = item.currentSecondGroup
-                    ? item.setCurrentGroupName.toUpperCase()
-                    : "".toUpperCase();
-                const textData = text.toUpperCase();
-                return itemData.indexOf(textData) > -1;
-            });
+    // const searchFilter3 = (text) => {
+    //     if (text) {
+    //         const newData = filterData.filter((item) => {
+    //             const itemData = item.currentSecondGroup
+    //                 ? item.setCurrentGroupName.toUpperCase()
+    //                 : "".toUpperCase();
+    //             const textData = text.toUpperCase();
+    //             return itemData.indexOf(textData) > -1;
+    //         });
 
-            setfilterData(newData);
-            // setsearch(text);
-        } else {
-            //setfilterData(fullData);
-            setfilterData(filteredChatRooms);
-        }
-        setsearch(text); // Actualiza el texto ingresado
-    };
+    //         setfilterData(newData);
+    //         // setsearch(text);
+    //     } else {
+    //         //setfilterData(fullData);
+    //         setfilterData(filteredChatRooms);
+    //     }
+    //     setsearch(text); // Actualiza el texto ingresado
+    // };
+
     const searchFilter = (text) => {
+        setIsLoading(true);
         if (text) {
             const newData = filterData.filter((item) => {
                 const itemData = item.currentSecondGroup
                     ? item.currentSecondGroup.toUpperCase()
                     : "".toUpperCase();
                 const textData = text.toUpperCase();
+                setIsLoading(false);
                 return itemData.indexOf(textData) > -1;
             });
 
@@ -169,39 +176,11 @@ const Messenger = ({ navigation }) => {
             // Si no hay texto en el buscador, mostramos todas las salas
             setfilterData(filteredChatRooms);
         }
+        setIsLoading(false);
         setsearch(text);
     };
 
     return (
-        // // Contenedor principal
-        // <View style={[styles.container, { backgroundColor: teme.background }]}>
-        //     {/*Contenedor del Buscador de contactos o palabras*/}
-        //     <Searchbar
-        //         maxLength={250}
-        //         inputStyle={styles.textBuscador}
-        //         style={[
-        //             styles.buscador,
-        //             { backgroundColor: teme.bla },
-        //             { color: teme.color },
-        //         ]}
-        //         placeholder="Buscar"
-        //         value={search}
-        //         onChangeText={(text) => searchFilter(text)}
-        //     />
-
-        //     {/*Contenedor de la lista de mefnsajes */}
-        //     <View style={styles.lista}>
-        //         {/*Flatlist se encarga de enlistar los mensajes  */}
-        //         <FlatList
-        //             data={filterData}
-        //             renderItem={({ item }) => <Chatcomponent item={item} />}
-        //             keyExtractor={(item) => item.id}
-        //         />
-        //     </View>
-        //     <StatusBar style="auto" />
-        // </View>
-
-
         <SafeAreaView className="flex-1 bg-white" style={styles.container}>
           <StatusBar backgroundColor={"#fff"} style="dark"/>
           <View className="p-4 border-b border-gray-200">
@@ -216,17 +195,26 @@ const Messenger = ({ navigation }) => {
               />
             </View>
           </View>
-          <FlatList
-            data={filterData}
-            renderItem={({ item }) => <Chatcomponent item={item} />}
-            keyExtractor={(item) => item.id}
-            contentContainerStyle={{ flexGrow: 1 }}
-            ListEmptyComponent={
-              <View className="flex-1 items-center justify-center">
-                <Text className="text-gray-500 text-lg">No se encontraron chats</Text>
-              </View>
-            }
-          />
+          {isLoading 
+          ? (
+            <View className="mt-10">
+                <RedLoader/>
+            </View>
+            )
+          : (
+            <FlatList
+                data={filterData}
+                renderItem={({ item }) => <Chatcomponent item={item} />}
+                keyExtractor={(item) => item.id}
+                contentContainerStyle={{ flexGrow: 1 }}
+                ListEmptyComponent={
+                  <View className="flex-1 items-center justify-center">
+                    <Text className="text-gray-500 text-lg">No se encontraron chats</Text>
+                  </View>
+                }
+            />
+            )
+          }
         </SafeAreaView>
     );
 };

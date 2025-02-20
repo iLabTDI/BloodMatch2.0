@@ -8,8 +8,8 @@ import len_esp from "../helper/len_esp.json"
 //intercambia entre español e ingles el tecto que se encuentra en las pantallas.
 
 export const language_resources = {
-    len_en: {translation: len_en},
-    len_esp: {translation: len_esp}
+    len_esp: {translation: len_esp},
+    len_en: {translation: len_en}
 }
 
 i18next.use(initReactI18next).init({
