@@ -26,7 +26,6 @@ export const useChatbot = (message) => {
             const result = await res.json();
             const answer = result.outputs["out-0"];
             setResponse(answer);
-            console.log("RESULTADOOOOOOOOO:", answer);
         } catch (err) {
             setError(err.message);
         } finally {

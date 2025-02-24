@@ -263,3 +263,25 @@ export async function updateTutorialValue(email) {
     return null;
   }
 }
+
+export async function getProfileImage(email: string) {
+  if (!email) {
+    console.error("email no es valido");
+    return null;
+  }
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .select("Url")
+      .eq("Email", email)
+      .single();
+    if (error) {
+      console.log("Error al consultar la imagen de perfil:", error);
+      return null;
+    }
+    return data?.Url || null;  
+  } catch (e) {
+    console.log("Error en getProfileImage: ", e);
+    return null;
+  }
+}

@@ -69,6 +69,9 @@
     "filter_by_municipality": "Filtrar por municipio",
 
     "chatbot section": "****************************************************************************************************",
+    "initial_message": "¡Hola! Soy el asistente de BloodMatch. ¿En qué puedo ayudarte hoy?",
+    "i_didnt_understand_your_message": "Lo siento, no entendí tu mensaje.",
+    "type_your_message": "Escribe tu mensaje...",
     
     
     "language": "Idioma",
