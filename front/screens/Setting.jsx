@@ -150,6 +150,8 @@
 //             </View>
 //           </TouchableOpacity>
 
+//           TEMA ****************************
+
 //           <TouchableOpacity style={styles.button} onPress={() => navigation.push(t("themesel"))}>
 //             <View style={styles.contOpc}>
 //               <Icono name="mobile" style={width >= 800 ? {fontSize: 50} : {fontSize: 37}}/>
@@ -318,7 +320,7 @@ import adjust from "../assets/fonts/ajust.js";
 import { Session } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 
-import ModalLanguajes from "@/components/ModalLanguajes";
+import ModalLanguages from "@/components/ModalLanguages";
 
 const SettingItem = ({ icon: Icon, title, onPress }) => (
   <TouchableOpacity className="flex-row items-center py-4 px-6 border-b border-gray-200" onPress={onPress}>
@@ -335,15 +337,38 @@ const SettingsGroup = ({ title, children }) => (
   </View>
 )
 
-const confi  = () => { 
+const log_out = (t, navigation) => { 
   Alert.alert(
-    (t("precaution")),
-    (t("Confirmation")),
+    t("precaution"),
+    t("Confirmation"),
+    [
+      {
+        text: t("Yes"), onPress: () => {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "Login" }],
+          });
+        }
+      },
+      {
+        text: t("No"),
+        onPress: () => {}
+      }
+    ]
+  );
+};
+
+
+//Falta eliminar de la base de datos
+const delete_account= (t, navigation) => { 
+  Alert.alert(
+    (t("delacc")),
+    (t("elimconf")),
     [
       {
         text: (t("Yes")), onPress: () => {
-          supabase.auth.signOut();
-          navigation.push('Login');
+          navigation.push('Login')
+          alert(t("accountelim"))
         }
       },
       {
@@ -363,25 +388,28 @@ const SettingsScreen = ({navigation}) => {
 
   const {t} = useTranslation();
 
-  const [modalLanguajeVisible, setModalLanguajeVisible] = useState(false);
+  const [modalLanguageVisible, setModalLanguageVisible] = useState(false);
   
   const handleSettingPress = (setting) => {
     console.log(`Pressed: ${setting}`);
     switch (setting) {
-      case "Idioma":
-        setModalLanguajeVisible(true);
+      case "Language":
+        setModalLanguageVisible(true);
         break;
-      case "":
-        
+      case "Profile":
+        navigation.navigate(t("profile_label"));
         break;
-      case "":
-        
+      case "Delete_account":
+        delete_account(t, navigation);
         break;
-      case "Términos y condiciones":
-        navigation.push(t("termycondi"))
+      case "Privacy":
+        navigation.push("Privacidad");
         break;
-      case "Cerrar sesión":
-        confi();
+      case "Terms_and_conditions":
+        navigation.push("termycondi");
+        break;
+      case "Log_out":
+        log_out(t, navigation);
         break;
       default:
         break;
@@ -392,59 +420,59 @@ const SettingsScreen = ({navigation}) => {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView>
-        <SettingsGroup title="Cuenta">
-          <SettingItem icon={Globe} title={t("language")} onPress={() => handleSettingPress("Idioma")} />
-          <SettingItem icon={User} title="Perfil" onPress={() => handleSettingPress("Perfil")} />
-          <SettingItem icon={Users} title="Cambiar usuario" onPress={() => handleSettingPress("Cambiar usuario")} />
+        <SettingsGroup title={t("account")}>
+          <SettingItem icon={Globe} title={t("language")} onPress={() => handleSettingPress("Language")} />
+          <SettingItem icon={User} title={t("profile")} onPress={() => handleSettingPress("Profile")} />
+          <SettingItem icon={Users} title={t("change_user")} onPress={() => handleSettingPress("Change_user")} />
           <SettingItem
             icon={Lock}
-            title="Cambiar contraseña"
-            onPress={() => handleSettingPress("Cambiar contraseña")}
+            title={t("change_password")}
+            onPress={() => handleSettingPress("Change_password")}
           />
         </SettingsGroup>
 
-        <SettingsGroup title="Preferencias">
-          <SettingItem icon={Bell} title="Notificaciones" onPress={() => handleSettingPress("Notificaciones")} />
-          <SettingItem icon={Moon} title="Tema" onPress={() => handleSettingPress("Tema")} />
+        <SettingsGroup title={t("preferences")}>
+          <SettingItem icon={Bell} title={t("notifications")} onPress={() => handleSettingPress("Notifications")} />
+          <SettingItem icon={Moon} title={t("theme")} onPress={() => handleSettingPress("Theme")} />
           <SettingItem
             icon={Shield}
-            title="Verificación de dos pasos"
-            onPress={() => handleSettingPress("Verificación de dos pasos")}
+            title={t("verification_two_steps")}
+            onPress={() => handleSettingPress("Verification_two_steps")}
           />
         </SettingsGroup>
 
-        <SettingsGroup title="Privacidad y Seguridad">
-          <SettingItem icon={Trash2} title="Eliminar cuenta" onPress={() => handleSettingPress("Eliminar cuenta")} />
-          <SettingItem icon={Eye} title="Privacidad" onPress={() => handleSettingPress("Privacidad")} />
+        <SettingsGroup title={t("privacy_and_security")}>
+          <SettingItem icon={Trash2} title={t("delete_account")} onPress={() => handleSettingPress("Delete_account")} />
+          <SettingItem icon={Eye} title={t("privacy")} onPress={() => handleSettingPress("Privacy")} />
         </SettingsGroup>
 
-        <SettingsGroup title="Ayuda y Legal">
-          <SettingItem icon={HelpCircle} title="Soporte" onPress={() => handleSettingPress("Soporte")} />
+        <SettingsGroup title={t("help_and_legal")}>
+          <SettingItem icon={HelpCircle} title={t("support")} onPress={() => handleSettingPress("Support")} />
           <SettingItem
             icon={FileText}
-            title="Términos y condiciones"
-            onPress={() => handleSettingPress("Términos y condiciones")}
+            title={t("terms_and_conditions")}
+            onPress={() => handleSettingPress("Terms_and_conditions")}
           />
         </SettingsGroup>
 
         <View className="mt-6 mb-8">
           <TouchableOpacity
             className="flex-row items-center justify-center py-2 px-6 bg-red-500 m-auto rounded-full"
-            onPress={() => handleSettingPress("Cerrar sesión")}
+            onPress={() => handleSettingPress("Log_out")}
           >
             <LogOut stroke="#FFFFFF" width={24} height={24} />
-            <Text className="ml-2 text-base font-bold text-white">Cerrar sesión</Text>
+            <Text className="ml-2 text-base font-bold text-white">{t("log_out")}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
 
       {
-        modalLanguajeVisible && 
-          <ModalLanguajes
-            onClose={() => setModalLanguajeVisible(false)}
-            onAccept={(languaje) => {
-              changeLng(languaje);
-              setModalLanguajeVisible(false);
+        modalLanguageVisible && 
+          <ModalLanguages
+            onClose={() => setModalLanguageVisible(false)}
+            onAccept={(language) => {
+              changeLng(language);
+              setModalLanguageVisible(false);
             }}
           />
       }

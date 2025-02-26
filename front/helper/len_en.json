@@ -1,4 +1,141 @@
 {
+    "login section": "****************************************************************************************************",
+    "log_in": "Log In",
+    "title_login": "Get connected to save lives!",
+    "email": "Email",
+    "password": "Password",
+    "forgot_password": "Forgot your password?",
+    "footer_login": "Joining BloodMatch is a step towards saving lives.",
+    "error": "Error",
+    "error_email_pass": "Incorrect email and/or password",
+    "error_login": "Login failed",
+    "loading": "Loading...",
+    
+    "register section": "****************************************************************************************************",
+    "register": "Sign Up",
+    "title_register": "Join the BloodMatch community",
+    "name": "First Name(s)",
+    "last_name": "Last name",
+    "dob": "Birthdate",
+    "age": "Age",
+    "i_am_a_woman": "I'm a woman",
+    "male": "Male",
+    "i_am_a_man": "I'm a man",
+    "female": "Female",
+    "gender": "Gender",
+    "state": "State",
+    "municipality": "Municipality",
+    "phone_number": "Phone Number",
+    "confirm_password": "Confirm Password",
+    "donor": "Donor",
+    "recipient": "Receiver",
+    "blood_type": "Blood group",
+    "profile_image": "Profile Image",
+    "profile_image_success": "Image uploaded",
+    "accept_the": "I accept the",
+    "terms": "terms and conditions",
+    "start_helping": "Start helping",
+    "error_image": "Cannot save image",
+    "characteristics_pass_title": "Required password features",
+    "characteristics_pass": "- Must be at least 8 characters long\n- Must include at least one uppercase letter\n- Must include at least one lowercase letter\n- Must have at least one number\n- Must have at least one special symbol\n- Must not have any spaces\n",
+    "success": "Success",
+    "success_form_submit": "The form was sent successfully",
+    "error_form_submit": "Error when trying to register a new user, please try again later",
+    "close": "Close",
+    "accept": "Accept",
+
+    "tabs navigation section": "****************************************************************************************************",
+    "home": "Home",
+    "chat_bot": "Chatbot",
+    "map": "Map",
+    "messenger": "Messages",
+    "profile": "Profile",
+    "settings": "Settings",
+
+    "home section": "****************************************************************************************************",
+    "exit_app": "Exit the application",
+    "exit_app_confirm": "Are you sure you want to leave?",
+    "cancel": "Cancel",
+    "exit": "Go out",
+    "made_a_match": "You made a match!",
+    "chat_created": "A chat has been created. Go to Messages",
+    "no_results": "No results to show",
+    "search_by": "Search for donors or recipients according to...",
+    "search": "Search by:",
+    "select_a_category": "Select a category",
+    "my_municipality": "My municipality",
+    "my_state": "My state",
+    "filter_by_state": "Filter by status",
+    "filter_by_municipality": "Filtrar by municipality",
+
+    "chatbot section": "****************************************************************************************************",
+    "initial_message": "Hello! I'm the BloodMatch assistant. How can I help you today?",
+    "i_didnt_understand_your_message": "Sorry, I didn't understand your message.",
+    "type_your_message": "Type your message...",
+
+    "map section": "****************************************************************************************************",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     "language": "Language",
     "Profile": "Profile",
     "Theme": "Theme",
@@ -14,7 +151,6 @@
     "confi": "Settings",
     "gnd": "Gender",
     "cty": "City",
-    "name": "Name",
     "tpy": "Type",
     "log-in": "Log In",
     "rgst": "Sign In",
@@ -31,7 +167,6 @@
     "wpass": "  Write down your password",
     "passconf": "  Confirm your password",
     "fpass": "Forget my password",
-    "register": "Register",
     "confr" : "Confirm",
     "precaution": "!Precaution!",
     "Yes": "Yes", 
@@ -41,7 +176,6 @@
     "delacc": "You're gonna delete your account!!",
     "accountelim": "Your account has been deleted succesfully",
     "contact": "Contact us: 33221144555", 
-    "profile": "Profile",
     "themesel": "Theme select",
     "termycondi": "Terms and conditions",
     "accep-terms" : "Agreement terms of use acceptance.",

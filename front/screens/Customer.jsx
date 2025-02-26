@@ -60,11 +60,11 @@ const Customer = ({  }) => {
           throw error;
         } else {
           setImage({uri:imageUrl})
-          Alert.alert("¡Imagen guardada!");
+          Alert.alert(t("image_saved"));
         }
       }
     } catch (error) {
-      Alert.alert('Hubo un error al procesar la imagen.');
+      Alert.alert(t("image_error"));
       console.error(error);
     }
   };
@@ -136,22 +136,22 @@ const Customer = ({  }) => {
         <View className="px-4 py-6">
           <ProfileItem 
             icon={Mail} 
-            label="Correo" 
+            label={t("email")}
             value={isLoading ? "..." : user?.Email}
           />
           <ProfileItem 
             icon={User} 
-            label="Género" 
-            value={isLoading ? "..." : ((user?.Gender === "male") ? "Masculino" : "Femenino")} 
+            label={t("gender")}
+            value={isLoading ? "..." : ((user?.Gender === "male") ? t("male") : t("female"))} 
           />
           <ProfileItem 
             icon={Droplet} 
-            label="Tipo de sangre" 
+            label={t("blood_type")}
             value={isLoading ? "..." : user?.Blood_Type} 
           />
           <ProfileItem 
             icon={MapPin} 
-            label="Ubicación" 
+            label={t("location")}
             value={isLoading ? "..." : (`${user?.City}, ${user?.State}`)} 
           />
         </View>

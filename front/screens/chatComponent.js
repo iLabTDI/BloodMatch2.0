@@ -4,8 +4,10 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { ChevronRight } from "react-native-feather"
 import { getUser } from "../lib/querys";
+import { useTranslation } from "react-i18next";
 
 export default function Chatcomponent({ item }) {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const [user, setUser] = useState({});
 
@@ -40,14 +42,14 @@ export default function Chatcomponent({ item }) {
         <Text numberOfLines={1} className="text-gray-600 mt-1">
           {item && item.messages && item.messages.length > 0 
               ? item.messages[item.messages.length - 1].text 
-              : "Tap to start messaging"}
+              : t("start_messaging")}
         </Text>
       </View>
       <View className="flex-row items-center">
         <Text className="text-sm text-gray-500 mr-1">
           {item && item.messages && item.messages.length > 0 
             ? item.messages[item.messages.length - 1].time 
-            : "Now"}
+            : t("now")}
         </Text>
         <ChevronRight stroke="red" width={20} height={20} />
       </View>

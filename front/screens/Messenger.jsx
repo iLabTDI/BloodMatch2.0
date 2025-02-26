@@ -4,21 +4,19 @@ import {
     StyleSheet,
     View,
     Text,
-    // Image,
     Dimensions,
-    // TouchableOpacity,
     TextInput,
     SafeAreaView
 } from "react-native";
 import { Search, ChevronRight } from "react-native-feather"
 import { Directions, FlatList } from "react-native-gesture-handler";
 import themeContext from "../helper/ThemeCon";
-// import { Searchbar } from "react-native-paper";
 import { socket } from "../util/connectionChat";
 import Chatcomponent from "./chatComponent";
 import { getGlobalData } from "../backend/querys/inserts/New_email";
 import { useFocusEffect } from "@react-navigation/native";
 import Constants from 'expo-constants';
+import { useTranslation } from "react-i18next";
 
 import RedLoader from "@/components/RedLoader";
 
@@ -26,6 +24,7 @@ const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
 const Messenger = ({ navigation }) => {
+    const { t } = useTranslation();
     const teme = useContext(themeContext);
     const [filterData, setfilterData] = useState([]);
     const [search, setsearch] = useState("");
@@ -181,14 +180,14 @@ const Messenger = ({ navigation }) => {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-white" style={styles.container}>
+        <SafeAreaView className="flex-1 bg-white">
           <StatusBar backgroundColor={"#fff"} style="dark"/>
           <View className="p-4 border-b border-gray-200">
             <View className="flex-row items-center bg-gray-100 rounded-full px-4 py-2">
               <Search stroke="#9CA3AF" width={20} height={20} />
               <TextInput
                 className="flex-1 ml-2 text-base text-gray-700"
-                placeholder="Buscar chats"
+                placeholder={t("search_chat")}
                 placeholderTextColor="#9CA3AF"
                 value={search}
                 onChangeText={(text) => searchFilter(text)}
@@ -209,7 +208,7 @@ const Messenger = ({ navigation }) => {
                 contentContainerStyle={{ flexGrow: 1 }}
                 ListEmptyComponent={
                   <View className="flex-1 items-center justify-center">
-                    <Text className="text-gray-500 text-lg">No se encontraron chats</Text>
+                    <Text className="text-gray-500 text-lg">{t("no_chats")}</Text>
                   </View>
                 }
             />
@@ -219,10 +218,10 @@ const Messenger = ({ navigation }) => {
     );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: Constants.statusBarHeight
-  }
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     marginTop: Constants.statusBarHeight
+//   }
+// });
 
 export default Messenger;

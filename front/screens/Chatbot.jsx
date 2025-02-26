@@ -70,7 +70,7 @@ const ChatbotScreen = () => {
   useEffect(() => {
     if (response) {
       const botMessage = {
-        id: String(Date.now()), // ID unico
+        id: String(Date.now()), // ID unique
         type: "bot",
         text: response ? response : t("i_didnt_understand_your_message"),
       };

@@ -78,30 +78,43 @@ export default function TabNavigator() {
             />*/ }
            
                <Tab.Screen
-                name = 'Location'
+                name = {t("map_label")}
                 component = { Location }
                 options={{ 
                     tabBarLabel: t("map"),
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="map-marker-radius" color={color} size={size} />
                     ),
+                    headerShown: true,
+                    headerStyle: {
+                        backgroundColor: "#EF4444",
+                        elevation: 0, 
+                        shadowOpacity: 0,
+                    },
+                    headerTintColor: "#FFFFFF",
+                    headerTitleAlign: "center",
                 }} 
             />
             <Tab.Screen
-                name = 'Messenger'
+                name = {t("messenger_label")}
                 component = { Messenger }
                 options={{ 
                     tabBarLabel: t("messenger"),
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="facebook-messenger" color={color} size={size} />
                     ),
-                    headerShown: false
-                    // tabBarBadge: false,
-                    // tabBarBadgeStyle: { backgroundColor: 'blue' }
+                    headerShown: true,
+                    headerStyle: {
+                        backgroundColor: "#EF4444",
+                        elevation: 0, 
+                        shadowOpacity: 0,
+                    },
+                    headerTintColor: "#FFFFFF",
+                    headerTitleAlign: "center",
                 }} 
             />
             <Tab.Screen
-                name = "profile"
+                name = {t("profile_label")}
                 component = { Customer }
                 options={{ 
                     tabBarLabel: t("profile"),
@@ -119,7 +132,7 @@ export default function TabNavigator() {
                 }} 
             />
             <Tab.Screen
-                name = "confi"
+                name = {t("settings_label")}
                 component = { Setting }
                 options={{  
                     tabBarLabel: t("settings"),
