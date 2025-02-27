@@ -2,24 +2,6 @@ import Tutorial from "@/components/Tutorial";
 import { supabase } from "./supabase";
 import bcrypt from "bcryptjs";
 
-// export async function getDates(email, password) {
-//     try {
-//         const { data, error } = await supabase
-//             .from("usuarios")
-//             .select("*")
-//             .eq("Email", email)
-//             .eq("password", password);
-//         if (error) {
-//             console.log(error);
-//         } else {
-//             console.log(data);
-//             return data;
-//         }
-//     } catch (e) {
-//         console.log(e);
-//     }
-// }
-
 export async function getDates(email) {
   try {
       const { data, error } = await supabase
@@ -97,7 +79,7 @@ export const New_User = async (
                     Gender: Gen,
                     LastName: LastName,
                     Phone: Phone,
-                    Situation: null,
+                    Status: null,
                     State: State,
                     Password: hashedPassword,
                     Role: TypeRol,
@@ -282,6 +264,102 @@ export async function getProfileImage(email: string) {
     return data?.Url || null;  
   } catch (e) {
     console.log("Error en getProfileImage: ", e);
+    return null;
+  }
+}
+
+export async function updateStatus(email: string, newStatus: string) {
+  if (!email || !newStatus) {
+    console.error("Email y status son requeridos");
+    return null;
+  }
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .update({ Status: newStatus })
+      .eq("Email", email)
+      .select();
+
+    if (error) {
+      console.error("Error al actualizar el status:", error);
+      return null;
+    }
+    console.log("Status actualizado con éxito:", data);
+    return data;
+  } catch (e) {
+    console.error("Error inesperado en updateStatus:", e);
+    return null;
+  }
+}
+
+export async function updateRole(email, newRole) {
+  if (!email || !newRole) {
+    console.error("Email y Role son requeridos");
+    return null;
+  }
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .update({ Role: newRole })
+      .eq("Email", email)
+      .select();
+
+    if (error) {
+      console.error("Error al actualizar el Role:", error);
+      return null;
+    }
+    console.log("Role actualizado con éxito:", data);
+    return data;
+  } catch (e) {
+    console.error("Error inesperado en updateRole:", e);
+    return null;
+  }
+}
+
+export async function updateLocation(email, state, municipality) {
+  if (!email || !state || !municipality) {
+    console.error("Email, Estado y Municipio son requeridos");
+    return null;
+  }
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .update({ State: state, City: municipality })
+      .eq("Email", email)
+      .select();
+
+    if (error) {
+      console.error("Error al actualizar la ubicación:", error);
+      return null;
+    }
+    console.log("Ubicación actualizada con éxito:", data);
+    return data;
+  } catch (e) {
+    console.error("Error inesperado en updateLocation:", e);
+    return null;
+  }
+}
+
+export async function updatePhone(email: string, newPhone: string) {
+  if (!email || !newPhone) {
+    console.error("Email y teléfono son requeridos");
+    return null;
+  }
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .update({ Phone: newPhone })
+      .eq("Email", email)
+      .select();
+
+    if (error) {
+      console.error("Error al actualizar el número de teléfono:", error);
+      return null;
+    }
+    console.log("Teléfono actualizado con éxito:", data);
+    return data;
+  } catch (e) {
+    console.error("Error inesperado en updatePhone:", e);
     return null;
   }
 }
