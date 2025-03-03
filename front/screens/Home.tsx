@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -12,7 +12,8 @@ import {
   PanResponder,
   TouchableOpacity,
   ScrollView,
-  BackHandler
+  BackHandler,
+  findNodeHandle
 } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styled } from 'nativewind';
@@ -30,6 +31,7 @@ import Toast from "react-native-toast-message";
 import CustomNotification from "../components/customNotification";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import RedLoader from "../components/RedLoader";
+import ModalUserProfile from "../components/ModalUserProfile";
 
 interface TaskInterface {
   user: string;
@@ -59,6 +61,7 @@ function Home() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [showModalFilter, setShowModalFilter] = useState(false);
+  const [isProfileModalVisible, setIsProfileModalVisible] = useState(false)
   const pan = useState(new Animated.ValueXY())[0];
 
   const navigation = useNavigation();
@@ -255,6 +258,7 @@ function Home() {
     }
   
     return (
+      <>
       <AnimatedView
         className="absolute w-[300px] h-[400px] bg-white rounded-xl shadow-lg"
         style={{
@@ -272,6 +276,7 @@ function Home() {
           </View>
         </View>
       </AnimatedView>
+      </>
     );
   };
 
@@ -374,6 +379,11 @@ function Home() {
               ? (
                 <>
                 <Card user={users[currentIndex][0]} pan={pan} panResponders={panResponders} />
+                <ModalUserProfile
+                  isVisible={isProfileModalVisible}
+                  onClose={() => setIsProfileModalVisible(false)}
+                  userData={users[currentIndex][0]}
+                />
                 <CustomNotification />
                 <View className="flex-row justify-between w-full mt-8 mb-4 px-2">
                   <TouchableOpacity
@@ -389,6 +399,12 @@ function Home() {
                     <Heart stroke="white" fill="white" width={32} height={32} />
                   </TouchableOpacity>
                 </View>
+                <TouchableOpacity 
+                  className="bg-green-800 rounded-full py-3 px-3 self-end mr-2"
+                  onPress={() => setIsProfileModalVisible(true)}
+                >
+                  <Text className="text-white font-semibold">{t("view_profile")}</Text>
+                </TouchableOpacity>
                 </>
                 )
               : <Card user={null} pan={pan} panResponders={panResponders} />)

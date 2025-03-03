@@ -67,6 +67,8 @@
     "my_state": "Mi estado",
     "filter_by_state": "Filtrar por estado",
     "filter_by_municipality": "Filtrar por municipio",
+    "view_profile": "Ver perfil",
+    "years": "Años",
 
     "chatbot section": "****************************************************************************************************",
     "initial_message": "¡Hola! Soy el asistente de BloodMatch. ¿En qué puedo ayudarte hoy?",
