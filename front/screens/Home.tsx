@@ -22,7 +22,8 @@ import { Heart, Loader, X} from 'react-native-feather';
 import Constants from 'expo-constants';
 import { socket } from "../util/connectionChat";
 import { getGlobalData, getAllGlobalData } from "../backend/querys/inserts/New_email";
-import { generaldates, getTutorialValue, updateTutorialValue } from "../lib/querys";
+import { generaldates, getTutorialValue, updateTutorialValue, rejectUser } from "../lib/querys";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Tutorial from "../components/Tutorial";
 import ModalFilters from '../components/ModalFilters'
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
@@ -150,7 +151,7 @@ function Home() {
       const show = data.length;
       console.log("la longitud de la lista es", show);
       const datos = data.map((user) => ({
-        id: user.Email,
+        id: user.IdUser,
         sangre: user.Blood_Type,
         municipio: user.City,
         descripcion: user.Situation,
@@ -171,7 +172,7 @@ function Home() {
         } else {
           const dates = [
             {
-              id: data[i].Email,
+              id: data[i].IdUser,
               sangre: data[i].Blood_Type,
               municipio: data[i].City,
               descripcion: data[i].Situation,
@@ -188,7 +189,11 @@ function Home() {
         }
       }
       setIsLoading(false);
-      return list;
+      // return list;
+
+      const rejectedUsers: number[] = JSON.parse((await AsyncStorage.getItem("rejectedUsers")) || "[]");
+      return list.filter(user => !rejectedUsers.includes(user[0].id));
+
     } catch (error) {
       console.log(error);
     }
@@ -214,11 +219,6 @@ function Home() {
     });
   };
 
-  // const swipeLeft = () => {
-  //   console.log("Deslizamiento hacia la izquierda detectado");
-  //   setCurrentIndex((prevIndex) => prevIndex + 1);
-  // };
-
   const swipeLeft = () => {
     console.log("Deslizamiento hacia la izquierda detectado");
   
@@ -229,7 +229,6 @@ function Home() {
       pan.setValue({ x: 0, y: 0 });
     });
   };
-  
 
   const renderCard = (task: TaskInterface) => {
     if (!task) {
@@ -336,6 +335,8 @@ function Home() {
       pan.setValue({ x: 0, y: 0 });
     });
     console.log(`Reject  ${users[currentIndex][0].email}`);
+    console.log(`Reject ID: ${users[currentIndex][0].id}`);
+    rejectUser(users[currentIndex][0].id);
     swipeLeft();
   };
 

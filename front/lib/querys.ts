@@ -1,6 +1,7 @@
 import Tutorial from "@/components/Tutorial";
 import { supabase } from "./supabase";
 import bcrypt from "bcryptjs";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export async function getDates(email) {
   try {
@@ -20,7 +21,6 @@ export async function getDates(email) {
       return null;
   }
 }
-
 
 export async function getUser(email:string){
   const {data,error }= await supabase.from("users").select("*").eq("Email",email)
@@ -206,7 +206,6 @@ export async function getTutorialValue(email:any) {
   }
 }
 
-
 export async function verificateUser(email:string){
     const {data,error }= await supabase.from("users").select("Email").eq("Email",email)
     if(error){
@@ -361,5 +360,18 @@ export async function updatePhone(email: string, newPhone: string) {
   } catch (e) {
     console.error("Error inesperado en updatePhone:", e);
     return null;
+  }
+}
+
+export async function rejectUser(userId: number): Promise<void> {
+  try {
+    const rejectedUsers: number[] = JSON.parse(
+      (await AsyncStorage.getItem("rejectedUsers")) || "[]"
+    );
+
+    rejectedUsers.push(userId);
+    await AsyncStorage.setItem("rejectedUsers", JSON.stringify(rejectedUsers));
+  } catch (error) {
+    console.error("Error guardando el usuario rechazado:", error);
   }
 }
