@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
-  Platform,
+  Platform
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { getGlobalData, getAllGlobalData } from "../backend/querys/inserts/New_email";

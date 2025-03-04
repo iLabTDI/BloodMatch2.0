@@ -26,7 +26,7 @@ export default function AuthNavigator() {
       <Stack.Screen
         name="Login"
         component={Login}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, navigationBarColor: '#FEF2F2', navigationBarHidden: false}}
       />
       <Stack.Screen name="Messagescreen" component={Messagescreen} />
       <Stack.Screen
@@ -37,7 +37,7 @@ export default function AuthNavigator() {
       <Stack.Screen
         name="Home"
         component={TabNavigator}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, navigationBarColor: '#ffffff', navigationBarHidden: false}}
       />
       <Stack.Screen name="Messenger" component={Messenger} />
       <Stack.Screen
