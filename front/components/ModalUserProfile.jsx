@@ -58,9 +58,9 @@ const ModalUserProfile = ({ isVisible, onClose, userData }) => {
         </View>
 
         <View className="px-4 flex-1 justify-between pb-4">
-          <View className="items-center mb-2">
+          <View className="items-center mb-2 -mt-8">
             <Image source={{ uri: userData.image }} className="w-20 h-20 rounded-full border-4 border-white shadow-lg mb-1" />
-            <Text className="text-lg font-bold text-gray-800">{userData?.nombre}</Text>
+            <Text className="text-lg font-bold text-gray-800">{userData?.name}</Text>
           </View>
 
           <View className="space-y-2 flex-1">
@@ -70,29 +70,29 @@ const ModalUserProfile = ({ isVisible, onClose, userData }) => {
                 <Text className="text-base font-bold text-gray-800 ml-2">{t("status")}</Text>
               </View>
               <View className="flex-1 justify-center">
-                <Text className="text-gray-700 text-sm leading-5">{userData?.descripcion || t("no_status")}</Text>
+                <Text className="text-gray-700 text-sm leading-5">{userData?.status || t("no_status")}</Text>
               </View>
             </View>
 
             <View className="bg-gray-50 rounded-xl p-3">
               <View className="flex-row items-center mb-1">
-                {userData?.rol === "donor" ? (
+                {userData?.role === "donor" ? (
                   <Heart stroke="#FF4136" width={16} height={16} />
                 ) : (
                   <UserPlus stroke="#FF4136" width={16} height={16} />
                 )}
                 <Text className="text-base font-bold text-gray-800 ml-2">{t("user_type")}</Text>
               </View>
-              <Text className="text-gray-700 text-sm">{userData?.rol === "donor" ? t("donor") : t("recipient")}</Text>
+              <Text className="text-gray-700 text-sm">{userData?.role === "donor" ? t("donor") : t("recipient")}</Text>
             </View>
 
             <View className="bg-gray-50 rounded-xl p-3">
-              <ProfileItem icon={MapPin} label={t("location")} value={`${userData?.municipio}, ${userData?.estado}`} />
-              <ProfileItem icon={Droplet} label={t("blood_type")} value={userData?.sangre} />
+              <ProfileItem icon={MapPin} label={t("location")} value={`${userData?.city}, ${userData?.state}`} />
+              <ProfileItem icon={Droplet} label={t("blood_type")} value={userData?.blood_type} />
               <ProfileItem
                 icon={User}
                 label={t("gender")}
-                value={userData?.genero === "male" ? t("male") : t("female")}
+                value={userData?.gender === "male" ? t("male") : t("female")}
               />
             </View>
           </View>

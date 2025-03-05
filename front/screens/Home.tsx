@@ -18,11 +18,11 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { styled } from 'nativewind';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import { Heart, Loader, X} from 'react-native-feather';
+import { Filter, Heart, Loader, X} from 'react-native-feather';
 import Constants from 'expo-constants';
 import { socket } from "../util/connectionChat";
-import { getGlobalData, getAllGlobalData } from "../backend/querys/inserts/New_email";
-import { generaldates, getTutorialValue, updateTutorialValue, rejectUser } from "../lib/querys";
+import { getGlobalData, setGlobalData, getAllGlobalData } from "../backend/querys/inserts/New_email";
+import { generaldates, getTutorialValue, updateTutorialValue, rejectUser, getDates } from "../lib/querys";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Tutorial from "../components/Tutorial";
 import ModalFilters from '../components/ModalFilters'
@@ -57,11 +57,14 @@ function Home() {
   const [showTutorial, setShowTutorial] = useState(false);
 
   const [users, setUsers] = useState([]);
+  const [usersCopy, setUsersCopy] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const [isLoading, setIsLoading] = useState(false);
 
   const [showModalFilter, setShowModalFilter] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState({ category: "", value: "" });
+
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false)
   const pan = useState(new Animated.ValueXY())[0];
 
@@ -93,6 +96,9 @@ function Home() {
   useEffect(() => {
     async function fetchUserData() {
       const tutorialValue = await getTutorialValue(getGlobalData("email"));
+      const currentUser = await getDates(getGlobalData("email"));
+      setGlobalData("state", currentUser.State);
+      setGlobalData("city", currentUser.City);
       console.log(tutorialValue)
       if (tutorialValue) {
         setShowTutorial(false);
@@ -105,6 +111,7 @@ function Home() {
       const result = await getDatabase();
       // setTasks(result);
       setUsers(result);
+      setUsersCopy(result);
     }
 
     fetchUserData();
@@ -124,6 +131,8 @@ function Home() {
       setAllChatRooms(groups);
     });
   }, [socket]);
+
+  
 
   const handleCreateNewRoom = (user) => {
     try {
@@ -152,13 +161,14 @@ function Home() {
       console.log("la longitud de la lista es", show);
       const datos = data.map((user) => ({
         id: user.IdUser,
-        sangre: user.Blood_Type,
-        municipio: user.City,
-        descripcion: user.Situation,
-        rol: user.Role,
-        estado: user.State,
-        nombre: user.FirstName,
-        email: user.Email
+        blood_type: user.Blood_Type,
+        city: user.City,
+        situation: user.Status,
+        role: user.Role,
+        state: user.State,
+        name: user.FirstName,
+        email: user.Email,
+        gender: user.Gender
       }));
       console.log("los datos son", datos);
       while (i <= show - 1) {
@@ -173,14 +183,15 @@ function Home() {
           const dates = [
             {
               id: data[i].IdUser,
-              sangre: data[i].Blood_Type,
-              municipio: data[i].City,
-              descripcion: data[i].Situation,
+              blood_type: data[i].Blood_Type,
+              city: data[i].City,
+              Status: data[i].Status,
               image: data[i].Url,
-              rol: data[i].Role,
-              estado: data[i].State,
-              nombre: data[i].FirstName,
-              email: data[i].Email
+              role: data[i].Role,
+              state: data[i].State,
+              name: data[i].FirstName,
+              email: data[i].Email,
+              gender: data[i].Gender
             },
           ];
 
@@ -267,11 +278,11 @@ function Home() {
       >
         <Image source={{ uri: user.image }} className="w-full h-3/4 rounded-t-xl" />
         <View className="p-4">
-          <Text className="text-xl font-bold">{user.nombre}</Text>
-          <Text className="text-lg font-semibold text-red-500">{user.sangre}</Text>
-          <Text className="text-sm text-gray-600">{user.municipio}, {user.estado}</Text>
+          <Text className="text-xl font-bold">{user.name}</Text>
+          <Text className="text-lg font-semibold text-red-500">{user.blood_type}</Text>
+          <Text className="text-sm text-gray-600">{user.city}, {user.state}</Text>
           <View className="mt-2 bg-green-500 rounded-full px-3 py-1 self-start">
-            <Text className="text-white font-semibold">{user.rol === 'donor' ? t("donor") : t("recipient")}</Text>
+            <Text className="text-white font-semibold">{user.role === 'donor' ? t("donor") : t("recipient")}</Text>
           </View>
         </View>
       </AnimatedView>
@@ -350,6 +361,28 @@ function Home() {
     console.log("onClose", showTutorial);
   };
 
+  const handleApplyFilters = (category: string, value: string) => {
+    if (!category || !value) {
+      console.log("SIN FILTROS APLICADOS");
+      setUsers(usersCopy);
+    } else if(category === "my_municipality" || value === "my_municipality"){
+      const city = getGlobalData("city");
+      const filteredUsers = usersCopy.filter(user => user[0]["city"] === city);
+      setSelectedFilters({ category, value });
+      setUsers(filteredUsers);
+    } else if(category === "my_state" || value === "my_state"){
+      const state = getGlobalData("state");
+      const filteredUsers = usersCopy.filter(user => user[0]["state"] === state);
+      setSelectedFilters({ category, value });
+      setUsers(filteredUsers);
+    } else {
+      const filteredUsers = usersCopy.filter(user => user[0][category] === value);
+      setSelectedFilters({ category, value });
+      setUsers(filteredUsers);
+      console.log("Filtros aplicados:", category, value);
+    }
+  };
+
   if (showTutorial) {
     return <Tutorial onClose={onClose} />;
   } else {
@@ -412,7 +445,11 @@ function Home() {
             }
           </View>
         </ScrollView>
-        {showModalFilter && <ModalFilters onClose={() => setShowModalFilter(false)}/>}
+        <ModalFilters 
+          onClose={() => setShowModalFilter(false)}
+          isVisible={showModalFilter}
+          onApplyFilters={handleApplyFilters}
+        />
       </SafeAreaView>      
     );
   }

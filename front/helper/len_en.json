@@ -1,46 +1,46 @@
 {
     "login section": "****************************************************************************************************",
-    "log_in": "Log In",
-    "title_login": "Get connected to save lives!",
+    "log_in": "Log in",
+    "title_login": "Connect to save lives!",
     "email": "Email",
     "password": "Password",
     "forgot_password": "Forgot your password?",
     "footer_login": "Joining BloodMatch is a step towards saving lives.",
     "error": "Error",
     "error_email_pass": "Incorrect email and/or password",
-    "error_login": "Login failed",
+    "error_login": "Login error",
     "loading": "Loading...",
     
     "register section": "****************************************************************************************************",
-    "register": "Sign Up",
+    "register": "Sign up",
     "title_register": "Join the BloodMatch community",
-    "name": "First Name(s)",
+    "name": "First name(s)",
     "last_name": "Last name",
-    "dob": "Birthdate",
+    "dob": "Date of birth",
     "age": "Age",
-    "i_am_a_woman": "I'm a woman",
+    "i_am_a_woman": "I am a woman",
     "male": "Male",
-    "i_am_a_man": "I'm a man",
+    "i_am_a_man": "I am a man",
     "female": "Female",
     "gender": "Gender",
     "state": "State",
     "municipality": "Municipality",
-    "phone_number": "Phone Number",
-    "confirm_password": "Confirm Password",
+    "phone_number": "Phone number",
+    "confirm_password": "Confirm password",
     "donor": "Donor",
-    "recipient": "Receiver",
-    "blood_type": "Blood group",
-    "profile_image": "Profile Image",
+    "recipient": "Recipient",
+    "blood_type": "Blood type",
+    "profile_image": "Profile image",
     "profile_image_success": "Image uploaded",
     "accept_the": "I accept the",
     "terms": "terms and conditions",
     "start_helping": "Start helping",
-    "error_image": "Cannot save image",
-    "characteristics_pass_title": "Required password features",
-    "characteristics_pass": "- Must be at least 8 characters long\n- Must include at least one uppercase letter\n- Must include at least one lowercase letter\n- Must have at least one number\n- Must have at least one special symbol\n- Must not have any spaces\n",
+    "error_image": "Unable to save the image",
+    "characteristics_pass_title": "Required password characteristics",
+    "characteristics_pass": "- Must be at least 8 characters\n- Must include at least one uppercase letter\n- Must include at least one lowercase letter\n- Must have at least one number\n- Must have at least one special symbol\n- Must not contain spaces\n",
     "success": "Success",
-    "success_form_submit": "The form was sent successfully",
-    "error_form_submit": "Error when trying to register a new user, please try again later",
+    "success_form_submit": "Form submitted successfully",
+    "error_form_submit": "Error trying to register a new user, please try again later",
     "close": "Close",
     "accept": "Accept",
 
@@ -53,90 +53,153 @@
     "settings": "Settings",
 
     "home section": "****************************************************************************************************",
-    "exit_app": "Exit the application",
-    "exit_app_confirm": "Are you sure you want to leave?",
+    "exit_app": "Exit the app",
+    "exit_app_confirm": "Are you sure you want to exit?",
     "cancel": "Cancel",
-    "exit": "Go out",
+    "exit": "Exit",
     "made_a_match": "You made a match!",
-    "chat_created": "A chat has been created. Go to Messages",
+    "chat_created": "A chat was created. Go to Messages",
     "no_results": "No results to show",
-    "search_by": "Search for donors or recipients according to...",
+    "search_by": "Search for donors or recipients by...",
     "search": "Search by:",
     "select_a_category": "Select a category",
     "my_municipality": "My municipality",
     "my_state": "My state",
-    "filter_by_state": "Filter by status",
-    "filter_by_municipality": "Filtrar by municipality",
+    "filter_by_state": "Filter by state",
+    "filter_by_municipality": "Filter by municipality",
+    "view_profile": "View profile",
+    "years": "Years",
+    "no_filters": "Quit filters",
 
     "chatbot section": "****************************************************************************************************",
-    "initial_message": "Hello! I'm the BloodMatch assistant. How can I help you today?",
+    "initial_message": "Hello! I am the BloodMatch assistant. How can I help you today?",
     "i_didnt_understand_your_message": "Sorry, I didn't understand your message.",
     "type_your_message": "Type your message...",
 
     "map section": "****************************************************************************************************",
 
 
+    "messenger section": "****************************************************************************************************",
+    "search_chat": "Search chats",
+    "start_messaging": "Press to start chat",
+    "now": "Now",
+    "no_chats": "No chats found",
 
+    "profile section": "****************************************************************************************************",
+    "location": "Location",
+    "image_saved": "Image saved!",
+    "image_error": "There was an error processing the image.",
+    "status": "Status",
+    "no_status": "Hi, I'm using BloodMatch!",
+    "user_type": "User type",
+    "no_user_type": "No user type",
+    "update_status": "Update status",
+    "insert_a_new_status": "Please enter a new status",
+    "update_status_success": "Status updated successfully",
+    "type_new_status": "Type your new status...",
+    "update_status_error": "An error occurred while updating the status, please try again later",
+    "250_characters_in_status": "Status must not exceed 250 characters",
+    "select_a_role": "Select a role",
+    "update_role_success": "Role updated successfully",
+    "update_role_error": "An error occurred while updating the role, please try again later",
+    "update_role": "Update role",
+    "select_location": "Select a state and municipality",
+    "update_location_success": "Location updated successfully",
+    "update_location_error": "An error occurred while updating the location, please try again later",
+    "update_location": "Update location",
+    "insert_a_new_phone": "Enter your new phone number",
+    "invalid_phone_format": "Invalid phone number format",
+    "update_phone_success": "Phone number updated successfully",
+    "update_phone_error": "An error occurred while updating the phone number, please try again later",
+    "update_phone": "Update phone number",
+    "type_new_phone": "Enter your new phone number",
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    "settings section": "****************************************************************************************************",
+    "account": "ACCOUNT",
     "language": "Language",
+    "select_language": "Select a language",
+    "select_option": "Select an option",
+    "change_user": "Change user",
+    "change_password": "Change Password",
+    "preferences": "PREFERENCES",
+    "notifications": "Notifications",
+    "theme": "Theme",
+    "verification_two_steps": "Two-step verification",
+    "privacy_and_security": "PRIVACY AND SECURITY",
+    "delete_account": "Delete account",
+    "privacy": "Privacy",
+    "help_and_legal": "HELP AND LEGAL",
+    "support": "Support",
+    "terms_and_conditions": "Terms and conditions",
+    "log_out": "Log out",
+
+    "tab bar labels": "****************************************************************************************************",
+    "map_label": "Map",
+    "messenger_label": "Messages",
+    "profile_label": "Profile",
+    "settings_label": "Settings",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     "Profile": "Profile",
     "Theme": "Theme",
     "Cha-user": "Change User",
