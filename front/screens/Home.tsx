@@ -461,4 +461,12 @@ const styles = StyleSheet.create({
   }
 });
 
+// function Home(){
+//   return (
+//     <View className="flex-1 bg-blue-600">
+//       <Text>Home Screen</Text>
+//     </View>
+//   );
+// }
+
 export default Home;

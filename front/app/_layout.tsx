@@ -1,11 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
-import {Text} from 'react-native'
+import {Text, View} from 'react-native'
 import AuthNavigator from '../navigation/AuthNavigator';
-import {
-  GestureHandlerRootView,
-} from 'react-native-gesture-handler';
 import {EventRegister} from 'react-native-event-listeners';
 import themeContext from '../helper/ThemeCon';
 import darkMode from '../helper/DarkMode';
@@ -34,7 +31,7 @@ if (!fontsLoaded) {
     return null;
   }
   return (
-    <GestureHandlerRootView style={{ flex: 1}}>
+    // <GestureHandlerRootView style={{ flex: 1}}>
     <themeContext.Provider value = {theme === true ? darkMode.dark : darkMode.light}>
 
       {/*{isAuthenticated ? AuthNavigator : DrawerNavigation} */}
@@ -43,6 +40,6 @@ if (!fontsLoaded) {
   
   
     </themeContext.Provider>
-    </GestureHandlerRootView>
+    // </GestureHandlerRootView>
   );
 }

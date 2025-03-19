@@ -28,6 +28,7 @@ export default function Chatcomponent({ item }) {
     navigation.navigate("Messagescreen", {
       currentSecondGroup: item.currentSecondGroup,
       currentGroupID: item.id,
+      userData: user
     });
   }
 

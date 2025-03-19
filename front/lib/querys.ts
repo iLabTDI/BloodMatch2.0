@@ -375,3 +375,23 @@ export async function rejectUser(userId: number): Promise<void> {
     console.error("Error guardando el usuario rechazado:", error);
   }
 }
+
+export async function setExpoTokenNotification(email: string, token: string){
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .update({ Token: token })
+      .eq("Email", email)
+      .select();
+
+    if (error) {
+      console.error("Error al actualizar el token: ", error);
+      return null;
+    }
+    console.log("Token actualizado: ", data);
+    return data;
+  } catch (e) {
+    console.error("Error inesperado en setExpoTokenNotification:", e);
+    return null;
+  }
+}

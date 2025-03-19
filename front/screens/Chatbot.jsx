@@ -141,4 +141,12 @@ const ChatbotScreen = () => {
   );
 };
 
+// function ChatbotScreen(){
+//   return (
+//     <View className="flex-1 bg-blue-600">
+//       <Text>ChatbotScreen Screen</Text>
+//     </View>
+//   );
+// }
+
 export default ChatbotScreen;

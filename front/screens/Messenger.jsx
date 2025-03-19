@@ -6,10 +6,11 @@ import {
     Text,
     Dimensions,
     TextInput,
-    SafeAreaView
+    SafeAreaView,
+    FlatList
 } from "react-native";
 import { Search, ChevronRight } from "react-native-feather"
-import { Directions, FlatList } from "react-native-gesture-handler";
+// import { Directions, FlatList } from "react-native-gesture-handler";
 import themeContext from "../helper/ThemeCon";
 import { socket } from "../util/connectionChat";
 import Chatcomponent from "./chatComponent";

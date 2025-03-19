@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "blood2",
-    "slug": "blood2",
-    "owner": "rauf1234",
+    "name": "bloodmatch",
+    "slug": "bloodmatch",
+    "owner": "manuel2003",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logotipo.png",
@@ -18,11 +18,12 @@
       "supportsTablet": true
     },
     "android": {
+      "useNextNotificationsApi": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/logotipo.png",
         "backgroundColor": "#ffffff"
       },
-       "package": "com.rauf1234.blood2"
+       "package": "com.manuel2003.bloodmatch"
     },
     "web": {
       "bundler": "metro",
@@ -34,7 +35,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/logotipo.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
@@ -52,7 +53,7 @@
       "supabaseAnonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6a2FzZHB6YmNqYWpvcGxmeHl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzkyODA1OTAsImV4cCI6MjA1NDg1NjU5MH0.42Oxtt82KlvOBKiDJfTHqsMB7BhCGcypp_rp08H63-s",
       "google": "AIzaSyAeuINf12oVscVv8i1koH0_3QQkbd36_eo",
       "eas": {
-        "projectId": "b2a573a2-8380-4092-bc56-8350443770a8"
+        "projectId": "1f33a6b3-25f9-4cdb-b054-fcb1d910262e"
       },
       "CHATBOT_API_URL": "https://api.stack-ai.com/inference/v0/run/cd977e32-3fec-4f93-a961-81a1002e492a/67b4c7bd43ffc313428d3b5d",
       "CHAtBOT_TOKEN": "Bearer 714aba56-69e4-4fc7-84ca-3dd96dbbf50a"

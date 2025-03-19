@@ -254,6 +254,12 @@ socketIO.on("connection", (socket) => {
 
   socket.on("newChatMessage", async (data) => {
     const { currentChatMesage, groupIdentifier, currentUser, timeData } = data;
+
+    // Aquí se reciben los mensajes
+    console.log("AQUI SE RECIBEN LOS MENSAJES");
+    console.log("Mensaje recibido: ", currentChatMesage);
+
+
     const filteredGroup = chatgroups.filter(
       (item) => item.id === groupIdentifier
     );

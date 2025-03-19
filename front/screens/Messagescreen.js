@@ -1,128 +1,134 @@
-import { useContext, useEffect, useLayoutEffect ,useState} from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   FlatList,
   Keyboard,
   Pressable,
-  StyleSheet,
   Text,
   TextInput,
   View,
+  KeyboardAvoidingView,
+  Platform,
+  Image,
+  TouchableOpacity
 } from "react-native";
-import  {socket}  from "../util/connectionChat";
+import { socket } from "../util/connectionChat";
 import Messagecomponent from "./Messagecomponent";
 import { getGlobalData } from "../backend/querys/inserts/New_email";
+import Constants from "expo-constants";
+import { useTranslation } from "react-i18next";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { useNavigation } from "@react-navigation/native";
+import ModalUserProfile from "@/components/ModalUserProfile";
 
-export default function Messagescreen({ navigation, route }) {
-  const [allChatMessages,setAllChatMessages]=useState([]);
+export default function Messagescreen({ route }) {
+  const [allChatMessages, setAllChatMessages] = useState([]);
   const [currentUser, setCurrentUser] = useState("");
-  const [currentChatMesage, setCurrentChatMessage] = useState('')
-  const { currentGroupName, currentGroupID } = route.params;
- 
+  const [currentChatMessage, setCurrentChatMessage] = useState("");
+  const { currentGroupName, currentGroupID, userData } = route.params;
+  const flatListRef = useRef(null);
+  const { t } = useTranslation();
+  const navigation = useNavigation();
+  const [modalUserProfileVisible, setModalUserProfileVisible] = useState(false);
+
+  useEffect(() => {
+    const usuario = getGlobalData("email");
+    setCurrentUser(usuario);
+
+    socket.emit("findGroup", currentGroupID);
+    socket.on("foundGroup", (allChats) => {
+      setAllChatMessages(allChats);
+      scrollToBottom();
+    });
+
+    return () => {
+      socket.off("foundGroup");
+    };
+  }, [socket]);
 
   function handleAddNewMessage() {
+    if (!currentChatMessage.trim()) return;
+
     const timeData = {
-      hr:
-        new Date().getHours() < 10
-          ? `0${new Date().getHours()}`
-          : new Date().getHours(),
-      mins:
-        new Date().getMinutes() < 10
-          ? `0${new Date().getMinutes()}`
-          : new Date().getMinutes(),
+      hr: new Date().getHours().toString().padStart(2, "0"),
+      mins: new Date().getMinutes().toString().padStart(2, "0"),
     };
 
-     console.log("el mensaje",  currentGroupID)
-     
+    socket.emit("newChatMessage", {
+      currentChatMesage: currentChatMessage,
+      groupIdentifier: currentGroupID,
+      currentUser,
+      timeData,
+    });
 
- 
-      socket.emit("newChatMessage", {
-        currentChatMesage,
-        groupIdentifier: currentGroupID,
-        currentUser,
-        timeData,
-      });
-
-      setCurrentChatMessage("");
-      Keyboard.dismiss();
-      
-    
+    setCurrentChatMessage("");
+    Keyboard.dismiss();
   }
 
-
-  useEffect(()=>{
-    const usuario=getGlobalData("email");
-    console.log("El usurio que encontro es=",getGlobalData("email"))
-    setCurrentUser(usuario)
-    
-    socket.emit('findGroup', currentGroupID)
-    socket.on('foundGroup', (allChats)=> setAllChatMessages(allChats))
-  },[socket])
-
+  function scrollToBottom() {
+    flatListRef.current?.scrollToEnd({ animated: true });
+  }
 
   return (
-    <View style={styles.wrapper}>
-      <View
-        style={[styles.wrapper, { paddingVertical: 50, paddingHorizontal: 10 }]}
-      >
-        {allChatMessages && allChatMessages[0] ? (
-         <FlatList
-         data={allChatMessages}
-         renderItem={({ item }) => (
-          <Messagecomponent item={item} currentUser={currentUser} />
-        )}
-         keyExtractor={(item) => item.id}
-       />
-        ) : (
-          ""
-        )}
+    <KeyboardAvoidingView
+      // behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1, marginTop: Constants.statusBarHeight }}
+    >
+      <View className="flex-row items-center bg-white px-4 py-3 border-b border-gray-300 shadow-md">
+        <Pressable onPress={() => navigation.goBack()} className="mr-3">
+          <FontAwesome5 name="arrow-left" size={24} color="black" />
+        </Pressable>
+        <TouchableOpacity className="flex flex-row items-center" onPress={() => setModalUserProfileVisible(!modalUserProfileVisible)}>
+          <Image
+            source={{ uri: userData.Url }}
+            className="w-10 h-10 rounded-full mr-3"
+          />
+          <Text className="text-lg font-semibold">{userData.FirstName}</Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.messageInputContainer}>
-        <TextInput
-          style={styles.messageInput}
-          value={currentChatMesage}
-          onChangeText={(value) => setCurrentChatMessage(value)}
-          placeholder="Enter your message"
+
+      <View className="flex-1 px-4">
+        <FlatList
+          ref={flatListRef}
+          data={allChatMessages}
+          renderItem={({ item }) => (
+            <Messagecomponent item={item} currentUser={currentUser} />
+          )}
+          keyExtractor={(item) => item.id}
+          onContentSizeChange={scrollToBottom}
+          onLayout={scrollToBottom}
+          showsVerticalScrollIndicator={false}
         />
 
-        <Pressable onPress={handleAddNewMessage} style={styles.button}>
-          <View>
-            <Text style={styles.buttonText}>SEND</Text>
-          </View>
-        </Pressable>
+        <View className="flex-row items-center p-2 bg-gray-100 border-t border-gray-400">
+          <TextInput
+            className="flex-1 bg-white rounded-xl px-4 py-2 text-lg"
+            value={currentChatMessage}
+            onChangeText={setCurrentChatMessage}
+            placeholder={t("type_your_message")}
+            multiline
+          />
+          <Pressable
+            onPress={handleAddNewMessage}
+            className="ml-2 bg-red-500 p-2 rounded-full"
+          >
+            <FontAwesome5 name="arrow-alt-circle-right" size={24} color="white" />
+          </Pressable>
+        </View>
       </View>
-    </View>
+      <ModalUserProfile
+        isVisible={modalUserProfileVisible}
+        onClose={() => setModalUserProfileVisible(false)}
+        userData={{
+          image: userData.Url,
+          name: userData.FirstName,
+          status: userData.Status,
+          role: userData.Role, 
+          city: userData.City,
+          state: userData.State,
+          blood_type: userData.Blood_Type,
+          gender: userData.Gender
+        }}
+      />
+    </KeyboardAvoidingView>
   );
 }
-
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    backgroundColor: "#eee",
-  },
-  messageInputContainer: {
-    width: "100%",
-    backgroundColor: "#fff",
-    paddingVertical: 30,
-    paddingHorizontal: 15,
-    justifyContent: "center",
-    flexDirection: "row",
-  },
-  messageInput: {
-    borderWidth: 1,
-    padding: 15,
-    flex: 1,
-    borderRadius: 50,
-    marginRight: 10,
-  },
-  button: {
-    width: "30%",
-    backgroundColor: "#703efe",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 50,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 20,
-  },
-});
