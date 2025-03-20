@@ -305,7 +305,26 @@ socketIO.on("connection", (socket) => {
       // LAUNCH PUSH NOTIFICATION*************************************************
       const token = await getUserToken(filteredGroup[0].currentSecondGroup);
       console.log("TOKEN RECUPERADO DEL OTRO USUARIO: ", token);
-      
+
+      if(token !== null){
+        const messages = {
+          to: token,
+          sound: "default",
+          title: "Blood Match",
+          body: "¡Tienes un nuevo mensaje en blood match!",
+          // data: { extraData: "Datos adicionales opcionales" },
+        }
+
+        await fetch("https://exp.host/--/api/v2/push/send", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(messages),
+        });
+      }
+
     }
   });
 });
