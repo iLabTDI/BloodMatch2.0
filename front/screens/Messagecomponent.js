@@ -60,14 +60,14 @@ export default function Messagecomponent({ currentUser, item }) {
 
   return (
     <View className={`flex ${isCurrentUser ? "items-end" : "items-start"} mb-3`}>
-      <View className="max-w-[50%]">
+      <View className="max-w-[70%]">
         <View className="flex-row items-center">
           <View
             className={`p-3 rounded-xl ${
               isCurrentUser ? "bg-red-500" : "bg-white"
             }`}
           >
-            <Text className={`${isCurrentUser ? "text-white" : "text-black"}`}>
+            <Text className={`${isCurrentUser ? "text-white" : "text-black"} text-base`}>
               {item.text}
             </Text>
           </View>

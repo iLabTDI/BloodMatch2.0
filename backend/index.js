@@ -305,7 +305,7 @@ socketIO.on("connection", (socket) => {
       // LAUNCH PUSH NOTIFICATION*************************************************
       const token = await getUserToken(filteredGroup[0].currentSecondGroup);
       console.log("TOKEN RECUPERADO DEL OTRO USUARIO: ", token);
-
+      
     }
   });
 });

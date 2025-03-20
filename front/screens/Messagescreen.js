@@ -100,7 +100,7 @@ export default function Messagescreen({ route }) {
 
         <View className="flex-row items-center p-2 bg-gray-100 border-t border-gray-400">
           <TextInput
-            className="flex-1 bg-white rounded-xl px-4 py-2 text-lg"
+            className="flex-1 bg-white rounded-xl px-4 py-2 text-lg max-h-24 overflow-scroll"
             value={currentChatMessage}
             onChangeText={setCurrentChatMessage}
             placeholder={t("type_your_message")}
