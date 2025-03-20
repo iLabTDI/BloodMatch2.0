@@ -61,7 +61,6 @@ export default function Messagescreen({ route }) {
     });
 
     setCurrentChatMessage("");
-    Keyboard.dismiss();
   }
 
   function scrollToBottom() {

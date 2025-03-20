@@ -3,7 +3,7 @@ import { supabase } from "./supabase";
 import bcrypt from "bcryptjs";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export async function getDates(email) {
+export async function getDates(email: string) {
   try {
       const { data, error } = await supabase
           .from("users")
@@ -46,7 +46,7 @@ export async function generaldates() {
     }
 }
 
-function hashPassword(password) {
+function hashPassword(password: string) {
   const salt = bcrypt.genSaltSync(10);
   return bcrypt.hashSync(password, salt);
 }
@@ -85,6 +85,7 @@ export const New_User = async (
                     Role: TypeRol,
                     Tutorial: false,
                     Url: Url,
+                    Token: null
                 },
             ])
             .select();
@@ -315,7 +316,7 @@ export async function updateRole(email, newRole) {
   }
 }
 
-export async function updateLocation(email, state, municipality) {
+export async function updateLocation(email: string, state: string, municipality: string) {
   if (!email || !state || !municipality) {
     console.error("Email, Estado y Municipio son requeridos");
     return null;

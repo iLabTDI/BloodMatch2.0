@@ -301,6 +301,11 @@ socketIO.on("connection", (socket) => {
 
       // Save the updated chat groups
       //saveChatGroups();
+
+      // LAUNCH PUSH NOTIFICATION*************************************************
+      const token = await getUserToken(filteredGroup[0].currentSecondGroup);
+      console.log("TOKEN RECUPERADO DEL OTRO USUARIO: ", token);
+
     }
   });
 });
@@ -320,3 +325,16 @@ process.on("SIGINT", () => {
 
   process.exit();
 });
+
+async function getUserToken(email) {
+  const { data, error } = await supabase
+    .from("users")
+    .select("Token")
+    .eq("Email", email)
+    .single();
+  if (error) {
+    console.error("Error al obtener el token:", error);
+    return null;
+  }
+  return data?.Token;
+}

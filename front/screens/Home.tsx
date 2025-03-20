@@ -33,6 +33,9 @@ import CustomNotification from "../components/customNotification";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import RedLoader from "../components/RedLoader";
 import ModalUserProfile from "../components/ModalUserProfile";
+import * as Notifications from "expo-notifications";
+import * as Device from "expo-device";
+import { setExpoTokenNotification } from "../lib/querys";
 
 interface TaskInterface {
   user: string;
@@ -70,6 +73,38 @@ function Home() {
 
   const navigation = useNavigation();
   const { t } = useTranslation();
+
+  const [expoPushToken, setExpoPushToken] = useState(null);
+
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+    }),
+  });
+
+  async function registerForPushNotifications() {
+    if (!Device.isDevice) {
+      Alert.alert("Error", "Las notificaciones solo funcionan en dispositivos físicos.");
+      return;
+    }
+
+    const { status } = await Notifications.requestPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert("Permiso denegado", "Habilita las notificaciones en la configuración.");
+      return;
+    }
+
+    // Obtener token de Expo
+    const token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log("Expo Push Token:", token);
+    setExpoPushToken(token);
+
+    // Guardar token en la base de datos
+    const email = getGlobalData("email");
+    await setExpoTokenNotification(email, token);
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -116,6 +151,7 @@ function Home() {
 
     fetchUserData();
     fetchData();
+    registerForPushNotifications();
   }, []);
 
   useEffect(() => {
