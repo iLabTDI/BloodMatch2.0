@@ -79,7 +79,7 @@ export default function TabNavigator() {
            
                <Tab.Screen
                 name = {t("map_label")}
-                component = { Location }
+                component = { Locate }
                 options={{ 
                     tabBarLabel: t("map"),
                     tabBarIcon: ({ color, size }) => (
