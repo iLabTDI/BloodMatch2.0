@@ -10,11 +10,11 @@
     "error_email_pass": "Incorrect email and/or password",
     "error_login": "Login error",
     "loading": "Loading...",
-    
+
     "register section": "****************************************************************************************************",
     "register": "Sign up",
     "title_register": "Join the BloodMatch community",
-    "name": "First name(s)",
+    "name": "First name",
     "last_name": "Last name",
     "dob": "Date of birth",
     "age": "Age",
@@ -35,12 +35,12 @@
     "accept_the": "I accept the",
     "terms": "terms and conditions",
     "start_helping": "Start helping",
-    "error_image": "Unable to save the image",
-    "characteristics_pass_title": "Required password characteristics",
-    "characteristics_pass": "- Must be at least 8 characters\n- Must include at least one uppercase letter\n- Must include at least one lowercase letter\n- Must have at least one number\n- Must have at least one special symbol\n- Must not contain spaces\n",
+    "error_image": "Unable to save image",
+    "characteristics_pass_title": "Password requirements",
+    "characteristics_pass": "- Must have at least 8 characters\n- Must include at least one uppercase letter\n- Must include at least one lowercase letter\n- Must have at least one number\n- Must have at least one special symbol\n- Must not contain spaces\n",
     "success": "Success",
     "success_form_submit": "Form submitted successfully",
-    "error_form_submit": "Error trying to register a new user, please try again later",
+    "error_form_submit": "Error while trying to register a new user, please try again later",
     "close": "Close",
     "accept": "Accept",
 
@@ -53,14 +53,14 @@
     "settings": "Settings",
 
     "home section": "****************************************************************************************************",
-    "exit_app": "Exit the app",
+    "exit_app": "Exit the application",
     "exit_app_confirm": "Are you sure you want to exit?",
     "cancel": "Cancel",
     "exit": "Exit",
     "made_a_match": "You made a match!",
     "chat_created": "A chat was created. Go to Messages",
-    "no_results": "No results to show",
-    "search_by": "Search for donors or recipients by...",
+    "no_results": "No results to display",
+    "search_by": "Search for donors or recipients based on...",
     "search": "Search by:",
     "select_a_category": "Select a category",
     "my_municipality": "My municipality",
@@ -69,28 +69,28 @@
     "filter_by_municipality": "Filter by municipality",
     "view_profile": "View profile",
     "years": "Years",
-    "no_filters": "Quit filters",
+    "no_filters": "Remove filters",
 
     "chatbot section": "****************************************************************************************************",
     "initial_message": "Hello! I am the BloodMatch assistant. How can I help you today?",
-    "i_didnt_understand_your_message": "Sorry, I didn't understand your message.",
+    "i_didnt_understand_your_message": "Sorry, I didn’t understand your message.",
     "type_your_message": "Type your message...",
 
     "map section": "****************************************************************************************************",
-
+    "go_to_google_maps": "Go to Google Maps",
 
     "messenger section": "****************************************************************************************************",
     "search_chat": "Search chats",
-    "start_messaging": "Press to start chat",
+    "start_messaging": "Tap to start a chat",
     "now": "Now",
     "no_chats": "No chats found",
 
     "profile section": "****************************************************************************************************",
     "location": "Location",
     "image_saved": "Image saved!",
-    "image_error": "There was an error processing the image.",
+    "image_error": "An error occurred while processing the image.",
     "status": "Status",
-    "no_status": "Hi, I'm using BloodMatch!",
+    "no_status": "Hello, I’m using BloodMatch!",
     "user_type": "User type",
     "no_user_type": "No user type",
     "update_status": "Update status",
@@ -98,7 +98,7 @@
     "update_status_success": "Status updated successfully",
     "type_new_status": "Type your new status...",
     "update_status_error": "An error occurred while updating the status, please try again later",
-    "250_characters_in_status": "Status must not exceed 250 characters",
+    "250_characters_in_status": "The status must not exceed 250 characters",
     "select_a_role": "Select a role",
     "update_role_success": "Role updated successfully",
     "update_role_error": "An error occurred while updating the role, please try again later",
@@ -108,7 +108,7 @@
     "update_location_error": "An error occurred while updating the location, please try again later",
     "update_location": "Update location",
     "insert_a_new_phone": "Enter your new phone number",
-    "invalid_phone_format": "Invalid phone number format",
+    "invalid_phone_format": "Invalid phone format",
     "update_phone_success": "Phone number updated successfully",
     "update_phone_error": "An error occurred while updating the phone number, please try again later",
     "update_phone": "Update phone number",
@@ -120,15 +120,15 @@
     "select_language": "Select a language",
     "select_option": "Select an option",
     "change_user": "Change user",
-    "change_password": "Change Password",
+    "change_password": "Change password",
     "preferences": "PREFERENCES",
     "notifications": "Notifications",
     "theme": "Theme",
     "verification_two_steps": "Two-step verification",
-    "privacy_and_security": "PRIVACY AND SECURITY",
+    "privacy_and_security": "PRIVACY & SECURITY",
     "delete_account": "Delete account",
     "privacy": "Privacy",
-    "help_and_legal": "HELP AND LEGAL",
+    "help_and_legal": "HELP & LEGAL",
     "support": "Support",
     "terms_and_conditions": "Terms and conditions",
     "log_out": "Log out",
@@ -138,63 +138,6 @@
     "messenger_label": "Messages",
     "profile_label": "Profile",
     "settings_label": "Settings",
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -7,6 +7,8 @@ import {EventRegister} from 'react-native-event-listeners';
 import themeContext from '../helper/ThemeCon';
 import darkMode from '../helper/DarkMode';
 import { useFonts } from 'expo-font';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import i18next from 'i18next';
 
 export default function App () {
   const [theme, setTheme] = useState(false)
@@ -17,6 +19,17 @@ export default function App () {
     'Quicksand-Regular': require('../assets/fonts/Quicksand-Regular.ttf'),
   });
 
+  const applyStoredLanguage = async () => {
+    try {
+      const storedLng = await AsyncStorage.getItem('appLanguage');
+      if (storedLng) {
+        i18next.changeLanguage(storedLng);
+      }
+    } catch (error) {
+      console.error("Error loading language preference:", error);
+    }
+  };
+
   useEffect(()=>{
     let eventListener = EventRegister.addEventListener('Cambiar el tema', (data) =>{
       setTheme(data);
@@ -26,6 +39,10 @@ export default function App () {
       EventRegister.removeEventListener(eventListener)
     };
   });
+
+  useEffect(() => {
+    applyStoredLanguage();
+  }, []);
 
 if (!fontsLoaded) {
     return null;

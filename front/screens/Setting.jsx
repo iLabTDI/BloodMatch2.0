@@ -319,7 +319,7 @@ import { useTranslation } from "react-i18next";
 import adjust from "../assets/fonts/ajust.js";
 import { Session } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalLanguages from "@/components/ModalLanguages";
 
 const SettingItem = ({ icon: Icon, title, onPress }) => (
@@ -379,9 +379,14 @@ const delete_account= (t, navigation) => {
   )
 }
 
-const changeLng = lng => {
-  if(lng === "" || lng === null || lng === undefined) return;
-  i18next.changeLanguage(lng);
+const changeLng = async (lng) => {
+  if (!lng) return;
+  try {
+    await AsyncStorage.setItem('appLanguage', lng);
+    i18next.changeLanguage(lng);
+  } catch (error) {
+    console.error("Error saving language preference:", error);
+  }
 };
 
 const SettingsScreen = ({navigation}) => {

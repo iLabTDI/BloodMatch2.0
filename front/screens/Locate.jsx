@@ -4,6 +4,7 @@ import MapView, { PROVIDER_DEFAULT, Marker } from "react-native-maps";
 import * as location from 'expo-location';
 import { mapStyle } from '../assets/API/mapStyle';
 import hospitals from "../assets/bancosSangre.json";
+import { useTranslation } from "react-i18next";
 
 const haversineDistance = (coords1, coords2) => {
   const toRad = x => x * Math.PI / 180;
@@ -23,6 +24,7 @@ const haversineDistance = (coords1, coords2) => {
 };
 
 const Locate = ({ navigation }) => {
+  const {t} = useTranslation();
 
  // Estado para la ubicación actual, inicialmente con valores por defecto
  const [origin, setOrigin] = useState({
@@ -156,7 +158,7 @@ const Locate = ({ navigation }) => {
                   className="bg-red-600 rounded-xl w-3/4 p-3 mx-auto"
                   onPress={() => openInGoogleMaps(selectedMarker.latitude, selectedMarker.longitude)}
                 >
-                  <Text className="text-white text-center">Ir a Google Maps</Text>
+                  <Text className="text-white text-center">{t("go_to_google_maps")}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setSelectedMarker(null)} className="mt-4 bg-red-600 rounded-xl w-3/4 p-3 mx-auto">
                   <Text className="text-white text-center">Cerrar</Text>
