@@ -5,6 +5,11 @@ import * as location from 'expo-location';
 import { mapStyle } from '../assets/API/mapStyle';
 import hospitals from "../assets/bancosSangre.json";
 import { useTranslation } from "react-i18next";
+import MapboxGL from "@rnmapbox/maps";
+
+const tokenmapbox = "sk.eyJ1IjoiZGllZ28xMjAzNzg0MyIsImEiOiJjbTkxaDFtdnYwMHdiMnJweXozcHB0MmM1In0.Qtq71L8irixFEi8Lc2K2Cw";
+
+MapboxGL.setAccesToken(tokenmapbox);
 
 const haversineDistance = (coords1, coords2) => {
   const toRad = x => x * Math.PI / 180;
@@ -87,81 +92,154 @@ const Locate = ({ navigation }) => {
   };
 
   return (
-    <View
-      className="flex-1"
-    >
-      <MapView
-        customMapStyle={mapStyle}
-        provider={PROVIDER_DEFAULT}
-        googleMapId="a2f7835530245c97"
-        className="w-screen h-screen"
-        region={{
-          latitude: origin.latitude,
-          longitude: origin.longitude,
-          latitudeDelta: 0.03,
-          longitudeDelta: 0.03,
-        }}
-        mapType="standard"
-        showsUserLocation
-        showsMyLocationButton
-        showsPointsOfInterest={false}
-        showsTraffic={false}
-        showsBuildings={false}
-        showsIndoors={false}
-        showsCompass={false}
-        showsIndoorLevelPicker={false}
-        marker={false}
+    // <View
+    //   className="flex-1"
+    // >
+    //   <MapView
+    //     customMapStyle={mapStyle}
+    //     provider={PROVIDER_DEFAULT}
+    //     googleMapId="a2f7835530245c97"
+    //     className="w-screen h-screen"
+    //     region={{
+    //       latitude: origin.latitude,
+    //       longitude: origin.longitude,
+    //       latitudeDelta: 0.03,
+    //       longitudeDelta: 0.03,
+    //     }}
+    //     mapType="standard"
+    //     showsUserLocation
+    //     showsMyLocationButton
+    //     showsPointsOfInterest={false}
+    //     showsTraffic={false}
+    //     showsBuildings={false}
+    //     showsIndoors={false}
+    //     showsCompass={false}
+    //     showsIndoorLevelPicker={false}
+    //     marker={false}
+    //   >
+    //     {nearbyHospitals.map((hospital, index) => (
+    //       <Marker
+    //         key={index}
+    //         coordinate={{
+    //           latitude: hospital.latitude,
+    //           longitude: hospital.longitude,
+    //         }}
+    //         title={hospital.nombre}
+    //         onPress={() => handleMarkerPress({
+    //           title: hospital.nombre,
+    //           direccion: hospital.direccion,
+    //           number: hospital.number,
+    //           redes: hospital.redes,
+    //           image: hospital.image,
+    //           latitude: hospital.latitude,
+    //           longitude: hospital.longitude
+    //         })}
+    //       >
+    //         <View className="w-9 h-9 bg-transparent">
+    //           <Image
+    //             source={require('../assets/sangreb.png')}
+    //             className="w-full h-full object-contain"
+    //           />
+    //         </View>
+    //       </Marker>
+    //     ))}
+    //   </MapView>
+  
+    //   <Modal
+    //     visible={selectedMarker !== null}
+    //     animationType="slide"
+    //     transparent={true}
+    //     onRequestClose={() => setSelectedMarker(null)}
+    //   >
+    //     <View className="flex-1 justify-center items-center bg-black/40">
+    //       <View className="w-5/6 bg-white rounded-xl border border-white">
+    //         {selectedMarker && (
+    //           <>
+    //             <View className="flex items-center w-full h-1/2 mb-4">
+    //               <Image source={{ uri: selectedMarker.image }} className="w-full h-full rounded-t-xl"/>
+    //             </View>
+    //             <Text className="text-xl font-bold text-center mb-4">{selectedMarker.title}</Text>
+    //             <TouchableOpacity
+    //               className="bg-red-600 rounded-xl w-3/4 p-3 mx-auto"
+    //               onPress={() => openInGoogleMaps(selectedMarker.latitude, selectedMarker.longitude)}
+    //             >
+    //               <Text className="text-white text-center">{t("go_to_google_maps")}</Text>
+    //             </TouchableOpacity>
+    //             <TouchableOpacity onPress={() => setSelectedMarker(null)} className="mt-4 bg-red-600 rounded-xl w-3/4 p-3 mx-auto">
+    //               <Text className="text-white text-center">Cerrar</Text>
+    //             </TouchableOpacity>
+    //           </>
+    //         )}
+    //       </View>
+    //     </View>
+    //   </Modal>
+    // </View>
+    <View style={{ flex: 1 }}>
+      <MapboxGL.MapView
+        style={{ flex: 1 }}
+        logoEnabled={false}
       >
+        <MapboxGL.Camera
+          centerCoordinate={[origin.longitude, origin.latitude]}
+          zoomLevel={14}
+        />
         {nearbyHospitals.map((hospital, index) => (
-          <Marker
+          <MapboxGL.PointAnnotation
             key={index}
-            coordinate={{
-              latitude: hospital.latitude,
-              longitude: hospital.longitude,
-            }}
-            title={hospital.nombre}
-            onPress={() => handleMarkerPress({
-              title: hospital.nombre,
-              direccion: hospital.direccion,
-              number: hospital.number,
-              redes: hospital.redes,
-              image: hospital.image,
-              latitude: hospital.latitude,
-              longitude: hospital.longitude
-            })}
+            id={`hospital-${index}`}
+            coordinate={[hospital.longitude, hospital.latitude]}
+            onSelected={() =>
+              handleMarkerPress({
+                title: hospital.nombre,
+                direccion: hospital.direccion,
+                number: hospital.number,
+                redes: hospital.redes,
+                image: hospital.image,
+                latitude: hospital.latitude,
+                longitude: hospital.longitude,
+              })
+            }
           >
-            <View className="w-9 h-9 bg-transparent">
+            <View style={{ width: 36, height: 36, backgroundColor: "transparent" }}>
               <Image
-                source={require('../assets/sangreb.png')}
-                className="w-full h-full object-contain"
+                source={require("../assets/sangreb.png")}
+                style={{ width: "100%", height: "100%", resizeMode: "contain" }}
               />
             </View>
-          </Marker>
+          </MapboxGL.PointAnnotation>
         ))}
-      </MapView>
-  
+      </MapboxGL.MapView>
+
       <Modal
         visible={selectedMarker !== null}
         animationType="slide"
         transparent={true}
         onRequestClose={() => setSelectedMarker(null)}
       >
-        <View className="flex-1 justify-center items-center bg-black/40">
-          <View className="w-5/6 bg-white rounded-xl border border-white">
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.4)" }}>
+          <View style={{ width: "80%", backgroundColor: "white", borderRadius: 10, padding: 10 }}>
             {selectedMarker && (
               <>
-                <View className="flex items-center w-full h-1/2 mb-4">
-                  <Image source={{ uri: selectedMarker.image }} className="w-full h-full rounded-t-xl"/>
+                <View style={{ width: "100%", height: 200, marginBottom: 10 }}>
+                  <Image
+                    source={{ uri: selectedMarker.image }}
+                    style={{ width: "100%", height: "100%", borderTopLeftRadius: 10, borderTopRightRadius: 10 }}
+                  />
                 </View>
-                <Text className="text-xl font-bold text-center mb-4">{selectedMarker.title}</Text>
+                <Text style={{ fontSize: 20, fontWeight: "bold", textAlign: "center", marginBottom: 10 }}>
+                  {selectedMarker.title}
+                </Text>
                 <TouchableOpacity
-                  className="bg-red-600 rounded-xl w-3/4 p-3 mx-auto"
+                  style={{ backgroundColor: "red", borderRadius: 10, padding: 10, alignSelf: "center", width: "70%", marginBottom: 10 }}
                   onPress={() => openInGoogleMaps(selectedMarker.latitude, selectedMarker.longitude)}
                 >
-                  <Text className="text-white text-center">{t("go_to_google_maps")}</Text>
+                  <Text style={{ color: "white", textAlign: "center" }}>{t("go_to_google_maps")}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setSelectedMarker(null)} className="mt-4 bg-red-600 rounded-xl w-3/4 p-3 mx-auto">
-                  <Text className="text-white text-center">Cerrar</Text>
+                <TouchableOpacity
+                  style={{ backgroundColor: "red", borderRadius: 10, padding: 10, alignSelf: "center", width: "70%" }}
+                  onPress={() => setSelectedMarker(null)}
+                >
+                  <Text style={{ color: "white", textAlign: "center" }}>Cerrar</Text>
                 </TouchableOpacity>
               </>
             )}
