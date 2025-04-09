@@ -197,6 +197,11 @@ socketIO.on("connection", (socket) => {
     console.log("el socket es", chatgroups);
   });
 
+  socket.on("deleteGroup", async ({ currentUser, secondUser }) => {
+    const result = await deleteChatGroupByUsers(currentUser, secondUser);
+    socket.emit("deleteGroupResult", result);
+  });
+
   socket.on(
     "createNewGroup",
     async ({ currentGroupName, currentSecondGroup }) => {
@@ -357,3 +362,63 @@ async function getUserToken(email) {
   }
   return data?.Token;
 }
+
+async function deleteChatGroupByUsers(currentUser, secondUser) {
+  try {
+    // Buscar el grupo que coincide con los dos usuarios (sin importar el orden)
+    const { data: groups, error: searchError } = await supabase
+      .from("savegroups2")
+      .select("*")
+      .or(
+        `and(currentGroupName.eq.${currentUser},currentSecondGroup.eq.${secondUser}),and(currentGroupName.eq.${secondUser},currentSecondGroup.eq.${currentUser})`
+      );
+
+    if (searchError) {
+      console.error("Error al buscar el grupo:", searchError);
+      return { success: false, message: "Error buscando el grupo" };
+    }
+
+    if (!groups || groups.length === 0) {
+      console.log("No se encontró ningún grupo con esos usuarios.");
+      return { success: false, message: "Grupo no encontrado" };
+    }
+
+    const groupToDelete = groups[0];
+    const groupId = groupToDelete.id;
+
+    // Eliminar de la tabla savegroups2
+    const { error: deleteGroupError } = await supabase
+      .from("savegroups2")
+      .delete()
+      .eq("id", groupId);
+
+    if (deleteGroupError) {
+      console.error("Error al eliminar el grupo:", deleteGroupError);
+      return { success: false, message: "Error eliminando el grupo" };
+    }
+
+    // Eliminar de la tabla messages
+    const { error: deleteMessagesError } = await supabase
+      .from("messages")
+      .delete()
+      .eq("idGroup", groupId);
+
+    if (deleteMessagesError) {
+      console.error("Error al eliminar mensajes:", deleteMessagesError);
+      return { success: false, message: "Error eliminando mensajes" };
+    }
+
+    // Eliminar del array en memoria
+    chatgroups = chatgroups.filter((group) => group.id !== groupId);
+
+    // Emitir actualizacion a todos los clientes
+    socketIO.emit("groupList", chatgroups);
+
+    console.log(`Grupo entre ${currentUser} y ${secondUser} eliminado.`);
+    return { success: true, message: "Grupo eliminado correctamente" };
+  } catch (error) {
+    console.error("Error general al eliminar el grupo:", error);
+    return { success: false, message: "Error inesperado", error };
+  }
+}
+

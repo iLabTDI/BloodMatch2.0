@@ -139,26 +139,6 @@ const Messenger = ({ navigation }) => {
         return result;
     }
 
-    //Funcion para obtener el texto del buscador e ir cambiando el contenido del flatlist
-    // const searchFilter3 = (text) => {
-    //     if (text) {
-    //         const newData = filterData.filter((item) => {
-    //             const itemData = item.currentSecondGroup
-    //                 ? item.setCurrentGroupName.toUpperCase()
-    //                 : "".toUpperCase();
-    //             const textData = text.toUpperCase();
-    //             return itemData.indexOf(textData) > -1;
-    //         });
-
-    //         setfilterData(newData);
-    //         // setsearch(text);
-    //     } else {
-    //         //setfilterData(fullData);
-    //         setfilterData(filteredChatRooms);
-    //     }
-    //     setsearch(text); // Actualiza el texto ingresado
-    // };
-
     const searchFilter = (text) => {
         setIsLoading(true);
         if (text) {
@@ -204,7 +184,13 @@ const Messenger = ({ navigation }) => {
           : (
             <FlatList
                 data={filterData}
-                renderItem={({ item }) => <Chatcomponent item={item} />}
+                renderItem={({ item }) => <Chatcomponent 
+                    item={item}
+                    onDelete={() => {
+                        setfilterData((prev) => prev.filter(chat => chat.id !== item.id));
+                        setAllChatRooms((prev) => prev.filter(chat => chat.id !== item.id));
+                    }} 
+                />}
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={{ flexGrow: 1 }}
                 ListEmptyComponent={
@@ -218,11 +204,5 @@ const Messenger = ({ navigation }) => {
         </SafeAreaView>
     );
 };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     marginTop: Constants.statusBarHeight
-//   }
-// });
 
 export default Messenger;
