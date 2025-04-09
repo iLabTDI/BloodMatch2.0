@@ -66,7 +66,7 @@ export default function Tutorial({ onClose }) {
     },
     {
       backgroundColor: "#e6e6fd",
-      image: require("../images/configuracionTutorial.png"),
+      image: require("../images/perfilTutorial.png"),
       dimensions: { width: wp(55), height: hp(55) },
       color: "#69379f",
       title: "¡Ajusta cuando quieras!",
