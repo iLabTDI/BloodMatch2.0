@@ -72,6 +72,7 @@ const Messenger = ({ navigation }) => {
     const filt = [];
     useFocusEffect(
         useCallback(() => {
+            setIsLoading(true);
             verification();
 
             const handleFound = (messages) => {
@@ -88,6 +89,8 @@ const Messenger = ({ navigation }) => {
 
             socket.on("found", handleFound);
 
+            setIsLoading(false);
+
             return () => {
                 socket.off("found", handleFound);
                 socket.off("groupList");
@@ -96,6 +99,7 @@ const Messenger = ({ navigation }) => {
     );
 
     useEffect(() => {
+        setIsLoading(true);
         if (allChatRooms.length > 0) {
             const result = filteredChatRooms();
             console.log("El resultado es:", result);
@@ -103,6 +107,7 @@ const Messenger = ({ navigation }) => {
         } else {
             console.log("No hay datos en allChatRooms todavía.");
         }
+        setIsLoading(false);
     }, [allChatRooms]);
 
     const user = getGlobalData("email");
