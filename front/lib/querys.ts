@@ -415,3 +415,23 @@ export async function addReport(user: string, reason: string, reportedBy: string
     return { success: false, error: err.message || "Unexpected error" };
   }
 }
+
+
+export async function deleteUserByEmail(email: string) {
+  if (!email) {
+    console.error("Email is required to delete a user");
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from('users')
+    .delete()
+    .eq('Email', email);
+
+  if (error) {
+    console.error("Error deleting user:", error.message);
+    return { success: false, error };
+  }
+
+  return { success: true, data };
+}

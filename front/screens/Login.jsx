@@ -310,11 +310,11 @@ const LogIn = (props) => {
                         <TouchableOpacity  onPress={() => { navigation.navigate('new-reg') }}>
                             <Text className="text-red-500 text-center mb-4">{t("forgot_password")}</Text>
                         </TouchableOpacity>
-                        <View className="flex-row justify-center space-x-4 mb-4">
+                        {/* <View className="flex-row justify-center space-x-4 mb-4">
                             <SocialIcon type="google" />
                             <SocialIcon type="facebook" />
-                            {/* <SocialIcon type="twitter" /> */}
-                        </View>
+                            <SocialIcon type="twitter" />
+                        </View> */}
                         </>
                     ) : (
                         // Register

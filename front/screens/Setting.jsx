@@ -23,6 +23,8 @@ import { Session } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalLanguages from "@/components/ModalLanguages";
+import { getGlobalData } from "@/backend/querys/inserts/New_email";
+import { deleteUserByEmail } from "@/lib/querys";
 
 const SettingItem = ({ icon: Icon, title, onPress }) => (
   <TouchableOpacity className="flex-row items-center py-4 px-6 border-b border-gray-200" onPress={onPress}>
@@ -61,16 +63,22 @@ const log_out = (t, navigation) => {
 };
 
 
-//Falta eliminar de la base de datos
-const delete_account= (t, navigation) => { 
+async function delete_account(t, navigation, currentUser) { 
   Alert.alert(
     (t("delacc")),
     (t("elimconf")),
     [
       {
-        text: (t("Yes")), onPress: () => {
-          navigation.push('Login')
-          alert(t("accountelim"))
+        text: (t("Yes")), onPress: async () => {
+          let res = await deleteUserByEmail(currentUser);
+          if(res.success){
+            navigation.push('Login');
+            alert(t("accountelim"));
+            return;
+          }else{
+            alert(t("error_delete_account"));
+            return;
+          }
         }
       },
       {
@@ -110,7 +118,8 @@ const SettingsScreen = ({navigation}) => {
         log_out(t, navigation);
         break;
       case "Delete_account":
-        delete_account(t, navigation);
+        let currentUser = getGlobalData("email");
+        delete_account(t, navigation, currentUser);
         break;
       case "Privacy":
         navigation.push("Privacidad");

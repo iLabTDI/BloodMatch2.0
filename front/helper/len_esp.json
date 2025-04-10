@@ -140,6 +140,7 @@
     "support": "Soporte",
     "terms_and_conditions": "Términos y condiciones",
     "log_out": "Cerrar sesión",
+    "error_delete_account": "Ha ocurrido un error al intentar eliminar la cuenta",
 
     "tab bar labels": "****************************************************************************************************",
     "map_label": "Mapa",

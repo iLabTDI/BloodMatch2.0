@@ -139,6 +139,7 @@
     "support": "Support",
     "terms_and_conditions": "Terms and conditions",
     "log_out": "Log out",
+    "error_delete_account": "An error occurred while trying to delete the account.",
 
     "tab bar labels": "****************************************************************************************************",
     "map_label": "Map",
