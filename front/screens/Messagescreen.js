@@ -19,6 +19,8 @@ import { useTranslation } from "react-i18next";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useNavigation } from "@react-navigation/native";
 import ModalUserProfile from "@/components/ModalUserProfile";
+import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
+import ModalReportUser from "../components/ModalReportUser"
 
 export default function Messagescreen({ route }) {
   const [allChatMessages, setAllChatMessages] = useState([]);
@@ -29,6 +31,9 @@ export default function Messagescreen({ route }) {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const [modalUserProfileVisible, setModalUserProfileVisible] = useState(false);
+  const [showOptionsMenu, setShowOptionsMenu] = useState(false);
+  const [modalReportIsvisible, setModalReportIsvisible] = useState(false);
+
 
   useEffect(() => {
     const usuario = getGlobalData("email");
@@ -83,7 +88,45 @@ export default function Messagescreen({ route }) {
           />
           <Text className="text-lg font-semibold">{userData.FirstName}</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          className="absolute right-4"
+          onPress={() => setShowOptionsMenu(!showOptionsMenu)}
+        >
+          <SimpleLineIcons name="options-vertical" size={24} color="black" />
+        </TouchableOpacity>
       </View>
+
+      {showOptionsMenu && (
+        <View className="self-end z-50 w-1/2 bg-white rounded-bl-2xl shadow-xl border border-gray-200">
+          <TouchableOpacity 
+            className="flex-row items-center px-4 py-3 hover:bg-gray-100 active:bg-gray-200 border-b border-gray-200 gap-2"
+            onPress={() => {
+              setModalUserProfileVisible(!modalUserProfileVisible);
+              setShowOptionsMenu(false);
+            }}
+          >
+            <FontAwesome5 name="user-circle" size={18} color="#374151" className="mr-2" />
+            <Text className="text-gray-800 text-base">{t("view_profile")}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            className="flex-row items-center px-4 py-3 hover:bg-gray-100 active:bg-gray-200 gap-2"
+            onPress={() => {
+              setModalReportIsvisible(true);
+              setShowOptionsMenu(false);
+            }}  
+          >
+            <FontAwesome5 name="exclamation-triangle" size={18} color="#DC2626" className="mr-2" />
+            <Text className="text-red-600 text-base">{t("report_profile")}</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {modalReportIsvisible &&(
+        <ModalReportUser
+          onClose={() => setModalReportIsvisible(false)}
+          userToReport={userData}
+        />
+      )}
 
       <View className="flex-1 px-4">
         <FlatList

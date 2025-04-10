@@ -1,3 +1,224 @@
+// import React, { useContext, useEffect, useState, useCallback } from "react";
+// import { StatusBar } from "expo-status-bar";
+// import {
+//     StyleSheet,
+//     View,
+//     Text,
+//     Dimensions,
+//     TextInput,
+//     SafeAreaView,
+//     FlatList
+// } from "react-native";
+// import { Search, ChevronRight } from "react-native-feather"
+// import themeContext from "../helper/ThemeCon";
+// import { socket } from "../util/connectionChat";
+// import Chatcomponent from "./chatComponent";
+// import { getGlobalData } from "../backend/querys/inserts/New_email";
+// import { useFocusEffect } from "@react-navigation/native";
+// import Constants from 'expo-constants';
+// import { useTranslation } from "react-i18next";
+
+// import RedLoader from "@/components/RedLoader";
+
+// const width = Dimensions.get("window").width;
+// const height = Dimensions.get("window").height;
+
+// const Messenger = ({ navigation }) => {
+//     const { t } = useTranslation();
+//     const teme = useContext(themeContext);
+//     const [filterData, setfilterData] = useState([]);
+//     const [search, setsearch] = useState("");
+//     const [allChatRooms, setAllChatRooms] = useState([]);
+
+//     const [isLoading, setIsLoading] = useState(false);
+
+//     const handleFindGroup = (id) => {
+//         setIsLoading(true);
+//         socket.emit("encontrar", id);
+//         setIsLoading(false);
+//     };
+
+//     const verification = async () => {
+//         try {
+//             setIsLoading(true);
+//             const usuario = getGlobalData("email");
+
+//             socket.emit("getAllGroups");
+//             socket.on("groupList", (groups) => {
+//                 console.log("los grupos son", groups);
+//                 console.log("el usuario es", usuario);
+//                 if (groups.length > 0) {
+//                     console.log("Grupos recibidos:", groups);
+//                     let longitud = groups.length;
+//                     for (let i = 0; i < longitud; i++) {
+//                         if (
+//                             usuario === groups[i].currentGroupName ||
+//                             usuario === groups[i].currentSecondGroup
+//                         ) {
+//                             console.log(" ID =", groups[i].id);
+//                             let id = groups[i].id;
+//                             handleFindGroup(id);
+//                         } else {
+//                             console.log("El usuario no está en este grupo");
+//                         }
+//                     }
+//                 } else {
+//                     console.log("no hay grupos");
+//                 }
+//             });
+//         } catch (e) {
+//             console.log("Error durante la verificación:", e);
+//         } finally {
+//             setIsLoading(false);
+//         }
+//     };
+
+//     const filt = [];
+//     useFocusEffect(
+//         useCallback(() => {
+//             setIsLoading(true);
+//             verification();
+
+//             const handleFound = (messages) => {
+//                 setAllChatRooms((prevMessages) => {
+//                     const combinedMessages = [...prevMessages, ...messages];
+//                     const uniqueMessages = [
+//                         ...new Map(
+//                             combinedMessages.map((msg) => [msg.id, msg])
+//                         ).values(),
+//                     ];
+//                     return uniqueMessages;
+//                 });
+//             };
+
+//             socket.on("found", handleFound);
+
+//             return () => {
+//                 socket.off("found", handleFound);
+//                 socket.off("groupList");
+//                 setIsLoading(false);
+//             };
+//         }, [])
+//     );
+
+//     useEffect(() => {
+//         setIsLoading(true);
+//         if (allChatRooms.length > 0) {
+//             const result = filteredChatRooms();
+//             console.log("El resultado es:", result);
+//             setfilterData(result);
+//         } else {
+//             console.log("No hay datos en allChatRooms todavía.");
+//         }
+//         setIsLoading(false);
+//     }, [allChatRooms]);
+
+//     const user = getGlobalData("email");
+
+//     function filteredChatRooms() {
+//         setIsLoading(true);
+//         const result = allChatRooms.map((group) => {
+//             if (user === group.currentGroupName) {
+//                 filt.push({
+//                     id: group.id,
+//                     currentSecondGroup: group.currentSecondGroup,
+//                     messages: group.messages,
+//                 });
+//                 console.log("lo que tiene flit", filt);
+//                 setIsLoading(false);
+//                 return {
+//                     id: group.id,
+//                     currentSecondGroup: group.currentSecondGroup,
+//                     messages: group.messages,
+//                 };
+//             } else {
+//                 filt.push({
+//                     id: group.id,
+//                     currentGroupName: group.currentGroupName,
+//                 });
+//                 console.log(filt);
+//                 setIsLoading(false);
+//                 return {
+//                     id: group.id,
+//                     currentSecondGroup: group.currentGroupName,
+//                     messages: group.messages,
+//                 };
+//             }
+//         });
+
+//         setIsLoading(false);
+//         return result;
+//     }
+
+//     const searchFilter = (text) => {
+//         setIsLoading(true);
+//         if (text) {
+//             const newData = filterData.filter((item) => {
+//                 const itemData = item.currentSecondGroup
+//                     ? item.currentSecondGroup.toUpperCase()
+//                     : "".toUpperCase();
+//                 const textData = text.toUpperCase();
+//                 setIsLoading(false);
+//                 return itemData.indexOf(textData) > -1;
+//             });
+
+//             setfilterData(newData);
+//         } else {
+//             // Si no hay texto en el buscador, mostramos todas las salas
+//             setfilterData(filteredChatRooms);
+//         }
+//         setIsLoading(false);
+//         setsearch(text);
+//     };
+
+//     return (
+//         <SafeAreaView className="flex-1 bg-white">
+//           <StatusBar backgroundColor={"#fff"} style="dark"/>
+//           <View className="p-4 border-b border-gray-200">
+//             <View className="flex-row items-center bg-gray-100 rounded-full px-4 py-2">
+//               <Search stroke="#9CA3AF" width={20} height={20} />
+//               <TextInput
+//                 className="flex-1 ml-2 text-base text-gray-700"
+//                 placeholder={t("search_chat")}
+//                 placeholderTextColor="#9CA3AF"
+//                 value={search}
+//                 onChangeText={(text) => searchFilter(text)}
+//               />
+//             </View>
+//           </View>
+//           {isLoading 
+//           ? (
+//             <View className="mt-10">
+//                 <RedLoader/>
+//             </View>
+//             )
+//           : (
+//             <FlatList
+//                 data={filterData}
+//                 renderItem={({ item }) => <Chatcomponent 
+//                     item={item}
+//                     onDelete={() => {
+//                         setfilterData((prev) => prev.filter(chat => chat.id !== item.id));
+//                         setAllChatRooms((prev) => prev.filter(chat => chat.id !== item.id));
+//                     }} 
+//                 />}
+//                 keyExtractor={(item) => item.id}
+//                 contentContainerStyle={{ flexGrow: 1 }}
+//                 ListEmptyComponent={
+//                   <View className="flex-1 items-center justify-center">
+//                     <Text className="text-gray-500 text-lg">{t("no_chats")}</Text>
+//                   </View>
+//                 }
+//             />
+//             )
+//           }
+//         </SafeAreaView>
+//     );
+// };
+
+// export default Messenger;
+
+
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
@@ -7,18 +228,15 @@ import {
     Dimensions,
     TextInput,
     SafeAreaView,
-    FlatList
+    FlatList,
 } from "react-native";
-import { Search, ChevronRight } from "react-native-feather"
-// import { Directions, FlatList } from "react-native-gesture-handler";
+import { Search } from "react-native-feather";
 import themeContext from "../helper/ThemeCon";
 import { socket } from "../util/connectionChat";
 import Chatcomponent from "./chatComponent";
 import { getGlobalData } from "../backend/querys/inserts/New_email";
 import { useFocusEffect } from "@react-navigation/native";
-import Constants from 'expo-constants';
 import { useTranslation } from "react-i18next";
-
 import RedLoader from "@/components/RedLoader";
 
 const width = Dimensions.get("window").width;
@@ -26,12 +244,13 @@ const height = Dimensions.get("window").height;
 
 const Messenger = ({ navigation }) => {
     const { t } = useTranslation();
-    const teme = useContext(themeContext);
-    const [filterData, setfilterData] = useState([]);
-    const [search, setsearch] = useState("");
+    const theme = useContext(themeContext);
+    const [filterData, setFilterData] = useState([]);
+    const [search, setSearch] = useState("");
     const [allChatRooms, setAllChatRooms] = useState([]);
-
     const [isLoading, setIsLoading] = useState(false);
+
+    const user = getGlobalData("email");
 
     const handleFindGroup = (id) => {
         socket.emit("encontrar", id);
@@ -39,100 +258,36 @@ const Messenger = ({ navigation }) => {
 
     const verification = async () => {
         try {
+            setIsLoading(true);
             const usuario = getGlobalData("email");
 
             socket.emit("getAllGroups");
             socket.on("groupList", (groups) => {
-                console.log("los grupos son", groups);
-                console.log("el usuario es", usuario);
                 if (groups.length > 0) {
-                    console.log("Grupos recibidos:", groups);
-                    let longitud = groups.length;
-                    for (let i = 0; i < longitud; i++) {
+                    groups.forEach((group) => {
                         if (
-                            usuario === groups[i].currentGroupName ||
-                            usuario === groups[i].currentSecondGroup
+                            usuario === group.currentGroupName ||
+                            usuario === group.currentSecondGroup
                         ) {
-                            console.log(" ID =", groups[i].id);
-                            let id = groups[i].id;
-                            handleFindGroup(id);
-                        } else {
-                            console.log("El usuario no está en este grupo");
+                            handleFindGroup(group.id);
                         }
-                    }
-                } else {
-                    console.log("no hay grupos");
+                    });
                 }
             });
         } catch (e) {
-            console.log("Error durante la verificación:", e);
+            console.error("Error durante la verificación:", e);
         }
     };
 
-    const filt = [];
-    useFocusEffect(
-        useCallback(() => {
-            setIsLoading(true);
-            verification();
-
-            const handleFound = (messages) => {
-                setAllChatRooms((prevMessages) => {
-                    const combinedMessages = [...prevMessages, ...messages];
-                    const uniqueMessages = [
-                        ...new Map(
-                            combinedMessages.map((msg) => [msg.id, msg])
-                        ).values(),
-                    ];
-                    return uniqueMessages;
-                });
-            };
-
-            socket.on("found", handleFound);
-
-            setIsLoading(false);
-
-            return () => {
-                socket.off("found", handleFound);
-                socket.off("groupList");
-            };
-        }, [])
-    );
-
-    useEffect(() => {
-        setIsLoading(true);
-        if (allChatRooms.length > 0) {
-            const result = filteredChatRooms();
-            console.log("El resultado es:", result);
-            setfilterData(result);
-        } else {
-            console.log("No hay datos en allChatRooms todavía.");
-        }
-        setIsLoading(false);
-    }, [allChatRooms]);
-
-    const user = getGlobalData("email");
-
-    function filteredChatRooms() {
+    const filteredChatRooms = () => {
         const result = allChatRooms.map((group) => {
             if (user === group.currentGroupName) {
-                filt.push({
-                    id: group.id,
-                    currentSecondGroup: group.currentSecondGroup,
-                    messages: group.messages,
-                });
-                console.log("lo que tiene flit", filt);
-
                 return {
                     id: group.id,
                     currentSecondGroup: group.currentSecondGroup,
                     messages: group.messages,
                 };
             } else {
-                filt.push({
-                    id: group.id,
-                    currentGroupName: group.currentGroupName,
-                });
-                console.log(filt);
                 return {
                     id: group.id,
                     currentSecondGroup: group.currentGroupName,
@@ -140,72 +295,103 @@ const Messenger = ({ navigation }) => {
                 };
             }
         });
-
         return result;
-    }
+    };
 
     const searchFilter = (text) => {
-        setIsLoading(true);
+        setSearch(text);
         if (text) {
             const newData = filterData.filter((item) => {
-                const itemData = item.currentSecondGroup
-                    ? item.currentSecondGroup.toUpperCase()
-                    : "".toUpperCase();
+                const itemData = item.currentSecondGroup?.toUpperCase() || "";
                 const textData = text.toUpperCase();
-                setIsLoading(false);
                 return itemData.indexOf(textData) > -1;
             });
-
-            setfilterData(newData);
+            setFilterData(newData);
         } else {
-            // Si no hay texto en el buscador, mostramos todas las salas
-            setfilterData(filteredChatRooms);
+            setFilterData(filteredChatRooms());
         }
-        setIsLoading(false);
-        setsearch(text);
     };
+
+    useFocusEffect(
+        useCallback(() => {
+            setIsLoading(true);
+            verification();
+    
+            const timeout = setTimeout(() => {
+                setIsLoading(false); // fallback si no llega "found"
+            }, 4000); 
+    
+            const handleFound = (messages) => {
+                clearTimeout(timeout); 
+                setAllChatRooms((prevMessages) => {
+                    const combined = [...prevMessages, ...messages];
+                    const unique = [...new Map(combined.map((msg) => [msg.id, msg])).values()];
+                    return unique;
+                });
+                setIsLoading(false);
+            };
+    
+            socket.on("found", handleFound);
+    
+            return () => {
+                socket.off("found", handleFound);
+                socket.off("groupList");
+                clearTimeout(timeout);
+            };
+        }, [])
+    );
+    
+    useEffect(() => {
+        if (allChatRooms.length > 0) {
+            const result = filteredChatRooms();
+            setFilterData(result);
+        } else {
+            setFilterData([]); 
+        }
+    }, [allChatRooms]);
+    
 
     return (
         <SafeAreaView className="flex-1 bg-white">
-          <StatusBar backgroundColor={"#fff"} style="dark"/>
-          <View className="p-4 border-b border-gray-200">
-            <View className="flex-row items-center bg-gray-100 rounded-full px-4 py-2">
-              <Search stroke="#9CA3AF" width={20} height={20} />
-              <TextInput
-                className="flex-1 ml-2 text-base text-gray-700"
-                placeholder={t("search_chat")}
-                placeholderTextColor="#9CA3AF"
-                value={search}
-                onChangeText={(text) => searchFilter(text)}
-              />
+            <StatusBar backgroundColor={"#fff"} style="dark" />
+            <View className="p-4 border-b border-gray-200">
+                <View className="flex-row items-center bg-gray-100 rounded-full px-4 py-2">
+                    <Search stroke="#9CA3AF" width={20} height={20} />
+                    <TextInput
+                        className="flex-1 ml-2 text-base text-gray-700"
+                        placeholder={t("search_chat")}
+                        placeholderTextColor="#9CA3AF"
+                        value={search}
+                        onChangeText={(text) => searchFilter(text)}
+                    />
+                </View>
             </View>
-          </View>
-          {isLoading 
-          ? (
-            <View className="mt-10">
-                <RedLoader/>
-            </View>
-            )
-          : (
-            <FlatList
-                data={filterData}
-                renderItem={({ item }) => <Chatcomponent 
-                    item={item}
-                    onDelete={() => {
-                        setfilterData((prev) => prev.filter(chat => chat.id !== item.id));
-                        setAllChatRooms((prev) => prev.filter(chat => chat.id !== item.id));
-                    }} 
-                />}
-                keyExtractor={(item) => item.id}
-                contentContainerStyle={{ flexGrow: 1 }}
-                ListEmptyComponent={
-                  <View className="flex-1 items-center justify-center">
-                    <Text className="text-gray-500 text-lg">{t("no_chats")}</Text>
-                  </View>
-                }
-            />
-            )
-          }
+
+            {isLoading ? (
+                <View className="mt-10">
+                    <RedLoader />
+                </View>
+            ) : (
+                <FlatList
+                    data={filterData}
+                    renderItem={({ item }) => (
+                        <Chatcomponent
+                            item={item}
+                            onDelete={() => {
+                                setFilterData((prev) => prev.filter((chat) => chat.id !== item.id));
+                                setAllChatRooms((prev) => prev.filter((chat) => chat.id !== item.id));
+                            }}
+                        />
+                    )}
+                    keyExtractor={(item) => item.id}
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    ListEmptyComponent={
+                        <View className="flex-1 items-center justify-center">
+                            <Text className="text-gray-500 text-lg">{t("no_chats")}</Text>
+                        </View>
+                    }
+                />
+            )}
         </SafeAreaView>
     );
 };

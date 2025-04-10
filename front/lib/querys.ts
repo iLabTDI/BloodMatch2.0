@@ -396,3 +396,22 @@ export async function setExpoTokenNotification(email: string, token: string){
     return null;
   }
 }
+
+
+export async function addReport(user: string, reason: string, reportedBy: string) {
+  try {
+    const { error } = await supabase
+      .from("reports")
+      .insert([{ user, reason, reportedBy }]);
+
+    if (error) {
+      console.error("Error al agregar reporte:", error.message);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true };
+  } catch (err: any) {
+    console.error("Error inesperado:", err);
+    return { success: false, error: err.message || "Unexpected error" };
+  }
+}

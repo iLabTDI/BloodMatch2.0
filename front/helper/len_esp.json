@@ -86,6 +86,12 @@
     "now": "Ahora",
     "no_chats": "No se encontraron chats",
     "delete_chat": "¿Eliminar chat con",
+    "report_profile": "Denunciar perfil",
+    "report_user": "¿Reportar al usuario",
+    "type_report_reason": "Escribe el motivo de tu reporte de manera breve",
+    "max_characters_report": "Maximo 300 caracteres",
+    "report_error": "Ha ocurrido un error al momento de realizar el reporte",
+    "report_done": "Reporte hecho",
 
     "profile section": "****************************************************************************************************",
     "location": "Ubicación",
