@@ -148,11 +148,31 @@
     "profile_label": "Perfil",
     "settings_label": "Ajustes",
 
-
-
-
-
-
+    "support section": "****************************************************************************************************",
+    "suggestion": "Sugerencia",
+    "complaint": "Queja",
+    "technical_problem": "Problema técnico",
+    "question1": "¿Cómo puedo cambiar mi tipo de sangre en mi perfil?",
+    "answer1": "Para cambiar tu tipo de sangre, ve a tu perfil, presiona el botón de editar junto a la información de tipo de sangre y selecciona el tipo correcto. Recuerda que esta información es crucial para las donaciones, así que asegúrate de que sea precisa.",
+    "question2": "No puedo conectar con donadores cercanos, ¿qué hago?",
+    "answer2": "Verifica que tienes activada la ubicación en tu dispositivo y que has dado permiso a BloodMatch para acceder a ella. También asegúrate de tener una conexión estable a internet. Si el problema persiste, intenta cerrar sesión y volver a iniciarla.",
+    "question3": "¿Cómo puedo eliminar mi cuenta?",
+    "answer3": "Para eliminar tu cuenta, ve a Configuración > Privacidad > Eliminar cuenta. Ten en cuenta que esta acción es irreversible y perderás todo tu historial de donaciones y conexiones.",
+    "no_subject": "Por favor ingresa un asunto",
+    "no_message": "Por favor ingresa un mensaje",
+    "title_support": "¿Cómo podemos ayudarte?",
+    "subtitle_support": "Estamos aquí para escuchar tus sugerencias, resolver tus problemas o atender cualquier inquietud que tengas sobre BloodMatch.",
+    "type_message": "Tipo de mensaje",
+    "subject": "Asunto",
+    "subject_placeholder": "Escribe un asunto breve",
+    "message": "Mensaje",
+    "message_placeholder": "Describe tu problema o sugerencia con detalle",
+    "submit_message": "Enviar mensaje",
+    "frequently_asked_questions": "Preguntas frecuentes",
+    "direct_contact": "Contáctanos directamente",
+    "phone": "Teléfono",
+    "error_send_support": "Ha ocurrido un error",
+    "success_submit_support": "Se ha enviado su comentario, gracias.",
 
     
     "Profile": "Perfil",

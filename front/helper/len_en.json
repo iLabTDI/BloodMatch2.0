@@ -147,8 +147,31 @@
     "profile_label": "Profile",
     "settings_label": "Settings",
 
-
-
+    "support section": "****************************************************************************************************",
+    "suggestion": "Suggestion",
+    "complaint": "Complaint",
+    "technical_problem": "Technical problem",
+    "question1": "How can I change my blood type in my profile?",
+    "answer1": "To change your blood type, go to your profile, press the edit button next to the blood type information, and select the correct type. Remember, this information is crucial for donations, so make sure it's accurate.",
+    "question2": "I can't connect with nearby donors. What do I do?",
+    "answer2": "Verify that you have location enabled on your device and that you have given BloodMatch permission to access it. Also, make sure you have a stable internet connection. If the problem persists, try logging out and back in.",
+    "question3": "How can I delete my account?",
+    "answer3": "To delete your account, go to Settings > Privacy > Delete Account. Please note that this action is irreversible and you will lose all your donation and connection history.",
+    "no_subject": "Please enter a subject",
+    "no_message": "Please enter a message",
+    "title_support": "How can we help you?",
+    "subtitle_support": "We're here to listen to your suggestions, solve your problems, or address any concerns you may have about BloodMatch.",
+    "type_message": "Message Type",
+    "subject": "Subject",
+    "subject_placeholder": "Write a brief subject",
+    "message": "Message",
+    "message_placeholder": "Describe your problem or suggestion in detail",
+    "submit_message": "Send Message",
+    "frequently_asked_questions": "Frequently Asked Questions",
+    "direct_contact": "Contact us directly",
+    "phone": "Phone",
+    "error_send_support": "An error has occurred",
+    "success_submit_support": "Your comment has been submitted, thank you.",
 
 
     "Profile": "Profile",

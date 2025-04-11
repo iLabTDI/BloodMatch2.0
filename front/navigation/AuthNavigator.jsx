@@ -17,6 +17,7 @@ import Messagescreen from "../screens/Messagescreen";
 import Home from "@/screens/Home";
 import Tutorial from "../components/Tutorial";
 //import chat from './../components/Tutorial
+import Support from "../screens/Support"
 
 export default function AuthNavigator() {
   const { t } = useTranslation();
@@ -73,6 +74,11 @@ export default function AuthNavigator() {
       <Stack.Screen
         name="new-reg"
         component={NewReg}
+        //options={{ headerShown: false}}
+      />
+      <Stack.Screen
+        name="Support"
+        component={Support}
         //options={{ headerShown: false}}
       />
     </Stack.Navigator>

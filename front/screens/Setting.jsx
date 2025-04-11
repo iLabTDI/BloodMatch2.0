@@ -124,6 +124,9 @@ const SettingsScreen = ({navigation}) => {
       case "Privacy":
         navigation.push("Privacidad");
         break;
+      case "Support":
+        navigation.push('Support');
+        break;
       case "Terms_and_conditions":
         navigation.push("termycondi");
         break;
@@ -151,8 +154,8 @@ const SettingsScreen = ({navigation}) => {
         </SettingsGroup>
 
         <SettingsGroup title={t("preferences")}>
-          <SettingItem icon={Bell} title={t("notifications")} onPress={() => handleSettingPress("Notifications")} />
-          <SettingItem icon={Moon} title={t("theme")} onPress={() => handleSettingPress("Theme")} />
+          {/* <SettingItem icon={Bell} title={t("notifications")} onPress={() => handleSettingPress("Notifications")} /> */}
+          {/* <SettingItem icon={Moon} title={t("theme")} onPress={() => handleSettingPress("Theme")} /> */}
           <SettingItem
             icon={Shield}
             title={t("verification_two_steps")}

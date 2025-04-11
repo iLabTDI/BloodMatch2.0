@@ -435,3 +435,22 @@ export async function deleteUserByEmail(email: string) {
 
   return { success: true, data };
 }
+
+
+export async function addToSupport(type: string, subject: string, message: string, user: string) {
+  try {
+    const { error } = await supabase
+      .from("support")
+      .insert([{ type, subject, message, user }]);
+
+    if (error) {
+      console.error("Error al agregar registro al soporte:", error.message);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true };
+  } catch (err: any) {
+    console.error("Error inesperado:", err);
+    return { success: false, error: err.message || "Unexpected error" };
+  }
+}

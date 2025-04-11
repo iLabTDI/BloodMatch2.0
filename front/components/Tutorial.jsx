@@ -64,14 +64,14 @@ export default function Tutorial({ onClose }) {
       title: "¡Tu perfil aquí!",
       subtitle: "Aquí verás tu información y podrás cambiar tu foto",
     },
-    {
-      backgroundColor: "#e6e6fd",
-      image: require("../images/perfilTutorial.png"),
-      dimensions: { width: wp(55), height: hp(55) },
-      color: "#69379f",
-      title: "¡Ajusta cuando quieras!",
-      subtitle: "Personaliza la aplicación como gustes",
-    },
+    // {
+    //   backgroundColor: "#e6e6fd",
+    //   image: require("../images/perfilTutorial.png"),
+    //   dimensions: { width: wp(55), height: hp(55) },
+    //   color: "#69379f",
+    //   title: "¡Ajusta cuando quieras!",
+    //   subtitle: "Personaliza la aplicación como gustes",
+    // },
   ];
 
   const goToNextPage = () => {
