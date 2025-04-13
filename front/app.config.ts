@@ -9,7 +9,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     ...config,
     slug: "bloodmatch",
-    name: "bloodmatch",
+    name: "Blood Match",
     extra: {
       ...config.extra,
       supabaseUrl: process.env.Project_URL,

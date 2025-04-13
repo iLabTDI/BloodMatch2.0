@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "bloodmatch",
+    "name": "Blood Match",
     "slug": "bloodmatch",
     "owner": "manuel2003",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logotipo.png",
+    "icon": "./assets/icon.png",
     "scheme": "myapp",
     "splash": {
-      "image": "./assets/logotipo.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -20,7 +20,7 @@
     "android": {
       "useNextNotificationsApi": true,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logotipo.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
        "package": "com.manuel2003.bloodmatch"
@@ -35,7 +35,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/logotipo.png",
+          "image": "./assets/icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
