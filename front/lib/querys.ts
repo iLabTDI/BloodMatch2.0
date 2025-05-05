@@ -46,7 +46,7 @@ export async function generaldates() {
     }
 }
 
-function hashPassword(password: string) {
+export function hashPassword(password: string) {
   const salt = bcrypt.genSaltSync(10);
   return bcrypt.hashSync(password, salt);
 }
@@ -452,5 +452,30 @@ export async function addToSupport(type: string, subject: string, message: strin
   } catch (err: any) {
     console.error("Error inesperado:", err);
     return { success: false, error: err.message || "Unexpected error" };
+  }
+}
+
+export async function updatePassword(email: string, newPassword: string) {
+  if (!email || !newPassword) {
+    console.error("Email y password son requeridos");
+    return null;
+  }
+  try {
+    const hashedPassword = await hashPassword(newPassword);
+    const { data, error } = await supabase
+      .from("users")
+      .update({ Password: hashedPassword })
+      .eq("Email", email)
+      .select();
+
+    if (error) {
+      console.error("Error al actualizar la contraseña:", error);
+      return null;
+    }
+    console.log("Password actualizado con éxito:", data);
+    return data;
+  } catch (e) {
+    console.error("Error inesperado en updatePassword:", e);
+    return null;
   }
 }

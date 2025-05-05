@@ -14,9 +14,9 @@ import { Eye, EyeOff, Lock, X, Shield } from "react-native-feather";
 import { useTranslation } from "react-i18next";
 import { FontAwesome5 } from '@expo/vector-icons';
 import GenericModal from "../components/GenericModal";
-import { getDates } from "@/lib/querys";
+import { getDates, updatePassword } from "../lib/querys";
 import { getGlobalData } from "@/backend/querys/inserts/New_email";
-import validations from "@/helper/validations";
+import validations from "../helper/validations.js";
 import bcrypt from "bcryptjs";
 
 const StyledView = styled(View);
@@ -78,19 +78,42 @@ const ModalChangePassword = ({ visible, onClose }) => {
     
             if (user) {
                 const passwordMatch = await bcrypt.compare(currentPassword, user.Password);
-    
                 if (passwordMatch) {
-                    alert("CONTRASEÑA ACTUAL VALIDA");
+                    let isTheSamePassword = validations.passwordConfirm(currentPassword, newPassword);
+                    if(isTheSamePassword === true){
+                        alert("La nueva contraseña no puede ser la misma que la anterior");
+                    }else{
+                        let validation = validations.password(newPassword);
+                        if(validation === true){
+                            let confirmValidation = validations.passwordConfirm(newPassword, confirmPassword);
+                            if(confirmValidation === true){
+                                let res = await updatePassword(email, newPassword);
+                                console.log(`AAAAAAAAAAAAAAAAA: ${email} - ${newPassword}`);
+                                if(res !== null){
+                                    alert(`Contraseña actualizada con exito`);
+                                }else{
+                                    alert("Ha ocurrido un error, intente mas tarde");
+                                }
+                            }else{
+                                alert("Las contraseñas no son iguales, intente de nuevo");
+                            }
+                        }else{
+                            alert("Contraseña invalida, intente de nuevo");
+                        }
+                    }
                 } else {
-                    alert("CONTRASEÑA ACTUAL INVALIDA");
+                    alert(`CONTRASEÑA ACTUAL INVALIDA`);
                 }
             } else {
-                alert("USER NO VALIDO");
+                alert("USUARIO NO VALIDO");
             }
         } catch (error) {
             alert(`ERROR AL CONSULTAR, ${error}`);
         }
 
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
 
         setIsLoading(false);
     };
