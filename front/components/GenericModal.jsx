@@ -8,7 +8,7 @@ const Modal = ({ isVisible, onClose, children }) => {
     if (!isVisible) return null;
 
     return (
-        <View className="absolute top-0 left-0 right-0 bottom-0 bg-black/50">
+        <View className="absolute top-0 left-0 right-0 bottom-0 bg-black/50 z-50">
             <ScrollView
                 contentContainerStyle={{
                     flexGrow: 1,

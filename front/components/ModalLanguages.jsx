@@ -3,9 +3,11 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { Picker } from '@react-native-picker/picker';
 import { useTranslation } from "react-i18next";
 
-const ModalFilters = ({onClose, onAccept}) => {
+const ModalFilters = ({visible, onClose, onAccept}) => {
     const { t } = useTranslation();
     const [language, setLanguage] = useState(null);
+
+    if(!visible) return null;
 
     return (
         <View className="absolute top-0 left-0 right-0 bottom-0 bg-black/50">

@@ -25,6 +25,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalLanguages from "@/components/ModalLanguages";
 import { getGlobalData } from "@/backend/querys/inserts/New_email";
 import { deleteUserByEmail } from "@/lib/querys";
+import ModalChangePassword from "../components/ModalChangePassword";
 
 const SettingItem = ({ icon: Icon, title, onPress }) => (
   <TouchableOpacity className="flex-row items-center py-4 px-6 border-b border-gray-200" onPress={onPress}>
@@ -104,6 +105,7 @@ const SettingsScreen = ({navigation}) => {
   const {t} = useTranslation();
 
   const [modalLanguageVisible, setModalLanguageVisible] = useState(false);
+  const [modalChangePassVisible, setModalChangePassVisible] = useState(false);
   
   const handleSettingPress = (setting) => {
     console.log(`Pressed: ${setting}`);
@@ -116,6 +118,9 @@ const SettingsScreen = ({navigation}) => {
         break;
       case "Change_user":
         log_out(t, navigation);
+        break;
+      case "Change_password":
+        setModalChangePassVisible(true);
         break;
       case "Delete_account":
         let currentUser = getGlobalData("email");
@@ -188,16 +193,19 @@ const SettingsScreen = ({navigation}) => {
         </View>
       </ScrollView>
 
-      {
-        modalLanguageVisible && 
-          <ModalLanguages
-            onClose={() => setModalLanguageVisible(false)}
-            onAccept={(language) => {
-              changeLng(language);
-              setModalLanguageVisible(false);
-            }}
-          />
-      }
+      <ModalLanguages
+        visible={modalLanguageVisible}
+        onClose={() => setModalLanguageVisible(false)}
+        onAccept={(language) => {
+          changeLng(language);
+          setModalLanguageVisible(false);
+        }}
+      />
+
+      <ModalChangePassword
+        visible={modalChangePassVisible}
+        onClose={() => setModalChangePassVisible(!modalChangePassVisible)}
+      />
 
     </SafeAreaView>
   )

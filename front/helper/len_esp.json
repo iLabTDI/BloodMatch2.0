@@ -141,6 +141,12 @@
     "terms_and_conditions": "Términos y condiciones",
     "log_out": "Cerrar sesión",
     "error_delete_account": "Ha ocurrido un error al intentar eliminar la cuenta",
+    "current_password": "Contraseña actual",
+    "type_current_password": "Ingresa tu contraseña actual",
+    "new_password": "Nueva contraseña",
+    "type_password": "Ingresa tu nueva contraseña",
+    "type_new_password": "Confirma tu nueva contraseña",
+    "save": "Guardar",
 
     "tab bar labels": "****************************************************************************************************",
     "map_label": "Mapa",

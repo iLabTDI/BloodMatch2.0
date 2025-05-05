@@ -140,6 +140,12 @@
     "terms_and_conditions": "Terms and conditions",
     "log_out": "Log out",
     "error_delete_account": "An error occurred while trying to delete the account.",
+    "current_password": "Current passsword",
+    "type_current_password": "Enter your current password",
+    "new_password": "New password",
+    "type_password": "Enter your new password",
+    "type_new_password": "Confirm your new password",
+    "save": "Save",
 
     "tab bar labels": "****************************************************************************************************",
     "map_label": "Map",
