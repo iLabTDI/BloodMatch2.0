@@ -5,6 +5,7 @@ import { SocialIcon } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
 import { FontAwesome5 } from '@expo/vector-icons';
 import GenericModal from '../components/GenericModal';
+import ModalForgotPassword from "../components/ModalForgotPassword";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as ImagePicker from 'expo-image-picker';
 import { useTranslation } from "react-i18next";
@@ -40,6 +41,8 @@ const LogIn = (props) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [titleModal, setTitleModal] = useState("");
     const [textModal, setTextModal] = useState("");
+
+    const [isModalForgotPasswordVisible, setIsModalForgotPasswordVisible] = useState(false);
 
     // Register
     const [register, setRegister] = useState({
@@ -307,7 +310,7 @@ const LogIn = (props) => {
                                 {isLoadingLogIn ? t("loading") : t("log_in")}
                             </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity  onPress={() => { navigation.navigate('new-reg') }}>
+                        <TouchableOpacity  onPress={() => setIsModalForgotPasswordVisible(true)}>
                             <Text className="text-red-500 text-center mb-4">{t("forgot_password")}</Text>
                         </TouchableOpacity>
                         {/* <View className="flex-row justify-center space-x-4 mb-4">
@@ -553,6 +556,11 @@ const LogIn = (props) => {
                 <Text className="text-xl font-bold mb-4">{titleModal}</Text>
                 <Text>{textModal}</Text>
             </GenericModal>
+
+            <ModalForgotPassword
+                isVisible={isModalForgotPasswordVisible}
+                onClose={() => setIsModalForgotPasswordVisible(false)}
+            />
         </SafeAreaView>
     );
 };

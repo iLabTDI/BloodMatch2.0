@@ -81,34 +81,33 @@ const ModalChangePassword = ({ visible, onClose }) => {
                 if (passwordMatch) {
                     let isTheSamePassword = validations.passwordConfirm(currentPassword, newPassword);
                     if(isTheSamePassword === true){
-                        alert("La nueva contraseña no puede ser la misma que la anterior");
+                        alert(t("same_password_error"));
                     }else{
                         let validation = validations.password(newPassword);
                         if(validation === true){
                             let confirmValidation = validations.passwordConfirm(newPassword, confirmPassword);
                             if(confirmValidation === true){
                                 let res = await updatePassword(email, newPassword);
-                                console.log(`AAAAAAAAAAAAAAAAA: ${email} - ${newPassword}`);
                                 if(res !== null){
-                                    alert(`Contraseña actualizada con exito`);
+                                    alert(t("update_password_success"));
                                 }else{
-                                    alert("Ha ocurrido un error, intente mas tarde");
+                                    alert(t("an_error_has_occurred"));
                                 }
                             }else{
-                                alert("Las contraseñas no son iguales, intente de nuevo");
+                                alert(t("no_is_the_same_password"));
                             }
                         }else{
-                            alert("Contraseña invalida, intente de nuevo");
+                            alert(t("invalid_password"));
                         }
                     }
                 } else {
-                    alert(`CONTRASEÑA ACTUAL INVALIDA`);
+                    alert(t("invalid_current_password"));
                 }
             } else {
-                alert("USUARIO NO VALIDO");
+                alert(t("invalid_user"));
             }
         } catch (error) {
-            alert(`ERROR AL CONSULTAR, ${error}`);
+            alert(`${t("error_to_consult")}, ${error}`);
         }
 
         setCurrentPassword("");
