@@ -13,10 +13,12 @@ import { isExistingEmail, updatePassword } from "@/lib/querys";
 import { send, EmailJSResponseStatus } from "@emailjs/react-native";
 import "react-native-url-polyfill/auto";
 import Constants from "expo-constants";
+import { useTranslation } from "react-i18next";
 
 const { height } = Dimensions.get("window");
 
 const ModalForgotPassword = ({ isVisible, onClose }) => {
+    const t = useTranslation();
     const [email, setEmail] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [step, setStep] = useState(1); // 1: email input, 2: success message
@@ -45,7 +47,7 @@ const ModalForgotPassword = ({ isVisible, onClose }) => {
 
     const generateRandomPassword = (passLength = generateRandomLength()) => {
         if (passLength < 8) {
-            throw new Error("La contraseña debe tener al menos 8 caracteres.");
+            throw new Error(t("min_length_pass"));
         }
 
         const capitalLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -114,19 +116,19 @@ const ModalForgotPassword = ({ isVisible, onClose }) => {
 
     const handleResetPassword = async () => {
         if (!email || email.trim() === "") {
-            setErrorMessage("El correo electrónico es obligatorio");
+            setErrorMessage(t("email_is_mandatory"));
             return;
         }
         const emailRegex =
             /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (!emailRegex.test(email.trim())) {
-            setErrorMessage("El correo electrónico no es válido");
+            setErrorMessage(t("email_is_invalid"));
             return;
         }
         setIsLoading(true);
         let vEmail = await isExistingEmail(email.trim());
         if (!vEmail) {
-            setErrorMessage("El correo proporcionado no esta registrado");
+            setErrorMessage(t("email_no_registered"));
             setIsLoading(false);
             return;
         } else {
@@ -141,14 +143,10 @@ const ModalForgotPassword = ({ isVisible, onClose }) => {
                 if (resUpdatePassword === true) {
                     setStep(2);
                 } else {
-                    setErrorMessage(
-                        "Ha ocurrido un error, intentelo mas tarde"
-                    );
+                    setErrorMessage(t("error_try_later"));
                 }
             } else {
-                setErrorMessage(
-                    "No se ha podido enviar el correo, intentelo mas tarde"
-                );
+                setErrorMessage(t("dont_send_email"));
             }
             setIsLoading(false);
         }
@@ -190,17 +188,16 @@ const ModalForgotPassword = ({ isVisible, onClose }) => {
                                 <Mail stroke="#FF4136" width={32} height={32} />
                             </View>
                             <Text className="text-2xl font-bold text-gray-800 mb-1">
-                                ¿Olvidaste tu contraseña?
+                                {t("forgot_password")}
                             </Text>
                             <Text className="text-gray-600 text-center">
-                                Ingresa tu correo electrónico y te enviaremos
-                                instrucciones para restablecer tu contraseña.
+                                {t("forgot_pass_details")}
                             </Text>
                         </View>
 
                         <View className="mb-4">
                             <Text className="text-sm font-medium text-gray-700 mb-1">
-                                Correo electrónico
+                                {t("email")}
                             </Text>
                             <View className="relative">
                                 <View className="absolute left-3 top-3">
@@ -246,7 +243,7 @@ const ModalForgotPassword = ({ isVisible, onClose }) => {
                             ) : (
                                 <>
                                     <Text className="text-white font-bold mr-2">
-                                        Enviar instrucciones
+                                        {t("send_instructions")}
                                     </Text>
                                     <ArrowRight
                                         stroke="white"
@@ -269,14 +266,12 @@ const ModalForgotPassword = ({ isVisible, onClose }) => {
                                 />
                             </View>
                             <Text className="text-2xl font-bold text-gray-800 mb-1">
-                                ¡Correo enviado!
+                                {t("mail_sent")}
                             </Text>
                             <Text className="text-gray-600 text-center">
-                                Hemos enviado instrucciones para restablecer tu
-                                contraseña a{" "}
+                                {t("instructions_sent")}{" "}
                                 <Text className="font-bold">{email}</Text>.
-                                Revisa tu bandeja de entrada y sigue los pasos
-                                indicados.
+                                {t("check_your_entrance_tray")}
                             </Text>
                         </View>
 
@@ -285,7 +280,7 @@ const ModalForgotPassword = ({ isVisible, onClose }) => {
                             onPress={handleClose}
                         >
                             <Text className="text-white font-bold">
-                                Entendido
+                                {t("understood")}
                             </Text>
                         </TouchableOpacity>
 
@@ -294,7 +289,7 @@ const ModalForgotPassword = ({ isVisible, onClose }) => {
                             onPress={() => setStep(1)}
                         >
                             <Text className="text-red-500 text-center">
-                                Volver a intentar con otro correo
+                                {t("try_again_with_another_email")}
                             </Text>
                         </TouchableOpacity>
                     </View>

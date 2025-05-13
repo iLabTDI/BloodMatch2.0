@@ -1,11 +1,17 @@
 import Tutorial from "@/components/Tutorial";
 import { supabase } from "./supabase";
-import bcrypt from "bcryptjs";
+// import bcrypt from "bcryptjs";
+import * as bcrypt from "bcryptjs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { socket } from "@/util/connectionChat";
 
 export async function getDates(email: string) {
     try {
-        const { data, error } = await supabase.from("users").select("*").eq("Email", email).single(); // Para obtener un solo usuario
+        const { data, error } = await supabase
+            .from("users")
+            .select("*")
+            .eq("Email", email)
+            .single(); // Para obtener un solo usuario
 
         if (error) {
             console.log("Error al obtener datos:", error);
@@ -19,7 +25,10 @@ export async function getDates(email: string) {
 }
 
 export async function getUser(email: string) {
-    const { data, error } = await supabase.from("users").select("*").eq("Email", email);
+    const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("Email", email);
     if (error) {
         console.log("was an error", error);
         return false;
@@ -42,52 +51,64 @@ export async function generaldates() {
     }
 }
 
-export function hashPassword(password: string) {
-    const salt = bcrypt.genSaltSync(10);
-    return bcrypt.hashSync(password, salt);
+export async function hashPassword(password: string) {
+    // const salt = bcrypt.genSaltSync(10);
+    // return bcrypt.hashSync(password, salt);
+
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
+    return hash;
 }
 
-export const New_User = async (Email, FirstName, LastName, Date, Type, TypeRol, Gen, Password, State, City, Phone, Url) => {
-    try {
-        const hashedPassword = await hashPassword(Password);
-        const { data, error } = await supabase
-            .from("users")
-            .insert([
-                {
-                    Birthdate: Date,
-                    Blood_Type: Type,
-                    City: City,
-                    Email: Email,
-                    FirstName: FirstName,
-                    Gender: Gen,
-                    LastName: LastName,
-                    Phone: Phone,
-                    Status: null,
-                    State: State,
-                    Password: hashedPassword,
-                    Role: TypeRol,
-                    Tutorial: false,
-                    Url: Url,
-                    Token: null,
-                },
-            ])
-            .select();
-        if (error) {
-            console.error("Error al insertar datos:", error);
-            throw new Error("Error al insertar datos:", error);
-        } else {
-            console.log("Datos insertados con éxito:", data);
-        }
-    } catch (error) {
-        console.error("Error al insertar datos 1:", error.message);
-        throw new Error("Error al insertar datos 2:", error);
-    }
+export const New_User = async (
+    Email,
+    FirstName,
+    LastName,
+    Date,
+    Type,
+    TypeRol,
+    Gen,
+    Password,
+    State,
+    City,
+    Phone,
+    Url
+) => {
+    return new Promise((resolve, reject) => {
+        socket.emit("register_user", {
+            Email,
+            FirstName,
+            LastName,
+            Date,
+            Type,
+            TypeRol,
+            Gen,
+            Password, // sin hashear
+            State,
+            City,
+            Phone,
+            Url,
+        });
+
+        // Escuchamos la respuesta del backend
+        socket.once("register_user_response", (response) => {
+            if (response.success) {
+                console.log("Datos insertados con éxito:", response.data);
+                resolve(response.data);
+            } else {
+                console.error("Error al insertar datos:", response.error);
+                reject(new Error(response.error || "Error desconocido"));
+            }
+        });
+    });
 };
 
 export const updateImages = async (filePath, formData) => {
     try {
         console.log("el file path es ", filePath, "El forma", formData);
-        const { error } = await supabase.storage.from("prueba").upload(filePath, formData);
+        const { error } = await supabase.storage
+            .from("prueba")
+            .upload(filePath, formData);
         if (error) throw error;
     } catch (error) {
         console.log(error);
@@ -95,7 +116,9 @@ export const updateImages = async (filePath, formData) => {
 };
 
 export async function getUrl(fileName) {
-    const { data } = await supabase.storage.from("prueba").getPublicUrl(fileName);
+    const { data } = await supabase.storage
+        .from("prueba")
+        .getPublicUrl(fileName);
     console.log(data);
     return data;
 }
@@ -103,10 +126,16 @@ export async function getUrl(fileName) {
 export async function isExistingEmail(email: string) {
     try {
         // Consultar la tabla usuarios para verificar si el correo ya existe
-        const { data, error } = await supabase.from("users").select("Email").eq("Email", email);
+        const { data, error } = await supabase
+            .from("users")
+            .select("Email")
+            .eq("Email", email);
 
         if (error) {
-            console.error("Hubo un error al consultar Supabase:", error.message);
+            console.error(
+                "Hubo un error al consultar Supabase:",
+                error.message
+            );
             return true;
         }
 
@@ -165,7 +194,11 @@ export async function getTutorialValue(email: any) {
 
     console.log("el usuario es+", email);
 
-    const { data, error } = await supabase.from("users").select("Tutorial").eq("Email", email).single();
+    const { data, error } = await supabase
+        .from("users")
+        .select("Tutorial")
+        .eq("Email", email)
+        .single();
 
     if (error) {
         console.error("Error al consultar estadoTutorial:", error.message);
@@ -180,7 +213,10 @@ export async function getTutorialValue(email: any) {
 }
 
 export async function verificateUser(email: string) {
-    const { data, error } = await supabase.from("users").select("Email").eq("Email", email);
+    const { data, error } = await supabase
+        .from("users")
+        .select("Email")
+        .eq("Email", email);
     if (error) {
         console.log("was an error", error);
         return false;
@@ -200,7 +236,11 @@ export async function updateTutorialValue(email) {
         return null;
     }
     try {
-        const { data, error } = await supabase.from("users").update({ Tutorial: true }).eq("Email", email).select();
+        const { data, error } = await supabase
+            .from("users")
+            .update({ Tutorial: true })
+            .eq("Email", email)
+            .select();
 
         if (error) {
             console.error("hubo un error", error);
@@ -220,7 +260,11 @@ export async function getProfileImage(email: string) {
         return null;
     }
     try {
-        const { data, error } = await supabase.from("users").select("Url").eq("Email", email).single();
+        const { data, error } = await supabase
+            .from("users")
+            .select("Url")
+            .eq("Email", email)
+            .single();
         if (error) {
             console.log("Error al consultar la imagen de perfil:", error);
             return null;
@@ -238,7 +282,11 @@ export async function updateStatus(email: string, newStatus: string) {
         return null;
     }
     try {
-        const { data, error } = await supabase.from("users").update({ Status: newStatus }).eq("Email", email).select();
+        const { data, error } = await supabase
+            .from("users")
+            .update({ Status: newStatus })
+            .eq("Email", email)
+            .select();
 
         if (error) {
             console.error("Error al actualizar el status:", error);
@@ -258,7 +306,11 @@ export async function updateRole(email, newRole) {
         return null;
     }
     try {
-        const { data, error } = await supabase.from("users").update({ Role: newRole }).eq("Email", email).select();
+        const { data, error } = await supabase
+            .from("users")
+            .update({ Role: newRole })
+            .eq("Email", email)
+            .select();
 
         if (error) {
             console.error("Error al actualizar el Role:", error);
@@ -272,13 +324,21 @@ export async function updateRole(email, newRole) {
     }
 }
 
-export async function updateLocation(email: string, state: string, municipality: string) {
+export async function updateLocation(
+    email: string,
+    state: string,
+    municipality: string
+) {
     if (!email || !state || !municipality) {
         console.error("Email, Estado y Municipio son requeridos");
         return null;
     }
     try {
-        const { data, error } = await supabase.from("users").update({ State: state, City: municipality }).eq("Email", email).select();
+        const { data, error } = await supabase
+            .from("users")
+            .update({ State: state, City: municipality })
+            .eq("Email", email)
+            .select();
 
         if (error) {
             console.error("Error al actualizar la ubicación:", error);
@@ -298,7 +358,11 @@ export async function updatePhone(email: string, newPhone: string) {
         return null;
     }
     try {
-        const { data, error } = await supabase.from("users").update({ Phone: newPhone }).eq("Email", email).select();
+        const { data, error } = await supabase
+            .from("users")
+            .update({ Phone: newPhone })
+            .eq("Email", email)
+            .select();
 
         if (error) {
             console.error("Error al actualizar el número de teléfono:", error);
@@ -314,10 +378,15 @@ export async function updatePhone(email: string, newPhone: string) {
 
 export async function rejectUser(userId: number): Promise<void> {
     try {
-        const rejectedUsers: number[] = JSON.parse((await AsyncStorage.getItem("rejectedUsers")) || "[]");
+        const rejectedUsers: number[] = JSON.parse(
+            (await AsyncStorage.getItem("rejectedUsers")) || "[]"
+        );
 
         rejectedUsers.push(userId);
-        await AsyncStorage.setItem("rejectedUsers", JSON.stringify(rejectedUsers));
+        await AsyncStorage.setItem(
+            "rejectedUsers",
+            JSON.stringify(rejectedUsers)
+        );
     } catch (error) {
         console.error("Error guardando el usuario rechazado:", error);
     }
@@ -325,7 +394,11 @@ export async function rejectUser(userId: number): Promise<void> {
 
 export async function setExpoTokenNotification(email: string, token: string) {
     try {
-        const { data, error } = await supabase.from("users").update({ Token: token }).eq("Email", email).select();
+        const { data, error } = await supabase
+            .from("users")
+            .update({ Token: token })
+            .eq("Email", email)
+            .select();
 
         if (error) {
             console.error("Error al actualizar el token: ", error);
@@ -339,9 +412,15 @@ export async function setExpoTokenNotification(email: string, token: string) {
     }
 }
 
-export async function addReport(user: string, reason: string, reportedBy: string) {
+export async function addReport(
+    user: string,
+    reason: string,
+    reportedBy: string
+) {
     try {
-        const { error } = await supabase.from("reports").insert([{ user, reason, reportedBy }]);
+        const { error } = await supabase
+            .from("reports")
+            .insert([{ user, reason, reportedBy }]);
 
         if (error) {
             console.error("Error al agregar reporte:", error.message);
@@ -361,7 +440,10 @@ export async function deleteUserByEmail(email: string) {
         return;
     }
 
-    const { data, error } = await supabase.from("users").delete().eq("Email", email);
+    const { data, error } = await supabase
+        .from("users")
+        .delete()
+        .eq("Email", email);
 
     if (error) {
         console.error("Error deleting user:", error.message);
@@ -371,12 +453,22 @@ export async function deleteUserByEmail(email: string) {
     return { success: true, data };
 }
 
-export async function addToSupport(type: string, subject: string, message: string, user: string) {
+export async function addToSupport(
+    type: string,
+    subject: string,
+    message: string,
+    user: string
+) {
     try {
-        const { error } = await supabase.from("support").insert([{ type, subject, message, user }]);
+        const { error } = await supabase
+            .from("support")
+            .insert([{ type, subject, message, user }]);
 
         if (error) {
-            console.error("Error al agregar registro al soporte:", error.message);
+            console.error(
+                "Error al agregar registro al soporte:",
+                error.message
+            );
             return { success: false, error: error.message };
         }
 
@@ -387,23 +479,51 @@ export async function addToSupport(type: string, subject: string, message: strin
     }
 }
 
-export async function updatePassword(email: string, newPassword: string) {
+// export async function updatePassword(email: string, newPassword: string) {
+//     if (!email || !newPassword) {
+//         console.error("Email y password son requeridos");
+//         return null;
+//     }
+//     try {
+//         const hashedPassword = await hashPassword(newPassword);
+//         const { data, error } = await supabase
+//             .from("users")
+//             .update({ Password: hashedPassword })
+//             .eq("Email", email)
+//             .select();
+
+//         if (error) {
+//             console.error("Error al actualizar la contraseña:", error);
+//             return null;
+//         }
+//         console.log("Password actualizado con éxito:", data);
+//         return data;
+//     } catch (e) {
+//         console.error("Error inesperado en updatePassword:", e);
+//         return null;
+//     }
+// }
+
+export const updatePassword = async (email: string, newPassword: string) => {
     if (!email || !newPassword) {
         console.error("Email y password son requeridos");
         return null;
     }
-    try {
-        const hashedPassword = await hashPassword(newPassword);
-        const { data, error } = await supabase.from("users").update({ Password: hashedPassword }).eq("Email", email).select();
 
-        if (error) {
-            console.error("Error al actualizar la contraseña:", error);
-            return null;
-        }
-        console.log("Password actualizado con éxito:", data);
-        return data;
-    } catch (e) {
-        console.error("Error inesperado en updatePassword:", e);
-        return null;
-    }
-}
+    return new Promise((resolve, reject) => {
+        socket.emit("update_password", { email, newPassword });
+
+        socket.once("update_password_response", (response) => {
+            if (response.success) {
+                console.log("Password actualizado con éxito:", response.data);
+                resolve(response.data);
+            } else {
+                console.error(
+                    "Error al actualizar la contraseña:",
+                    response.error
+                );
+                reject(new Error(response.error || "Error desconocido"));
+            }
+        });
+    });
+};
