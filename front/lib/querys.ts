@@ -61,18 +61,18 @@ export async function hashPassword(password: string) {
 }
 
 export const New_User = async (
-    Email,
-    FirstName,
-    LastName,
-    Date,
-    Type,
-    TypeRol,
-    Gen,
-    Password,
-    State,
-    City,
-    Phone,
-    Url
+    Email: string,
+    FirstName: string,
+    LastName: string,
+    Date: any,
+    Type: string,
+    TypeRol: string,
+    Gen: string,
+    Password: string,
+    State: string,
+    City: string,
+    Phone: string,
+    Url: any
 ) => {
     return new Promise((resolve, reject) => {
         socket.emit("register_user", {
@@ -91,7 +91,7 @@ export const New_User = async (
         });
 
         // Escuchamos la respuesta del backend
-        socket.once("register_user_response", (response) => {
+        socket.once("register_user_response", (response: any) => {
             if (response.success) {
                 console.log("Datos insertados con éxito:", response.data);
                 resolve(response.data);
@@ -103,7 +103,7 @@ export const New_User = async (
     });
 };
 
-export const updateImages = async (filePath, formData) => {
+export const updateImages = async (filePath: any, formData: any) => {
     try {
         console.log("el file path es ", filePath, "El forma", formData);
         const { error } = await supabase.storage
@@ -115,7 +115,7 @@ export const updateImages = async (filePath, formData) => {
     }
 };
 
-export async function getUrl(fileName) {
+export async function getUrl(fileName: any) {
     const { data } = await supabase.storage
         .from("prueba")
         .getPublicUrl(fileName);
@@ -154,7 +154,7 @@ export async function isExistingEmail(email: string) {
     }
 }
 
-export async function handleSubmit(image) {
+export async function handleSubmit(image: any) {
     try {
         let publicUrl = "";
         console.log("se enica", image);
@@ -212,25 +212,25 @@ export async function getTutorialValue(email: any) {
     }
 }
 
-export async function verificateUser(email: string) {
-    const { data, error } = await supabase
-        .from("users")
-        .select("Email")
-        .eq("Email", email);
-    if (error) {
-        console.log("was an error", error);
-        return false;
-    }
-    if (data.length > 0) {
-        console.log("sicces", data[0].Email);
-        return true;
-    }
-    if (data) {
-        return data.Tutorial === null ? false : data.Tutorial;
-    }
-}
+// export async function verificateUser(email: string) {
+//     const { data, error } = await supabase
+//         .from("users")
+//         .select("Email")
+//         .eq("Email", email);
+//     if (error) {
+//         console.log("was an error", error);
+//         return false;
+//     }
+//     if (data.length > 0) {
+//         console.log("sicces", data[0].Email);
+//         return true;
+//     }
+//     if (data) {
+//         return data.Tutorial === null ? false : data.Tutorial;
+//     }
+// }
 
-export async function updateTutorialValue(email) {
+export async function updateTutorialValue(email: string) {
     if (!email) {
         console.error("email no es valido");
         return null;
@@ -300,7 +300,7 @@ export async function updateStatus(email: string, newStatus: string) {
     }
 }
 
-export async function updateRole(email, newRole) {
+export async function updateRole(email: string, newRole: string) {
     if (!email || !newRole) {
         console.error("Email y Role son requeridos");
         return null;
@@ -479,31 +479,6 @@ export async function addToSupport(
     }
 }
 
-// export async function updatePassword(email: string, newPassword: string) {
-//     if (!email || !newPassword) {
-//         console.error("Email y password son requeridos");
-//         return null;
-//     }
-//     try {
-//         const hashedPassword = await hashPassword(newPassword);
-//         const { data, error } = await supabase
-//             .from("users")
-//             .update({ Password: hashedPassword })
-//             .eq("Email", email)
-//             .select();
-
-//         if (error) {
-//             console.error("Error al actualizar la contraseña:", error);
-//             return null;
-//         }
-//         console.log("Password actualizado con éxito:", data);
-//         return data;
-//     } catch (e) {
-//         console.error("Error inesperado en updatePassword:", e);
-//         return null;
-//     }
-// }
-
 export const updatePassword = async (email: string, newPassword: string) => {
     if (!email || !newPassword) {
         console.error("Email y password son requeridos");
@@ -513,7 +488,7 @@ export const updatePassword = async (email: string, newPassword: string) => {
     return new Promise((resolve, reject) => {
         socket.emit("update_password", { email, newPassword });
 
-        socket.once("update_password_response", (response) => {
+        socket.once("update_password_response", (response: any) => {
             if (response.success) {
                 console.log("Password actualizado con éxito:", response.data);
                 resolve(response.data);
