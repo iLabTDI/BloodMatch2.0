@@ -4,23 +4,19 @@ const http = require("http").Server(app);
 const cors = require("cors");
 const { createClient } = require("@supabase/supabase-js");
 const bcrypt = require("bcryptjs");
-// const supabase = createClient(
-//   "https://abgspujwyujtccknqenr.supabase.co",
-//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFiZ3NwdWp3eXVqdGNja25xZW5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTA0MzU5NzgsImV4cCI6MjAyNjAxMTk3OH0.NOjPxUVPBYztUlLCl6CBYg9vIrl9I58zD6bolUzqYfs"
-// );
 const supabase = createClient(
     "https://bzkasdpzbcjajoplfxyw.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6a2FzZHB6YmNqYWpvcGxmeHl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzkyODA1OTAsImV4cCI6MjA1NDg1NjU5MH0.42Oxtt82KlvOBKiDJfTHqsMB7BhCGcypp_rp08H63-s"
 );
 
-// Función para hashear contraseña
+// function to hash password
 async function hashPassword(password) {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
     return hash;
 }
 
-// Función para comparar contraseña
+// function to compare passwords
 async function comparePassword(input, hash) {
     return await bcrypt.compare(input, hash);
 }
@@ -68,6 +64,7 @@ const conexion = async (id, currentFirstName, currentSecondName) => {
         console.error("Error durante la operación:", error);
     }
 };
+
 const verify = (currentGroupName, currentSecondGroup) => {
     console.log("los nombre son", currentGroupName, currentSecondGroup);
     let longitud = chatgroups.length;
@@ -93,6 +90,7 @@ const verify = (currentGroupName, currentSecondGroup) => {
         }
     }
 };
+
 const socketIO = require("socket.io")(http, {
     cors: {
         origin: "*", // Permitir todas las conexiones
