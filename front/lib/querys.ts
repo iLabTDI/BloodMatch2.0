@@ -24,7 +24,7 @@ export async function getDates(email: string) {
     }
 }
 
-export async function generaldates(page = 1, limit = 10) {
+export async function generaldates(page = 1, limit = 20) {
     const from = (page - 1) * limit;
     const to = from + limit - 1;
 
