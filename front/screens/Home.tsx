@@ -559,6 +559,7 @@ import {
   PanResponder,
   TouchableOpacity,
   ScrollView,
+  StatusBar,
   BackHandler,
   Alert,
   StyleSheet,
@@ -768,6 +769,7 @@ function Home() {
 
   return (
     <SafeAreaView className="flex-1 bg-gray-100">
+      <StatusBar backgroundColor={"#ffffff"} barStyle={"dark-content"}/>
       <TouchableOpacity onPress={() => setShowModalFilter(true)} className="bg-white p-4 border-b border-gray-200">
         <View className="flex-row items-center bg-gray-100 rounded-full px-2 py-2 pr-5">
           <Text className="text-[#9CA3AF] flex-1 ml-2 text-base">{t("search_by")}</Text>
