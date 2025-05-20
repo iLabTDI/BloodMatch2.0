@@ -24,6 +24,23 @@ export async function getDates(email: string) {
     }
 }
 
+export async function generaldates(page = 1, limit = 10) {
+    const from = (page - 1) * limit;
+    const to = from + limit - 1;
+
+    const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .range(from, to); // esto aplica paginación
+
+    if (error) {
+        console.error("Error al obtener datos paginados:", error);
+        return [];
+    }
+
+    return data || [];
+}
+
 export async function getUser(email: string) {
     const { data, error } = await supabase
         .from("users")
@@ -36,20 +53,20 @@ export async function getUser(email: string) {
     return data;
 }
 
-export async function generaldates() {
-    const { data, error } = await supabase.from("users").select("*");
+// export async function generaldates() {
+//     const { data, error } = await supabase.from("users").select("*");
 
-    console.log("los usuarios que esta agarrando son estos ", data);
+//     console.log("los usuarios que esta agarrando son estos ", data);
 
-    if (error) {
-        console.log(error);
-    }
-    if (!data || data.length === 0) {
-        console.log("error datos invalidos");
-    } else {
-        return data;
-    }
-}
+//     if (error) {
+//         console.log(error);
+//     }
+//     if (!data || data.length === 0) {
+//         console.log("error datos invalidos");
+//     } else {
+//         return data;
+//     }
+// }
 
 export async function hashPassword(password: string) {
     // const salt = bcrypt.genSaltSync(10);

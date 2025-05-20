@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import SignIn from "../screens/SignIn";
 import Login from "../screens/Login";
 import TabNavigator from "./TabNavigator";
 import Messenger from "../screens/Messenger";
@@ -12,75 +11,72 @@ import Chat from "../screens/Chat";
 import { useTranslation } from "react-i18next";
 import Termycon from "../screens/terminos";
 import Privacidad from "../screens/Privacidad";
-import NewReg from "../screens/New-reg";
 import Messagescreen from "../screens/Messagescreen";
 import Home from "@/screens/Home";
 import Tutorial from "../components/Tutorial";
 //import chat from './../components/Tutorial
-import Support from "../screens/Support"
+import Support from "../screens/Support";
 
 export default function AuthNavigator() {
-  const { t } = useTranslation();
-  const Stack = createNativeStackNavigator();
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{ headerShown: false, navigationBarColor: '#FEF2F2', navigationBarHidden: false}}
-      />
-      <Stack.Screen name="Messagescreen" component={Messagescreen} />
-      <Stack.Screen
-        name="SignIn"
-        component={SignIn}
-        //options={{ headerShown: false, title: 'Se pudo'}}
-      />
-      <Stack.Screen
-        name="Home"
-        component={TabNavigator}
-        options={{ headerShown: false, navigationBarColor: '#ffffff', navigationBarHidden: false}}
-      />
-      <Stack.Screen name="Messenger" component={Messenger} />
-      <Stack.Screen
-        name="profile"
-        component={Customers}
-        //options={{ headerShown: false}}
-      />
-      <Stack.Screen
-        name="Configuracion"
-        component={Setting}
-        //options={{ headerShown: false}}
-      />
-      <Stack.Screen
-        name="themesel"
-        component={Tema}
-        //options={{ headerShown: false}}
-      />
-      <Stack.Screen
-        name="Chat"
-        component={Chat}
-        //options={{ headerShown: false}}
-      />
-      <Stack.Screen
-        name="termycondi"
-        component={Termycon}
-        //options={{ headerShown: false}}
-      />
-      <Stack.Screen
-        name="Privacidad"
-        component={Privacidad}
-        //options={{ headerShown: false}}
-      />
-      <Stack.Screen
-        name="new-reg"
-        component={NewReg}
-        //options={{ headerShown: false}}
-      />
-      <Stack.Screen
-        name="Support"
-        component={Support}
-        //options={{ headerShown: false}}
-      />
-    </Stack.Navigator>
-  );
+    const { t } = useTranslation();
+    const Stack = createNativeStackNavigator();
+    return (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{
+                    headerShown: false,
+                    navigationBarColor: "#FEF2F2",
+                    navigationBarHidden: false,
+                }}
+            />
+            <Stack.Screen name="Messagescreen" component={Messagescreen} />
+            <Stack.Screen
+                name="Home"
+                component={TabNavigator}
+                options={{
+                    headerShown: false,
+                    navigationBarColor: "#ffffff",
+                    navigationBarHidden: false,
+                }}
+            />
+            <Stack.Screen name="Messenger" component={Messenger} />
+            <Stack.Screen
+                name="profile"
+                component={Customers}
+                //options={{ headerShown: false}}
+            />
+            <Stack.Screen
+                name="Configuracion"
+                component={Setting}
+                //options={{ headerShown: false}}
+            />
+            <Stack.Screen
+                name="themesel"
+                component={Tema}
+                //options={{ headerShown: false}}
+            />
+            <Stack.Screen
+                name="Chat"
+                component={Chat}
+                //options={{ headerShown: false}}
+            />
+            <Stack.Screen
+                name="termycondi"
+                component={Termycon}
+                //options={{ headerShown: false}}
+            />
+            <Stack.Screen
+                name="Privacidad"
+                component={Privacidad}
+                //options={{ headerShown: false}}
+            />
+            <Stack.Screen
+                name="Support"
+                component={Support}
+                //options={{ headerShown: false}}
+            />
+        </Stack.Navigator>
+    );
 }

@@ -22,7 +22,7 @@ import { Filter, Heart, Loader, X} from 'react-native-feather';
 import Constants from 'expo-constants';
 import { socket } from "../util/connectionChat";
 import { getGlobalData, setGlobalData, getAllGlobalData } from "../backend/querys/inserts/New_email";
-import { generaldates, getTutorialValue, updateTutorialValue, rejectUser, getDates } from "../lib/querys";
+import { generaldates, updateTutorialValue, rejectUser, getDates } from "../lib/querys";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Tutorial from "../components/Tutorial";
 import ModalFilters from '../components/ModalFilters'
@@ -129,17 +129,26 @@ function Home() {
   );
 
   useEffect(() => {
+    async function getTutorialValue(){
+      let value = await AsyncStorage.getItem("tutorial");
+      if(value){
+        setShowTutorial(false);
+      }else{
+        setShowTutorial(true);
+      }
+      // await AsyncStorage.setItem("currentPage", newPage.toString());
+    }
+
     async function fetchUserData() {
-      const tutorialValue = await getTutorialValue(getGlobalData("email"));
+      // const tutorialValue = await getTutorialValue(getGlobalData("email"));
       const currentUser = await getDates(getGlobalData("email"));
       setGlobalData("state", currentUser.State);
       setGlobalData("city", currentUser.City);
-      console.log(tutorialValue)
-      if (tutorialValue) {
-        setShowTutorial(false);
-      } else {
-        setShowTutorial(true);
-      }
+      // if (tutorialValue) {
+      //   setShowTutorial(false);
+      // } else {
+      //   setShowTutorial(true);
+      // }
     }
 
     async function fetchData() {
@@ -149,6 +158,7 @@ function Home() {
       setUsersCopy(result);
     }
 
+    getTutorialValue();
     fetchUserData();
     fetchData();
     registerForPushNotifications();
@@ -389,8 +399,9 @@ function Home() {
 
   const onClose = () => {
     async function updateTutorial() {
-      const result = await updateTutorialValue(getGlobalData("email"));
-      console.log("Checando result: ", result);
+      // const result = await updateTutorialValue(getGlobalData("email"));
+      // console.log("Checando result: ", result);
+      await AsyncStorage.setItem("tutorial", "true");
     }
     updateTutorial();
     setShowTutorial(false);
@@ -496,13 +507,5 @@ const styles = StyleSheet.create({
     marginTop: Constants.statusBarHeight
   }
 });
-
-// function Home(){
-//   return (
-//     <View className="flex-1 bg-blue-600">
-//       <Text>Home Screen</Text>
-//     </View>
-//   );
-// }
 
 export default Home;
