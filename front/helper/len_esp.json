@@ -52,10 +52,11 @@
     "characteristics_pass_title": "Características necesarias de la contraseña",
     "characteristics_pass": "- Debe tener al menos 8 caracteres\n- Debe incluir al menos una letra mayúscula\n- Debe incluir al menos una letra minúscula\n- Debe tener al menos un número\n- Debe tener al menos un símbolo especial\n- No debe tener espacios\n",
     "success": "Éxito",
-    "success_form_submit": "El formulario se envió correctamente",
+    "success_form_submit": "El formulario se envió correctamente, ingresa a tu correo electronico y validalo en el correo que te mandamos para iniciar sesión",
     "error_form_submit": "Error al intentar registrar nuevo usuario, por favor inténtalo mas tarde",
     "close": "Cerrar",
     "accept": "Aceptar",
+    "no_validated": "Antes de iniciar sesión debes validar tu correo electronico",
 
     "tabs navigation section": "****************************************************************************************************",
     "home": "Inicio",

@@ -63,6 +63,7 @@
             "CHAtBOT_TOKEN": "Bearer 714aba56-69e4-4fc7-84ca-3dd96dbbf50a",
             "EMAILJS_SERVICE_ID": "service_ieb2odp",
             "EMAILJS_TEMPLATE_ID": "template_fa4koir",
+            "EMAILJS_TEMPLATE_ID_WELCOME": "template_pmk2g6e",
             "EMAILJS_PUBLIC_KEY": "VLM9fNZg8Zj_8MPRP"
         }
     }

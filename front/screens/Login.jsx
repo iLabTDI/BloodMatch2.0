@@ -26,6 +26,10 @@ import { getDates } from "../lib/querys";
 import { setGlobalData } from "../backend/querys/inserts/New_email";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as bcrypt from "bcryptjs";
+import { v4 as uuidv4 } from "uuid";
+import { send, EmailJSResponseStatus } from "@emailjs/react-native";
+import "react-native-url-polyfill/auto";
+import Constants from "expo-constants";
 
 import { handleSubmit, getUrl } from "../lib/querys";
 import validations from "../helper/validations.js";
@@ -124,21 +128,29 @@ const LogIn = (props) => {
         try {
             const usuario = await getDates(email.trim());
 
-            if (usuario) {
-                const passwordMatch = await bcrypt.compareSync(
-                    password,
-                    usuario.Password
-                );
+            console.log("USUARIO ISÑOÑIÑOUÑAEJ: ", usuario);
 
-                if (passwordMatch) {
-                    setGlobalData("email", email);
-                    if ((await getSession()) === null) {
-                        await saveSession(email);
+            if (usuario) {
+                if (usuario.Is_Verified) {
+                    const passwordMatch = await bcrypt.compareSync(
+                        password,
+                        usuario.Password
+                    );
+
+                    if (passwordMatch) {
+                        setGlobalData("email", email);
+                        if ((await getSession()) === null) {
+                            await saveSession(email);
+                        }
+                        navigation.push("Home");
+                    } else {
+                        setTitleModal(t("error"));
+                        setTextModal(t("error_email_pass"));
+                        setIsModalVisible(true);
                     }
-                    navigation.push("Home");
                 } else {
                     setTitleModal(t("error"));
-                    setTextModal(t("error_email_pass"));
+                    setTextModal(t("no_validated"));
                     setIsModalVisible(true);
                 }
             } else {
@@ -226,8 +238,41 @@ const LogIn = (props) => {
         setIsModalVisible(true);
     };
 
+    const submitVerificationEmail = async (email, name, token) => {
+        let res = {
+            status: 0,
+            message: "",
+        };
+        try {
+            await send(
+                Constants.expoConfig.extra.EMAILJS_SERVICE_ID,
+                Constants.expoConfig.extra.EMAILJS_TEMPLATE_ID_WELCOME,
+                {
+                    email,
+                    to_name: name,
+                    verification_link: `https://bloodmatch-verification-email.onrender.com/verificacion/${token}`,
+                },
+                {
+                    publicKey: Constants.expoConfig.extra.EMAILJS_PUBLIC_KEY,
+                }
+            );
+            res.status = 200;
+            res.message = "success";
+            console.log("SUCCESS! ", res);
+        } catch (err) {
+            if (err instanceof EmailJSResponseStatus) {
+                console.log("EmailJS Request Failed...", err);
+            }
+            res.status = 500;
+            res.message = "error";
+            console.log("ERROR", err, res);
+        }
+        return res;
+    };
+
     const handleSubmitRegister = async () => {
         setIsLoadingRegister(true);
+        const token = uuidv4();
         let validateFields = [
             (vFirstName = validations.firstName(register.firstName)),
             (vLastName = validations.lastName(register.lastName)),
@@ -267,31 +312,43 @@ const LogIn = (props) => {
                     register.state.trim(),
                     register.municipality.trim(),
                     register.phoneNumber.trim(),
-                    register.uriImage.trim()
+                    register.uriImage.trim(),
+                    token
                 );
 
-                setTitleModal(t("success"));
-                setTextModal(t("success_form_submit"));
-                setIsModalVisible(true);
-                setRegister({
-                    firstName: "",
-                    lastName: "",
-                    birthDate: null,
-                    gender: "female",
-                    state: "",
-                    municipality: "",
-                    phoneNumber: "",
-                    email: "",
-                    password: "",
-                    passwordConfirm: "",
-                    bloodTypeRol: "donor",
-                    bloodType: "",
-                    uriImage: "",
-                    termsAgree: false,
-                });
-                setIsImageLoading(false);
-                setIsImageLoaded(false);
-                setActiveTab("login");
+                let resEmailSend = await submitVerificationEmail(
+                    register.email.trim(),
+                    register.firstName.trim(),
+                    token
+                );
+                if (resEmailSend.status === 200) {
+                    setTitleModal(t("success"));
+                    setTextModal(t("success_form_submit"));
+                    setIsModalVisible(true);
+                    setRegister({
+                        firstName: "",
+                        lastName: "",
+                        birthDate: null,
+                        gender: "female",
+                        state: "",
+                        municipality: "",
+                        phoneNumber: "",
+                        email: "",
+                        password: "",
+                        passwordConfirm: "",
+                        bloodTypeRol: "donor",
+                        bloodType: "",
+                        uriImage: "",
+                        termsAgree: false,
+                    });
+                    setIsImageLoading(false);
+                    setIsImageLoaded(false);
+                    setActiveTab("login");
+                } else {
+                    setTitleModal(t("error"));
+                    setTextModal(t("error_form_submit"));
+                    setIsModalVisible(true);
+                }
             } catch (error) {
                 setTitleModal(t("error"));
                 setTextModal(t("error_form_submit"));

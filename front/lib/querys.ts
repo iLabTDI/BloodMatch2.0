@@ -89,8 +89,10 @@ export const New_User = async (
     State: string,
     City: string,
     Phone: string,
-    Url: any
+    Url: any,
+    Verification_Token: string
 ) => {
+    console.log("DESDE QUERYSSSSSSSSSSSSSSSSSS: ", Verification_Token);
     return new Promise((resolve, reject) => {
         socket.emit("register_user", {
             Email,
@@ -100,11 +102,12 @@ export const New_User = async (
             Type,
             TypeRol,
             Gen,
-            Password, // sin hashear
+            Password,
             State,
             City,
             Phone,
             Url,
+            Verification_Token,
         });
 
         // Escuchamos la respuesta del backend

@@ -52,10 +52,11 @@
     "characteristics_pass_title": "Password requirements",
     "characteristics_pass": "- Must have at least 8 characters\n- Must include at least one uppercase letter\n- Must include at least one lowercase letter\n- Must have at least one number\n- Must have at least one special symbol\n- Must not contain spaces\n",
     "success": "Success",
-    "success_form_submit": "Form submitted successfully",
+    "success_form_submit": "The form was sent successfully, enter your email and validate it in the email we sent you to log in.",
     "error_form_submit": "Error while trying to register a new user, please try again later",
     "close": "Close",
     "accept": "Accept",
+    "no_validated": "Before logging in you must validate your email",
 
     "tabs navigation section": "****************************************************************************************************",
     "home": "Home",
