@@ -364,6 +364,7 @@ socketIO.on("connection", (socket) => {
                 City,
                 Phone,
                 Url,
+                Verification_Token,
             } = userData;
 
             const hashedPassword = await hashPassword(Password);
@@ -386,6 +387,7 @@ socketIO.on("connection", (socket) => {
                         Role: TypeRol,
                         Url: Url,
                         Token: null,
+                        Verification_Token: Verification_Token,
                     },
                 ])
                 .select();
@@ -537,7 +539,8 @@ const New_User = async (
     State,
     City,
     Phone,
-    Url
+    Url,
+    Verification_Token
 ) => {
     try {
         const hashedPassword = await hashPassword(Password);
@@ -560,6 +563,7 @@ const New_User = async (
                     Role: TypeRol,
                     Url: Url,
                     Token: null,
+                    Verification_Token: Verification_Token,
                 },
             ])
             .select();
