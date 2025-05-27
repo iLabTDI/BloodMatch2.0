@@ -37,6 +37,9 @@ import { New_User } from "../lib/querys";
 import estadosMunicipios from "../assets/estados_municipios.json";
 import WhiteFullScreen from "../components/WhiteFullScreen";
 
+// import * as ImagePicker from "expo-image-picker";
+import * as ImageManipulator from "expo-image-manipulator";
+
 const LogIn = (props) => {
     const { navigation } = props;
     const { t } = useTranslation();
@@ -201,32 +204,90 @@ const LogIn = (props) => {
         if (selectedDate) handleInputChange("birthDate", selectedDate);
     };
 
+    // const pickImage = async () => {
+    //     setIsImageLoading(true);
+    //     try {
+    //         let result = await ImagePicker.launchImageLibraryAsync({
+    //             mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    //             quality: 1,
+    //             allowsEditing: true,
+    //         });
+
+    //         if (!result.cancelled) {
+    //             const fileName = await handleSubmit(result.assets[0].uri);
+    //             const data2 = await getUrl(fileName);
+    //             const imageUrl = data2.publicUrl;
+
+    //             handleInputChange("uriImage", imageUrl);
+
+    //             if (imageUrl.length > 0) {
+    //                 setIsImageLoaded(true);
+    //             } else {
+    //                 setTitleModal(t("error"));
+    //                 setTextModal(t("error_image"));
+    //                 setIsModalVisible(true);
+    //             }
+    //         }
+    //     } catch (error) {
+    //         console.log("Error al seleccionar la imagen:", error);
+    //     } finally {
+    //         setIsImageLoading(false);
+    //     }
+    // };
+
     const pickImage = async () => {
         setIsImageLoading(true);
         try {
-            let result = await ImagePicker.launchImageLibraryAsync({
+            // 1. Pedir permisos de galería
+            const permission =
+                await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (!permission.granted) {
+                throw new Error("Permiso denegado para acceder a la galería.");
+            }
+
+            // 2. Seleccionar imagen
+            const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                quality: 1,
                 allowsEditing: true,
+                quality: 1,
             });
 
-            if (!result.cancelled) {
-                const fileName = await handleSubmit(result.assets[0].uri);
-                const data2 = await getUrl(fileName);
-                const imageUrl = data2.publicUrl;
+            if (result.canceled) return;
 
+            const file = result.assets[0];
+
+            // 3. Validar tipo MIME
+            const fileNameImage = file.fileName || file.uri.split("/").pop();
+            const extension = fileNameImage.split(".").pop()?.toLowerCase();
+            const allowedExtensions = ["jpg", "jpeg", "png", "webp"];
+            if (!extension || !allowedExtensions.includes(extension)) {
+                throw new Error("Formato de imagen no permitido.");
+            }
+
+            // 4. Redimensionar y comprimir la imagen
+            const manipulated = await ImageManipulator.manipulateAsync(
+                file.uri,
+                [{ resize: { width: 800 } }],
+                { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
+            );
+
+            // 5. Subir la imagen (usando tu lógica `handleSubmit`)
+            const fileName = await handleSubmit(manipulated.uri); // Subida a Supabase
+            const data2 = await getUrl(fileName); // Obtener URL pública
+            const imageUrl = data2?.publicUrl;
+
+            // 6. Verificar URL y actualizar UI
+            if (imageUrl && imageUrl.startsWith("https://")) {
                 handleInputChange("uriImage", imageUrl);
-
-                if (imageUrl.length > 0) {
-                    setIsImageLoaded(true);
-                } else {
-                    setTitleModal(t("error"));
-                    setTextModal(t("error_image"));
-                    setIsModalVisible(true);
-                }
+                setIsImageLoaded(true);
+            } else {
+                throw new Error("No se pudo obtener la URL de la imagen.");
             }
         } catch (error) {
-            console.log("Error al seleccionar la imagen:", error);
+            console.error("Error al seleccionar la imagen:", error);
+            setTitleModal(t("error"));
+            setTextModal(error.message || t("error_image"));
+            setIsModalVisible(true);
         } finally {
             setIsImageLoading(false);
         }
