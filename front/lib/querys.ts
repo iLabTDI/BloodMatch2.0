@@ -92,7 +92,6 @@ export const New_User = async (
     Url: any,
     Verification_Token: string
 ) => {
-    console.log("DESDE QUERYSSSSSSSSSSSSSSSSSS: ", Verification_Token);
     return new Promise((resolve, reject) => {
         socket.emit("register_user", {
             Email,
