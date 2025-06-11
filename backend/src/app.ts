@@ -1,4 +1,5 @@
 import express from "express";
+import homeRoute from "./routes";
 import { createServer } from "http"; // Necesario para vincular socket.io con express
 import { setupSocket } from "./config/socket";
 import { Server } from "socket.io";
@@ -15,6 +16,8 @@ const io = new Server(httpServer, {
 });
 //iniciamos el servidor socket
 setupSocket(io);
+
+app.use(homeRoute);//Usamos el manejador de rutas
 
 // Endpoints HTTP
 app.get("/", (req, res) => {
