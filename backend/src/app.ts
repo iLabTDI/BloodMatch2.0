@@ -19,6 +19,8 @@ setupSocket(io);
 
 app.use(homeRoute);//Usamos el manejador de rutas
 
+app.use(express.json());
+
 // Endpoints HTTP
 app.get("/", (req, res) => {
     res.send("holi mundo");
