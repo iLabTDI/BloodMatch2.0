@@ -62,4 +62,4 @@ const deleUser = ({body}:Request, res: Response) => {
         }
 }
 //exportamos las controller
-export {getUser, getUsers, updateUser, postRegister, postLogin, postlogout ,deleUser };
+export {getUser, getUsers, updateUser, postRegister, postLogin,postlogout ,deleUser };
