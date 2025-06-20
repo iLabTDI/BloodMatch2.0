@@ -4,11 +4,17 @@ const router = Router()
 
 //       ==rutas de usuario==
 
-//Esta ruta se encarga de crear usuarios
-router.post("/");
+//Esta ruta se encarga de hacer loging un usuario
+router.post("/login");
+
+//esta ruta de encarga de registra un usuario
+router.post("/register");
+
+//esta ruta se encarga de cerrar la sesion de usuario
+router.post("/logout");
 
 //Esta ruta se encarga de optener un usuario
-router.get("/",(req, res)=>{
+router.get("/:id",(req, res)=>{
     res.send({data: "Aqui van los modelos"})
 });
 
@@ -16,9 +22,9 @@ router.get("/",(req, res)=>{
 router.get("/");
 
 //Esta ruta se encarga de editar un usuario
-router.put("/");
+router.put("/:id");
 
 //Esta ruta se encarga de eliminar usuarios
-router.delete("/");
+router.delete("/:id");
 
 export default router;
