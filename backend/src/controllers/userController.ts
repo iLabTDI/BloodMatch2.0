@@ -7,7 +7,7 @@ const postRegister = ({ body }:Request, res: Response) => {
         try{
                 res.send(body);
         } catch (e) {
-                handleHttp(res, 'ERROR_INSERT_USER')
+                handleHttp(res, e)
         }
 }
 
@@ -16,7 +16,7 @@ const postLogin = ({ body }:Request, res: Response) => {
         try{
                 res.send(body);
         } catch (e) {
-                handleHttp(res, 'ERROR_INSERT_USER')
+                handleHttp(res, e)
         }
 }
 
@@ -25,7 +25,7 @@ const postlogout = ({ body }:Request, res: Response) => {
         try{
                 res.send(body);
         } catch (e) {
-                handleHttp(res, 'ERROR_INSERT_USER')
+                handleHttp(res, e)
         }
 }
 
@@ -34,7 +34,7 @@ const getUser = ({ body }:Request, res: Response) => {
         try {
                 res.send(body);
         } catch (e) {
-        handleHttp(res, 'ERROR_GET_USER')
+        handleHttp(res, e)
         }
 }
 //controller para obtener un usuarios
@@ -42,7 +42,7 @@ const getUsers = ({ body }:Request, res: Response) => {
         try{
                 res.send(body)
         } catch (e) {
-                handleHttp(res, 'ERROR_GET_USERS')
+                handleHttp(res, e)
         }
 }
 //controller para actualizar usuario
@@ -50,7 +50,7 @@ const updateUser = ({ body }:Request, res: Response) => {
         try{
                 res.send(body)
         }catch (e) {
-                handleHttp(res, 'ERROR_UPDATE_USER')
+                handleHttp(res, e)
         }
 }
 //controller para eliminar un usuario
@@ -58,7 +58,7 @@ const deleUser = ({body}:Request, res: Response) => {
         try{
                 res.send(body)
         } catch (e) {
-                handleHttp(res, 'ERROR_DELET_USER')
+                handleHttp(res, e)
         }
 }
 //exportamos las controller
