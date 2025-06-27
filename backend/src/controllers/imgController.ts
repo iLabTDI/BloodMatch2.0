@@ -6,7 +6,7 @@ const getImg = ({ body }:Request, res: Response) => {
         try {
                 res.send(body);
         } catch (e) {
-        handleHttp(res, 'ERROR_GET_USER')
+        handleHttp(res, e)
         }
 }
 //controller para obtener imagenes
@@ -14,7 +14,7 @@ const getImgs = ({ body }:Request, res: Response) => {
         try{
                 res.send(body)
         } catch (e) {
-                handleHttp(res, 'ERROR_GET_USERS')
+                handleHttp(res, e)
         }
 }
 
@@ -23,7 +23,7 @@ const updateImg = ({ body }:Request, res: Response) => {
         try{
                 res.send(body)
         }catch (e) {
-                handleHttp(res, 'ERROR_UPDATE_USER')
+                handleHttp(res, e)
         }
 }
 
@@ -32,7 +32,7 @@ const postImg = ({ body }:Request, res: Response) => {
         try{
                 res.send(body);
         } catch (e) {
-                handleHttp(res, 'ERROR_INSERT_USER')
+                handleHttp(res, e)
         }
 }
 
@@ -41,7 +41,7 @@ const deleImg = ({body}:Request, res: Response) => {
         try{
                 res.send(body)
         } catch (e) {
-                handleHttp(res, 'ERROR_DELET_USER')
+                handleHttp(res, e)
         }
 }
 
