@@ -9,14 +9,6 @@ const getImg = ({ body }:Request, res: Response) => {
         handleHttp(res, e)
         }
 }
-//controller para obtener imagenes
-const getImgs = ({ body }:Request, res: Response) => {
-        try{
-                res.send(body)
-        } catch (e) {
-                handleHttp(res, e)
-        }
-}
 
 //controller para editar una imagen
 const updateImg = ({ body }:Request, res: Response) => {
@@ -46,4 +38,4 @@ const deleImg = ({body}:Request, res: Response) => {
 }
 
 //exportamos las controller
-export {getImg, getImgs, updateImg, postImg, deleImg };
+export {getImg, updateImg, postImg, deleImg };
