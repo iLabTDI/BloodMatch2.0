@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleImg, getImg, getImgs, postImg, updateImg } from "../controllers/imgController";
+import { deleImg, getImg, postImg, updateImg } from "../controllers/imgController";
 
 const router = Router()
 
@@ -11,9 +11,6 @@ router.post("/id:", postImg);//Esta ruta se encarga de inserta imagenes
 
 //Esta ruta se encarga de optener un imagen
 router.get("/id:", getImg);
-
-//Esta ruta optiene todas las imagenes
-router.get("/", getImgs);
 
 //Esta ruta se encarga de editar la imagen
 router.put("/id", updateImg);
