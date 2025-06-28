@@ -3,7 +3,7 @@ import { handleHttp } from "../utils/error.handle";
 import * as UserService from "../service/user"
 
 //controller para registra un usuario
-const postRegister = async (req: Request, res: Response) => {
+const registerUser = async (req: Request, res: Response) => {
         try{
                 const newUser = await UserService.registerUser(req.body); //se implementa logica de service
                 res.status(201).json({message: "Usuario registrado exitosamente", user: newUser});
@@ -13,7 +13,7 @@ const postRegister = async (req: Request, res: Response) => {
 }
 
 //controller para hacer login
-const postLogin = async (req: Request, res: Response) => {
+const loginUser = async (req: Request, res: Response) => {
         try{
                 const User = await UserService.loginUser(req.body);
                 res.status(201).json({message: "Login exitoso",user: User});
@@ -23,7 +23,7 @@ const postLogin = async (req: Request, res: Response) => {
 }
 
 //controller para cerrar sesion de usuario
-const postlogout = ({ body }:Request, res: Response) => {
+const logoutUser = ({ body }:Request, res: Response) => {
         try{
                 res.send(body);
         } catch (e) {
@@ -61,4 +61,4 @@ const deleUser = async ({params}:Request, res: Response) => {
         }
 }
 //exportamos las controller
-export {getUser, updateUser, postRegister, postLogin,postlogout ,deleUser };
+export {getUser, updateUser, registerUser, loginUser,logoutUser ,deleUser };
