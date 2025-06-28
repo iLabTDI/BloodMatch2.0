@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleUser, getUser, getUsers, postLogin, postlogout, postRegister, updateUser } from "../controllers/userController";
+import { deleUser, getUser,postLogin, postlogout, postRegister, updateUser } from "../controllers/userController";
 
 const router = Router()
 
@@ -16,9 +16,6 @@ router.post("/logout", postlogout);
 
 //Esta ruta se encarga de optener un usuario
 router.get("/:id", getUser);
-
-//Esta ruta optiene todos los usuarios
-router.get("/", getUsers);
 
 //Esta ruta se encarga de editar un usuario
 router.put("/:id", updateUser);
