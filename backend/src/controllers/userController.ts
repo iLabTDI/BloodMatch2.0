@@ -5,6 +5,7 @@ import * as UserService from "../service/user"
 //controller para registra un usuario
 const registerUser = async (req: Request, res: Response) => {
         try{
+                console.log("req.body:", req.body); // 🔍 Verifica aquí
                 const newUser = await UserService.registerUser(req.body); //se implementa logica de service
                 res.status(201).json({message: "Usuario registrado exitosamente", user: newUser});
         } catch (e: any) {
@@ -22,7 +23,7 @@ const loginUser = async (req: Request, res: Response) => {
         }
 }
 
-//controller para cerrar sesion de usuario
+//controller para cerrar sesion de usuario (a futuro implementar token, cookies, etc.)
 const logoutUser = ({ body }:Request, res: Response) => {
         try{
                 res.send(body);
@@ -32,9 +33,9 @@ const logoutUser = ({ body }:Request, res: Response) => {
 }
 
 //controller para obtener un usuario
-const getUser = ({ body }:Request, res: Response) => {
+const getUser = ({ params }:Request, res: Response) => {
         try {
-                res.send(body);
+                
         } catch (e) {
         handleHttp(res, e)
         }
