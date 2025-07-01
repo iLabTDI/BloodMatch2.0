@@ -6,20 +6,20 @@ import { CustomError } from "../utils/CustomError";
 //Se encarga de registra User
 export const registerUser = async (user: User) => {
     //validacion basica
-    if (!user.email) throw new CustomError("El correo es obligatorio", "USER_EMAIL_REQUIRED", 400);
-    if (!user.password) throw new CustomError("La contraseña es obligatoria", "USER_PASWORD_REQUIRED", 400);
+    if (!user.Email) throw new CustomError("El correo es obligatorio", "USER_EMAIL_REQUIRED", 400);
+    if (!user.Password) throw new CustomError("La contraseña es obligatoria", "USER_PASWORD_REQUIRED", 400);
 
     //validar que no exita el correo antes
-    const existing = await UserModel.getUserByEmail(user.email);
-    if (existing)  throw new CustomError("El usuario ya existe", "USER_ALREADY_EXISTS", 409);
+    //const existing = await UserModel.getUserByEmail(user.Email);
+    //if (existing)  throw new CustomError("El usuario ya existe", "USER_ALREADY_EXISTS", 409);
 
     //agregar validacion extra(zod)
 
     //hash de contraseña(bcrypt)
-    const hashedPassword = await bcrypt.hash(user.password, 10);
+    const hashedPassword = await bcrypt.hash(user.Password, 10);
     const newUser: User = {
         ...user,
-        password: hashedPassword
+        Password: hashedPassword
     };
 
     //se agrega usuario a models(BD)
@@ -40,8 +40,8 @@ export const loginUser = async (id: string) => {
 //se encarga de Actualizar User
 export const updateUser = async (id: string, userData: Partial<User>) => {
     //Si se actualiza la contraseña se hashea
-    if(userData.password){
-        userData.password = await bcrypt.hash(userData.password, 10)
+    if(userData.Password){
+        userData.Password = await bcrypt.hash(userData.Password, 10)
     }
 
     const result =await UserModel.updateUser(id, userData);
