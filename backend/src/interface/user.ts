@@ -1,13 +1,13 @@
 //interface de registro de usuarios
 export interface User {
-    firstName: string;  
-    lastName: string;   
-    birthDate: Date;    
-    bloodType: string;
-    gender: "Masculino" | "Femenino";  
-    password: string;
-    state: string;
-    city: string;
-    phone: number;      
-    email?: string;     //normalmente se requiere en registros
+    FirstName: string;  
+    LastName: string;   
+    Birthdate: string;    
+    Blood_Type: string;
+    Gender: "Masculino" | "Femenino";  
+    Password: string;
+    State: string;
+    City: string;
+    Phone: number;
+    Email?: string;           
 }
