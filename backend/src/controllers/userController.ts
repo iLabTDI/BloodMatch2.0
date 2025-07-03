@@ -2,26 +2,7 @@ import {Request, Response} from "express";
 import { handleHttp } from "../utils/error.handle";
 import * as UserService from "../service/user"
 
-//controller para registra un usuario
-const registerUser = async (req: Request, res: Response) => {
-        try{
-                console.log("req.body:", req.body); // 🔍 Verifica aquí
-                const newUser = await UserService.registerUser(req.body); //se implementa logica de service
-                res.status(201).json({message: "Usuario registrado exitosamente", user: newUser});
-        } catch (e: any) {
-                handleHttp(res, e)
-        }
-}
 
-//controller para hacer login
-const loginUser = async (req: Request, res: Response) => {
-        try{
-                const User = await UserService.loginUser(req.body);
-                res.status(201).json({message: "Login exitoso",user: User});
-        } catch (e) {
-                handleHttp(res, e)
-        }
-}
 
 //controller para cerrar sesion de usuario (a futuro implementar token, cookies, etc.)
 const logoutUser = ({ body }:Request, res: Response) => {
@@ -62,4 +43,4 @@ const deleUser = async ({params}:Request, res: Response) => {
         }
 }
 //exportamos las controller
-export {getUser, updateUser, registerUser, loginUser,logoutUser ,deleUser };
+export {getUser, updateUser,logoutUser ,deleUser };
