@@ -1,32 +1,77 @@
 {
+    
     "name": "backend",
+    
     "version": "1.0.0",
+    
     "description": "",
+    
     "main": "index.js",
+    
     "type": "module",
+    
     "exports": "./dist/index.mjs",
+    
     "scripts": {
-        "dev": "tsx watch src/app.ts",
-        "start": "node dist/index.mjs",
-        "build": "pkgroll"
+    
+        
+    "dev": "tsx watch src/app.ts",
+    
+        
+    "start": "node dist/index.mjs",
+    
+        
+    "build": "pkgroll"
+    
     },
+    
     "author": "sangam mukherjee",
+    
     "license": "ISC",
+    
     "dependencies": {
-        "@supabase/supabase-js": "^2.45.1",
-        "bcryptjs": "^3.0.2",
-        "cors": "^2.8.5",
-        "dotenv": "^16.5.0",
-        "express": "^4.18.2",
-        "fs": "^0.0.1-security",
-        "nodemon": "^2.0.22",
-        "socket.io": "^4.6.2"
+    
+        
+    "@supabase/supabase-js": "^2.45.1",
+    
+        
+    "bcryptjs": "^3.0.2",
+    
+        
+    "cors": "^2.8.5",
+    
+        
+    "dotenv": "^16.5.0",
+    
+        
+    "express": "^4.18.2",
+    
+        
+    "fs": "^0.0.1-security",
+    
+        
+    "jsonwebtoken": "^9.0.2",
+    
+    "nodemon": "^2.0.22",
+    "socket.io": "^4.6.2"
     },
+    
     "devDependencies": {
-        "@types/express": "^5.0.2",
-        "@types/node": "^22.15.29",
-        "pkgroll": "^2.12.2",
-        "tsx": "^4.19.4",
-        "typescript": "^5.8.3"
+    
+        
+    "@types/express": "^5.0.2",
+    
+        
+    "@types/node": "^22.15.29",
+    
+        
+    "pkgroll": "^2.12.2",
+    
+        
+    "tsx": "^4.19.4",
+    
+        
+    "typescript": "^5.8.3"
+    
     }
 }
