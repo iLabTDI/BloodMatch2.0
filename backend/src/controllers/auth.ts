@@ -2,7 +2,6 @@ import {Request, Response} from "express";
 import { handleHttp } from "../utils/error.handle";
 import * as UserService from "../service/auth"
 
-
 //controller para registra un usuario
 export const registerUser = async (req: Request, res: Response) => {
         try{
