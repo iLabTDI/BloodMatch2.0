@@ -5,7 +5,7 @@ import * as UserService from "../service/user"
 
 
 //controller para cerrar sesion de usuario (a futuro implementar token, cookies, etc.)
-const logoutUser = ({ body }:Request, res: Response) => {
+export const logoutUser = ({ body }:Request, res: Response) => {
         try{
                 res.send(body);
         } catch (e) {
@@ -14,7 +14,7 @@ const logoutUser = ({ body }:Request, res: Response) => {
 }
 
 //controller para obtener un usuario
-const getUser = ({ params }:Request, res: Response) => {
+export const getUser = ({ params }:Request, res: Response) => {
         try {
                 
         } catch (e) {
@@ -23,7 +23,7 @@ const getUser = ({ params }:Request, res: Response) => {
 }
 
 //controller para actualizar usuario
-const updateUser = async ({params, body}: Request, res: Response) => {
+export const updateUser = async ({params, body}: Request, res: Response) => {
         try{
                 const {id} = params;
                 const UpdateUser = await UserService.updateUser(id,body)
@@ -33,7 +33,7 @@ const updateUser = async ({params, body}: Request, res: Response) => {
         }
 }
 //controller para eliminar un usuario
-const deleUser = async ({params}:Request, res: Response) => {
+export const deleUser = async ({params}:Request, res: Response) => {
         try{
                 const {id} = params;
                 const DeleteUser = await UserService.deleteUser(id)
@@ -42,5 +42,3 @@ const deleUser = async ({params}:Request, res: Response) => {
                 handleHttp(res, e)
         }
 }
-//exportamos las controller
-export {getUser, updateUser,logoutUser ,deleUser };
