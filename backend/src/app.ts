@@ -4,6 +4,7 @@ import { createServer } from "http"; // Necesario para vincular socket.io con ex
 import { setupSocket } from "./config/socket";
 import { Server } from "socket.io";
 import { env } from "./config/env";
+import { requestLogger } from "./middleware/logger";
 import "dotenv/config";
 
 const app = express();
@@ -11,6 +12,9 @@ const httpServer = createServer(app);
 
 // Primero: Middlewares globales
 app.use(express.json()); // ✅ Ahora está antes
+
+//Middleware para el monitoreo 
+app.use(requestLogger);
 
 // Segundo: Rutas
 app.use(homeRoute); // ✅ Ahora sí funciona req.body en tus rutas
