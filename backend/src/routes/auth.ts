@@ -3,7 +3,7 @@ import {loginUser, registerUser} from "../controllers/auth";
 
 const router = Router()
 
-//       ==rutas de usuario==
+//       ==rutas de usuario(auth)==
 
 //Esta ruta se encarga de hacer loging un usuario
 router.post("/login", loginUser);
