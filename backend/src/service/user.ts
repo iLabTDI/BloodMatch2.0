@@ -18,3 +18,9 @@ export const deleteUser = async (id: string) => {
     const result = await UserModel.deleteUser(id);
     return result;
 }
+
+//se encarga de obtener user
+export const getUser = async (id: string) => {
+    const result = await UserModel.getUserById(id);
+    return result;
+}
