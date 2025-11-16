@@ -13,17 +13,6 @@ export const logoutUser = ({ body }:Request, res: Response) => {
         }
 }
 
-//controller para obtener un usuario
-export const getUser =  async ({ params }:Request, res: Response) => {
-        try {
-                const {id} = params;
-                const GetUser = await UserService.getUser(id)
-                res.status(201).json({message: "se trajo de BD",user: GetUser});
-        } catch (e) {
-        handleHttp(res, e)
-        }
-}
-
 //controller para actualizar usuario
 export const updateUser = async ({params, body}: Request, res: Response) => {
         try{

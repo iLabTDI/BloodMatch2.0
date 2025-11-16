@@ -16,7 +16,8 @@ export const registerUser = async (req: Request, res: Response) => {
 //controller para hacer login
 export const loginUser = async (req: Request, res: Response) => {
         try{
-                const User = await UserService.loginUser(req.body);
+                const {Email, Password} = req.body;
+                const User = await UserService.loginUser(Email, Password);
                 res.status(201).json({message: "Login exitoso",user: User});
         } catch (e) {
                 handleHttp(res, e)
