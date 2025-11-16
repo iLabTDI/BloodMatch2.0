@@ -20,18 +20,9 @@ export const getUserById = async (id: string) => {
     const { data, error } = await BD
     .from('users').select('*')
     .eq('IdUser', id)
-    .select('IdUser, Email, FirstName, LastName, Blood_Type')
+    .select('IdUser, Email, FirstName, LastName, Blood_Type, Password')
     .maybeSingle();
     if (error) throwModelError("Error al obtener usuario por ID", error, "DB_GET_USER_FAIL");
-    return data;
-};
-
-// Obtener todos los usuarios
-export const getUsers = async () => {
-    const { data, error } = await BD
-    .from("users")
-    .select('IdUser, Email, FirstName, LastName, Blood_Type');
-    if (error) throwModelError("Error al obtener lista de usuarios", error, "DB_GET_USERS_FAIL");
     return data;
 };
 
@@ -52,7 +43,7 @@ export const deleteUser = async (id: string) => {
     .from('users')
     .delete()
     .eq('IdUser', id)
-    .select("IdUser, Email, FirstName, LastName, Blood_Type");
+    .select("IdUser, Email, FirstName, LastName, Blood_Type, Password");
     if (error) throwModelError("Error al eliminar usuario", error, "DB_DELETE_USER_FAIL");
     return data;
 };
