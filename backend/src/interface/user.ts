@@ -1,5 +1,6 @@
+import { Auth } from "./auth"
 //interface de registro de usuarios
-export interface User {
+export interface User extends Auth {
     FirstName: string;  
     LastName: string;   
     Birthdate: string;    
