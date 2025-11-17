@@ -18,9 +18,9 @@ export const createUser = async (user: User) => {
 // Obtener usuario por ID
 export const getUserById = async (id: string) => {
     const { data, error } = await BD
-    .from('users').select('*')
+    .from('users')
+    .select('IdUser, Email, FirstName, LastName, Blood_Type')
     .eq('IdUser', id)
-    .select('IdUser, Email, FirstName, LastName, Blood_Type, Password')
     .maybeSingle();
     if (error) throwModelError("Error al obtener usuario por ID", error, "DB_GET_USER_FAIL");
     return data;
@@ -43,7 +43,7 @@ export const deleteUser = async (id: string) => {
     .from('users')
     .delete()
     .eq('IdUser', id)
-    .select("IdUser, Email, FirstName, LastName, Blood_Type, Password");
+    .select("IdUser, Email, FirstName, LastName, Blood_Type");
     if (error) throwModelError("Error al eliminar usuario", error, "DB_DELETE_USER_FAIL");
     return data;
 };
@@ -51,7 +51,8 @@ export const deleteUser = async (id: string) => {
 // Obtener usuario por email
 export const getUserByEmail = async (email: string) => {
     const { data, error } = await BD
-    .from('users').select('*')
+    .from('users')
+    .select('IdUser, Email, Password, FirstName, LastName, Blood_Type')
     .eq('Email', email)
     .maybeSingle();
     if (error) throwModelError("Error al obtener usuario por email", error, "DB_GET_USER_EMAIL_FAIL");

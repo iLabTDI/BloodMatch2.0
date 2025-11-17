@@ -2,8 +2,6 @@ import {Request, Response} from "express";
 import { handleHttp } from "../utils/error.handle";
 import * as UserService from "../service/user"
 
-
-
 //controller para cerrar sesion de usuario (a futuro implementar token, cookies, etc.)
 export const logoutUser = ({ body }:Request, res: Response) => {
         try{
