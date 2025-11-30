@@ -2,7 +2,6 @@ import { BD } from "../config/supabase"
 import { User } from "../interface/user"
 import { throwModelError } from "../utils/error.handle";
 
-
 // Crear usuario
 export const createUser = async (user: User) => {
     const { data, error } = await BD
