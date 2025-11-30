@@ -1,40 +1,45 @@
-//Se encarga de registra User
-import { User } from "../interface/user";
+//Service/auth
+import { registerValidat } from "../validator/register";
 import * as UserModel from "../models/user";
 import { CustomError } from "../utils/CustomError";
 import { encrypt, verified } from "../utils/crypt.handle";
+import { generateToken } from "../utils/jwt.handle";
 
-export const registerUser = async (user: User) => {
-    
-    if (!user.Email) throw new CustomError("El correo es obligatorio", "USER_EMAIL_REQUIRED", 400);
-    if (!user.Password) throw new CustomError("La contraseña es obligatoria", "USER_PASWORD_REQUIRED", 400);
-
-    //agregar validacion extra(zod) o express validetor
+export const registerUser = async (userData: unknown) => {
+    const parsed = registerValidat.safeParse(userData);
+    if(!parsed.success){
+        const errorList = parsed.error.issues.map(
+            (e) => `${e.path.join(".")}: ${e.message}`
+        );
+        throw new CustomError(errorList.join(", "), "VALIDATION_ERROR", 400);
+    }
+    const user = parsed.data;
 
     const passhash = await encrypt(user.Password)
-    const newUser: User = {
+    const newUser = {
         ...user,
         Password: passhash
     };
-
     //se agrega usuario a models(BD)
     const result = await UserModel.createUser(newUser);
     return result;
 };
 
-//se encarga de hacer login
 export const loginUser = async (email: string, password: string) => {
-    //Obtenemos el usuario por medio del email
-    const user = await UserModel.getUserByEmail(email);
-    //valibasicadacion 
-    if(!user) throw new CustomError("Usuario no encontrado","USER_NOT_FOUND",404);
+    const checkIs = await UserModel.getUserByEmail(email);
+    //validacion de Email y contraseña
+    if(!checkIs) throw new CustomError("Usuario no encontrado","USER_NOT_FOUND",404);
     if(!email) throw new CustomError("El correo es obligatorio","USER_EMAIL_REQUIRED",404);
     if(!password) throw new CustomError("La contraseña es obligatoria","USER_PASSWORD_REQUIRED",404);
 
-    //Validamos la contraseña
-    const isPasswordValid = await verified(password, user.Password);
-    if(!isPasswordValid) throw new CustomError("Contraseña incorrecta", "INVALID_PASSWORD", 403)
+    const passwordHash = checkIs.Password;
+    const isPasswordValid = await verified(password, passwordHash);
+    if(!isPasswordValid) throw new CustomError("Contraseña incorrecta", "INVALID_PASSWORD", 403);
 
-    //hacer mas robusta la validacion de usuario
-    return user;
+    const token = generateToken(checkIs.Email);//Generar token JWT
+    const data ={
+        token,
+        user:checkIs
+    };
+    return data;
 }
