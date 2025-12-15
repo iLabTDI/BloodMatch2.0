@@ -26,7 +26,7 @@ export const throwModelError =(
     message: string,
     error: unknown, 
     code: string = "UNHANDLE_MODEL_ERROR", 
-    statusCode:number = 500) =>{
+    statusCode:number = 500): never => {
     //variables para mensaje y details
     let fullMessage = message;
     let details = null;
