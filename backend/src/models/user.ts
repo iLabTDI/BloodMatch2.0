@@ -1,5 +1,5 @@
 import { BD } from "../config/supabase"
-import { User } from "../interface/user"
+import { User } from "../interface/User/user";
 import { throwModelError } from "../utils/error.handle";
 
 // Crear usuario
