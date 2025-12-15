@@ -29,7 +29,7 @@ setupSocket(io);
 
 // Otros endpoints de prueba
 app.get("/", (req, res) => {
-    res.send("holi mundo");
+    res.send("corriendo Api");
 });
 
 // Servidor
