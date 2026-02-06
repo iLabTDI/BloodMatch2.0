@@ -13,7 +13,7 @@
             "backgroundColor": "#ffffff"
         },
         "userInterfaceStyle": "automatic",
-        "newArchEnabled": true,
+        "newArchEnabled": false,
         "ios": {
             "supportsTablet": true,
             "bundleIdentifier": "com.manuel2003.bloodmatch",
@@ -22,12 +22,19 @@
             }
         },
         "android": {
-            "useNextNotificationsApi": true,
             "adaptiveIcon": {
                 "foregroundImage": "./assets/icon.png",
                 "backgroundColor": "#ffffff"
             },
-            "package": "com.manuel2003.bloodmatch"
+            "package": "com.manuel2003.bloodmatch",
+            "permissions": [
+                "ACCESS_COARSE_LOCATION",
+                "ACCESS_FINE_LOCATION",
+                "CAMERA",
+                "READ_EXTERNAL_STORAGE",
+                "WRITE_EXTERNAL_STORAGE",
+                "NOTIFICATIONS"
+            ]
         },
         "web": {
             "bundler": "metro",
@@ -43,6 +50,19 @@
                     "imageWidth": 200,
                     "resizeMode": "contain",
                     "backgroundColor": "#ffffff"
+                }
+            ],
+            [
+                "expo-location",
+                {
+                    "locationAlwaysAndWhenInUsePermission": "Allow Blood Match to use your location to find nearby blood banks and donors."
+                }
+            ],
+            [
+                "expo-notifications",
+                {
+                    "icon": "./assets/icon.png",
+                    "color": "#ffffff"
                 }
             ]
         ],
