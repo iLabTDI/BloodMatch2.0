@@ -36,7 +36,7 @@ export const loginUser = async (email: string, password: string) => {
     const isPasswordValid = await verified(password, passwordHash);
     if(!isPasswordValid) throw new CustomError("Contraseña incorrecta", "INVALID_PASSWORD", 403);
 
-    const token = generateToken(checkIs.Email);//Generar token JWT
+    const token = generateToken({id: checkIs.IdUser, email: checkIs.Email});//Generar token JWT
     const data ={
         token,
         user:checkIs
