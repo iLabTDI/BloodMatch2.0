@@ -9,7 +9,7 @@ export const updateUser = async (id: string, userData: Partial<User>) => {
         userData.Password = await bcrypt.hash(userData.Password, 10)
     }
 
-    const result =await UserModel.updateUser(id, userData);
+    const result = await UserModel.updateUser(id, userData);
     return result;
 }
 
