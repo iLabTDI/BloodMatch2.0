@@ -18,7 +18,7 @@ export const createUser = async (user: User) => {
 export const getUserById = async (id: string) => {
     const { data, error } = await BD
     .from('users')
-    .select('IdUser, Email, FirstName, LastName, Blood_Type')
+    .select('IdUser, Blood_Type')
     .eq('IdUser', id)
     .maybeSingle();
     if (error) throwModelError("Error al obtener usuario por ID", error, "DB_GET_USER_FAIL");
