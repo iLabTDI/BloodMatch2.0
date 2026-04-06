@@ -13,9 +13,9 @@ export const createDonation = async (req: Request, res: Response): Promise<void>
             return;
         }
         const userPayload = req.user as JwtPayload;
-        if(!userPayload.id){
-            res.status(400).json({
-                message: "ID de usuario no encontrado en el token"
+        if(!req.user){
+            res.status(401).json({
+                message: "Usuario no autenticado"
             });
             return;
         }
