@@ -2,14 +2,14 @@
 import { createDonation, deleteDonation, updateDonation } from "../models/donations";
 import { Donation } from "../interface/Donation/donations";
 import { throwModelError } from "../utils/error.handle";
-import { DonationValidator } from "../validator/donationValidator";
-import { ValidationFieldsDonation } from "../validator/Strategies/RequiredFields";
+import { Validator } from "../validator/Validator";
+import { ValidationFields } from "../validator/Strategies/RequiredFields";
 import { UserExistenceValidation } from "../validator/Strategies/UserExistence";
 import { BloodTypeValidation } from "../validator/Strategies/BloodType";
 
 export const registerDonation = async (donation: Donation): Promise<Donation | null> => {
-    const validator = new DonationValidator([
-        new ValidationFieldsDonation(),
+    const validator = new Validator([
+        new ValidationFields(),
         new UserExistenceValidation(),
         new BloodTypeValidation()
     ]);
