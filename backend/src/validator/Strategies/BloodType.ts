@@ -1,10 +1,10 @@
 //src/validator/Strategies/BloodType.ts
 import { Donation } from "../../interface/Donation/donations";
-import { DonationStrategy } from "../../interface/Donation/donationStrategy";
+import { ValidationDonationStrategy } from "../../interface/Strategy";
 import { throwModelError } from "../../utils/error.handle";
 import { getUserById } from "../../models/user";
 
-export class BloodTypeValidation implements DonationStrategy {
+export class BloodTypeValidation implements ValidationDonationStrategy {
     async validate(donation: Donation): Promise<void> {
         const donor = await getUserById(donation.byUser);
         const recipient = await getUserById(donation.toUser);

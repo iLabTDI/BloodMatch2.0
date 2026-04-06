@@ -1,18 +1,20 @@
 //scr/validator/Strategies/UserExistence.ts
-import { Donation } from "../../interface/Donation/donations";
-import { DonationStrategy } from "../../interface/Donation/donationStrategy";
+import type { ValidationDonationStrategy } from "../../interface/Strategy";
+import type { Donation } from "../../interface/Donation/donations";
 import { getUserById } from "../../models/user";
 import { throwModelError } from "../../utils/error.handle";
 
-export class UserExistenceValidation implements DonationStrategy {
+export class UserExistenceValidation implements ValidationDonationStrategy {
+    
     async validate(donation: Donation): Promise<void> {
-        const donor = await getUserById(donation.byUser);
-        const recipient = await getUserById(donation.toUser);
-        // Validar que el usuario donate y el receptor existan
-        if(!donor){
+        const User1 = await getUserById(donation.byUser);
+        const User2 = await getUserById(donation.toUser);
+
+        if (!User1) {
             throwModelError("Usuario donante no existe", null, "DONOR_NOT_FOUND", 404);
         }
-        if(!recipient){
+
+        if (!User2) {
             throwModelError("Usuario receptor no existe", null, "RECIPIENT_NOT_FOUND", 404);
         }
     }
