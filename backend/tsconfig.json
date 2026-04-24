@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "strict": true, //Habilita todas las camprobaciones de tipo
+    "moduleDetection": "force", //forzar la deteccion de modulos
+    "moduleResolution": "node", //Resolución de módulos compatible con Node.js
+    "module": "ESNext", //especifica el sistema de modulos
+    "target": "ESNext", //especifica la version de ECMAScript
+    "allowJs": true, //permitir archivos js
+    "esModuleInterop": true, //activar la interoperavidad de los modulos
+    "isolatedModules": true //habilitar la comparacion de modulos independientes
+  },
+  "include": ["src/**/*"], //incluir archivos
+  "exclude": ["node_modules", "dist"] //excluir archivos
+}
