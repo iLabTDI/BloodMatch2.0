@@ -35,7 +35,6 @@ export default function Location() {
 
     // Obtener token de Expo
     const token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log("Expo Push Token:", token);
     setExpoPushToken(token);
 
     // Guardar token en la base de datos
@@ -58,8 +57,6 @@ export default function Location() {
       },
       trigger: null, // Muestra la notificación inmediatamente
     });
-
-    console.log("Notificación enviada");
   }
 
   return (

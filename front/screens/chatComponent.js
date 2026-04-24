@@ -19,11 +19,6 @@ export default function Chatcomponent({ item, onDelete }) {
   const currentUser = getGlobalData("email");
 
   useEffect(() => {
-    console.log("el titeem es=",item)
-    if (item && item.messages) {
-      console.log(" los items son=", item.messages[item.messages.length - 1]);
-    }
-
     async function getUserData(email){
       let res = await getUser(email);
       setUser(res[0]);

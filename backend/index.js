@@ -44,21 +44,11 @@ const conexion = async (id, currentFirstName, currentSecondName) => {
 
         // Manejar los resultados
         if (groupResult.error) {
-            console.log("Error al insertar en savegroups2:", groupResult.error);
-        } else {
-            console.log(
-                "Datos insertados correctamente en savegroups2:",
-                groupResult.data
-            );
+            console.error("Error al insertar en savegroups2:", groupResult.error);
         }
 
         if (messageResult.error) {
-            console.log("Error al insertar en messages:", messageResult.error);
-        } else {
-            console.log(
-                "Datos insertados correctamente en messages:",
-                messageResult.data
-            );
+            console.error("Error al insertar en messages:", messageResult.error);
         }
     } catch (error) {
         console.error("Error durante la operación:", error);
@@ -66,26 +56,18 @@ const conexion = async (id, currentFirstName, currentSecondName) => {
 };
 
 const verify = (currentGroupName, currentSecondGroup) => {
-    console.log("los nombre son", currentGroupName, currentSecondGroup);
     let longitud = chatgroups.length;
-    console.log("la longitud es", longitud);
 
     for (let i = 0; i < chatgroups.length; i++) {
-        console.log(
-            chatgroups[i].currentGroupName,
-            chatgroups[i].currentSecondGroup
-        );
         if (
             (currentGroupName === chatgroups[i].currentGroupName ||
                 currentGroupName === chatgroups[i].currentSecondGroup) &&
             (currentSecondGroup === chatgroups[i].currentGroupName ||
                 currentSecondGroup === chatgroups[i].currentSecondGroup)
         ) {
-            console.log("ya se ha crreado un grupo ");
             return 1;
         }
         if (longitud === i) {
-            console.log("no se encontro nada");
             return 0;
         }
     }
@@ -118,16 +100,13 @@ async function loadChatGroups() {
             .select("*");
 
         if (groupsError) {
-            console.log("Error loading groups:", groupsError);
+            console.error("Error loading groups:", groupsError);
             return;
         }
         if (messagesError) {
-            console.log("Error loading messages:", messagesError);
+            console.error("Error loading messages:", messagesError);
             return;
         }
-
-        console.log("Groups data:", groupsData);
-        console.log("Messages data:", messagesData);
 
         if (groupsData.length > 0) {
             chatgroups = groupsData.map((group) => {
@@ -151,19 +130,13 @@ async function loadChatGroups() {
                 };
             });
 
-            console.log("Grupos actualizados correctamente:", chatgroups);
-        } else {
-            console.log("No hay grupos");
         }
     } catch (e) {
-        console.log("An error occurred:", e);
+        console.error("An error occurred:", e);
     }
 }
 
-// Cargar los datos cuando el servidor se inicie
-loadChatGroups().then(() => {
-    console.log("Los grupos del log son", chatgroups);
-});
+loadChatGroups();
 
 //}
 
@@ -176,36 +149,21 @@ async function saveChatGroups() {
             .eq("id", "5");
 
         if (error) {
-            console.log("there was an error", error);
-        } else {
-            //console.log("data",data)
+            console.error("there was an error", error);
         }
-
-        //console.log("los chats salvados son =",chatgroups)
-        console.log("Chat groups saved successfully.");
     } catch (error) {
         console.error("Error saving chat groups:", error);
     }
 }
 
-// Load the data when the server starts
-(async () => {
-    await loadChatGroups();
-    console.log("Los grupos del log son", chatgroups);
-})();
-
-console.log("los grupos del log es", chatgroups);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
 //in this part the user is connected to the server
 socketIO.on("connection", (socket) => {
-    console.log(`${socket.id} user is just connected`);
-
     socket.on("getAllGroups", () => {
         socket.emit("groupList", chatgroups);
-        console.log("el socket es", chatgroups);
     });
 
     socket.on("deleteGroup", async ({ currentUser, secondUser }) => {
@@ -227,12 +185,9 @@ socketIO.on("connection", (socket) => {
                 var id = chatgroups.length + 1;
 
                 if (verify(currentGroupName, currentSecondGroup) > 0) {
-                    console.log("no va a hacer nada ejje");
+                    // group already exists
                 } else {
                     await conexion(id, currentGroupName, currentSecondGroup);
-
-                    // i will print the new group
-                    console.log("Nuevo grupo creado:", newGroup);
 
                     // add new group to my chat list
                     chatgroups.unshift(newGroup);
@@ -241,7 +196,7 @@ socketIO.on("connection", (socket) => {
                     //saveChatGroups();
                 }
             } catch (e) {
-                console.log("el error es", e);
+                console.error("el error es", e);
             }
         }
     );
@@ -253,10 +208,8 @@ socketIO.on("connection", (socket) => {
         );
 
         if (filteredGroup.length > 0 && filteredGroup[0].messages) {
-            console.log("El grupo filtrado es:", filteredGroup);
             socket.emit("foundGroup", filteredGroup[0].messages);
         } else {
-            console.log("No se encontró el grupo o no tiene mensajes.");
             socket.emit("foundGroup", []);
         }
     });
@@ -276,10 +229,6 @@ socketIO.on("connection", (socket) => {
         const { currentChatMesage, groupIdentifier, currentUser, timeData } =
             data;
 
-        // Aquí se reciben los mensajes
-        console.log("AQUI SE RECIBEN LOS MENSAJES");
-        console.log("Mensaje recibido: ", currentChatMesage);
-
         const filteredGroup = chatgroups.filter(
             (item) => item.id === groupIdentifier
         );
@@ -293,7 +242,6 @@ socketIO.on("connection", (socket) => {
 
         // Ensure the group exists
         if (filteredGroup.length > 0) {
-            console.log("elgrupo filtrado esf", filteredGroup);
             if (!Array.isArray(filteredGroup[0].messages)) {
                 filteredGroup[0].messages = [];
             }
@@ -305,9 +253,7 @@ socketIO.on("connection", (socket) => {
                 .update([{ messages: filteredGroup[0].messages }])
                 .eq("idGroup", groupIdentifier);
             if (error) {
-                console.log(error);
-            } else {
-                console.log(data);
+                console.error(error);
             }
 
             // Emit the new message to all clients in the group room
@@ -326,8 +272,6 @@ socketIO.on("connection", (socket) => {
             const token = await getUserToken(
                 filteredGroup[0].currentSecondGroup
             );
-            console.log("TOKEN RECUPERADO DEL OTRO USUARIO: ", token);
-
             if (token !== null) {
                 const messages = {
                     to: token,
@@ -449,9 +393,6 @@ http.listen(PORT, () => {
 
 // Save chat groups to the JSON file when the server is shutting down
 process.on("SIGINT", () => {
-    console.log("Saving chat groups...");
-    //saveChatGroups();
-
     process.exit();
 });
 
@@ -484,7 +425,6 @@ async function deleteChatGroupByUsers(currentUser, secondUser) {
         }
 
         if (!groups || groups.length === 0) {
-            console.log("No se encontró ningún grupo con esos usuarios.");
             return { success: false, message: "Grupo no encontrado" };
         }
 
@@ -519,7 +459,6 @@ async function deleteChatGroupByUsers(currentUser, secondUser) {
         // Emitir actualizacion a todos los clientes
         socketIO.emit("groupList", chatgroups);
 
-        console.log(`Grupo entre ${currentUser} y ${secondUser} eliminado.`);
         return { success: true, message: "Grupo eliminado correctamente" };
     } catch (error) {
         console.error("Error general al eliminar el grupo:", error);
@@ -573,7 +512,6 @@ const New_User = async (
             throw new Error("Error al insertar datos");
         }
 
-        console.log("Datos insertados con éxito:", data);
         return data;
     } catch (error) {
         console.error("Error en registro:", error.message);

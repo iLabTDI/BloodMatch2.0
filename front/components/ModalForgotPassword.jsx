@@ -75,10 +75,8 @@ const ModalForgotPassword = ({ isVisible, onClose }) => {
     const updateRandomPassword = async (email, password) => {
         let resQuery = await updatePassword(email, password);
         if (resQuery === null) {
-            console.log("fracaso");
             return false;
         } else {
-            console.log("exito");
             return true;
         }
     };
@@ -102,14 +100,12 @@ const ModalForgotPassword = ({ isVisible, onClose }) => {
             );
             res.status = 200;
             res.message = "success";
-            console.log("SUCCESS! ", res);
         } catch (err) {
             if (err instanceof EmailJSResponseStatus) {
-                console.log("EmailJS Request Failed...", err);
+                console.error("EmailJS Request Failed...", err);
             }
             res.status = 500;
             res.message = "error";
-            console.log("ERROR", err, res);
         }
         return res;
     };

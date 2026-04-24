@@ -7,8 +7,6 @@ import { useNavigation } from "@react-navigation/native";
 export default function Chatcomponent({ item }) {
   const navigation = useNavigation();
 
-  console.log(item.messages[item.messages.length - 1]);
-
   function handleNavigateToMessageScreen() {
     navigation.navigate("Messagescreen", {
       currentGroupName: item.currentGroupName,

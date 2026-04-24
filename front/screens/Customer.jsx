@@ -143,8 +143,6 @@ const Customer = ({}) => {
 
             // 5. Subir la imagen usando tu lógica existente
             const fileName = await handleSubmit(manipulated.uri); // debe mantener el nombre real
-            console.log("Nombre del archivo subido:", fileName);
-
             // 6. Obtener URL pública segura
             const { data: data2, error: error2 } = await supabase.storage
                 .from("prueba") // tu bucket
@@ -161,7 +159,6 @@ const Customer = ({}) => {
             }
 
             const imageUrl = data2.publicUrl;
-            console.log("Imagen URL:", imageUrl);
 
             // 7. Actualizar en la base de datos
             const { data, error } = await supabase
@@ -187,7 +184,6 @@ const Customer = ({}) => {
         const fetchData = async () => {
             setIsLoading(true);
             const email = getGlobalData("email");
-            console.log(" lo que imprime es", email);
             const { data, error } = await supabase
                 .from("users")
                 .select("*")
@@ -200,10 +196,8 @@ const Customer = ({}) => {
                     setUser(data[0]);
                     const usuarioEncontrado = data[0];
                     const urlEncontrado = usuarioEncontrado.Url;
-                    console.log("el url que se encontró es: ", urlEncontrado);
                     setImage({ uri: urlEncontrado });
                 } else {
-                    console.log(data);
                     console.error("No user data found");
                 }
             }

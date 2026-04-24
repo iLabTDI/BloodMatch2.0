@@ -89,7 +89,6 @@ const LogIn = (props) => {
     const saveSession = async (email) => {
         try {
             await AsyncStorage.setItem("email", email);
-            console.log(`Guardado: ${email}`);
         } catch (error) {
             console.error("Error al guardar en AsyncStorage:", error);
         }
@@ -99,10 +98,8 @@ const LogIn = (props) => {
         try {
             const value = await AsyncStorage.getItem("email");
             if (value !== null) {
-                console.log(`Valor leído de email:`, value);
                 return value;
             } else {
-                console.log(`No se encontró valor para email`);
                 return null;
             }
         } catch (error) {
@@ -122,7 +119,7 @@ const LogIn = (props) => {
                 }
             })
             .catch((error) => {
-                console.log("Error al recuperar la sesion: ", error);
+                console.error("Error al recuperar la sesion: ", error);
             });
     }, []);
 
@@ -130,8 +127,6 @@ const LogIn = (props) => {
         setIsLoadingLogIn(true);
         try {
             const usuario = await getDates(email.trim());
-
-            console.log("USUARIO ISÑOÑIÑOUÑAEJ: ", usuario);
 
             if (usuario) {
                 if (usuario.Is_Verified) {
@@ -179,25 +174,6 @@ const LogIn = (props) => {
         }));
     };
 
-    const printRegister = () => {
-        console.log(
-            "**********************************************************"
-        );
-        console.log("Nombre: ", register.firstName);
-        console.log("Apellido: ", register.lastName);
-        console.log("Nacimiento: ", register.birthDate);
-        console.log("Genero: ", register.gender);
-        console.log("Estado: ", register.state);
-        console.log("Municipio: ", register.municipality);
-        console.log("Telefono: ", register.phoneNumber);
-        console.log("Email: ", register.email);
-        console.log("Password: ", register.password);
-        console.log("Password 2: ", register.passwordConfirm);
-        console.log("Rol: ", register.bloodTypeRol);
-        console.log("Sangre: ", register.bloodType);
-        console.log("Imagen: ", register.uriImage);
-        console.log("Terminos: ", register.termsAgree);
-    };
 
     const handleCalendar = (event, selectedDate) => {
         setShowPicker(false);
@@ -319,14 +295,12 @@ const LogIn = (props) => {
             );
             res.status = 200;
             res.message = "success";
-            console.log("SUCCESS! ", res);
         } catch (err) {
             if (err instanceof EmailJSResponseStatus) {
-                console.log("EmailJS Request Failed...", err);
+                console.error("EmailJS Request Failed...", err);
             }
             res.status = 500;
             res.message = "error";
-            console.log("ERROR", err, res);
         }
         return res;
     };

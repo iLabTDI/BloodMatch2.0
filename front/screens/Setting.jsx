@@ -57,7 +57,6 @@ const SettingsGroup = ({ title, children }) => (
 const removeSession = async () => {
     try {
         await AsyncStorage.removeItem("email");
-        console.log(`Item email eliminado`);
     } catch (error) {
         console.error("Error al eliminar item:", error);
     }
@@ -122,7 +121,6 @@ const SettingsScreen = ({ navigation }) => {
     const [modalChangePassVisible, setModalChangePassVisible] = useState(false);
 
     const handleSettingPress = (setting) => {
-        console.log(`Pressed: ${setting}`);
         switch (setting) {
             case "Language":
                 setModalLanguageVisible(true);

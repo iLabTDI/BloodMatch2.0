@@ -14,12 +14,12 @@ export async function getDates(email: string) {
             .single(); // Para obtener un solo usuario
 
         if (error) {
-            console.log("Error al obtener datos:", error);
+            console.error("Error al obtener datos:", error);
             return null;
         }
         return data;
     } catch (e) {
-        console.log("Error en getDates:", e);
+        console.error("Error en getDates:", e);
         return null;
     }
 }
@@ -47,7 +47,7 @@ export async function getUser(email: string) {
         .select("*")
         .eq("Email", email);
     if (error) {
-        console.log("was an error", error);
+        console.error("was an error", error);
         return false;
     }
     return data;
@@ -112,7 +112,6 @@ export const New_User = async (
         // Escuchamos la respuesta del backend
         socket.once("register_user_response", (response: any) => {
             if (response.success) {
-                console.log("Datos insertados con éxito:", response.data);
                 resolve(response.data);
             } else {
                 console.error("Error al insertar datos:", response.error);
@@ -124,13 +123,12 @@ export const New_User = async (
 
 export const updateImages = async (filePath: any, formData: any) => {
     try {
-        console.log("el file path es ", filePath, "El forma", formData);
         const { error } = await supabase.storage
             .from("prueba")
             .upload(filePath, formData);
         if (error) throw error;
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 };
 
@@ -138,7 +136,6 @@ export async function getUrl(fileName: any) {
     const { data } = await supabase.storage
         .from("prueba")
         .getPublicUrl(fileName);
-    console.log(data);
     return data;
 }
 
@@ -160,12 +157,9 @@ export async function isExistingEmail(email: string) {
 
         // Si la consulta devuelve datos, significa que el correo ya existe
         if (data && data.length > 0) {
-            console.log("El correo ya está registrado:", data[0].Email);
             return true;
         }
 
-        // Si no hay datos, el correo no está registrado
-        console.log("El correo no está registrado. Puede usarse.");
         return false;
     } catch (err: any) {
         console.error("Error inesperado:", err.message);
@@ -175,15 +169,10 @@ export async function isExistingEmail(email: string) {
 
 export async function handleSubmit(image: any) {
     try {
-        let publicUrl = "";
-        console.log("se enica", image);
         if (image) {
             const fileExt = image.split(".").pop();
-            console.log(fileExt);
             const fileName = image.replace(/^.*[\\\/]/, "");
-            console.log(fileName);
             const filePath = `posts/${Date.now()}.${fileExt}`;
-            console.log(filePath);
             const formData = new FormData();
 
             const photo = {
@@ -194,14 +183,12 @@ export async function handleSubmit(image: any) {
 
             formData.append("file", photo);
 
-            const images = await updateImages(filePath, formData);
-
-            console.log(images);
+            await updateImages(filePath, formData);
 
             return filePath;
         }
     } catch (error) {
-        console.log("error");
+        console.error(error);
     }
 }
 
@@ -210,8 +197,6 @@ export async function getTutorialValue(email: any) {
         console.error("Se requiere un email válido");
         return false;
     }
-
-    console.log("el usuario es+", email);
 
     const { data, error } = await supabase
         .from("users")
@@ -224,7 +209,6 @@ export async function getTutorialValue(email: any) {
         return false;
     }
     if (data.Tutorial === "false") {
-        console.log("el tuto es", data.Tutorial);
         return false;
     } else {
         return true;
@@ -265,7 +249,6 @@ export async function updateTutorialValue(email: string) {
             console.error("hubo un error", error);
             return null;
         }
-        console.log("Checando el cambio", data);
         return data;
     } catch (e) {
         console.error(e);
@@ -285,12 +268,12 @@ export async function getProfileImage(email: string) {
             .eq("Email", email)
             .single();
         if (error) {
-            console.log("Error al consultar la imagen de perfil:", error);
+            console.error("Error al consultar la imagen de perfil:", error);
             return null;
         }
         return data?.Url || null;
     } catch (e) {
-        console.log("Error en getProfileImage: ", e);
+        console.error("Error en getProfileImage: ", e);
         return null;
     }
 }
@@ -311,7 +294,6 @@ export async function updateStatus(email: string, newStatus: string) {
             console.error("Error al actualizar el status:", error);
             return null;
         }
-        console.log("Status actualizado con éxito:", data);
         return data;
     } catch (e) {
         console.error("Error inesperado en updateStatus:", e);
@@ -335,7 +317,6 @@ export async function updateRole(email: string, newRole: string) {
             console.error("Error al actualizar el Role:", error);
             return null;
         }
-        console.log("Role actualizado con éxito:", data);
         return data;
     } catch (e) {
         console.error("Error inesperado en updateRole:", e);
@@ -363,7 +344,6 @@ export async function updateLocation(
             console.error("Error al actualizar la ubicación:", error);
             return null;
         }
-        console.log("Ubicación actualizada con éxito:", data);
         return data;
     } catch (e) {
         console.error("Error inesperado en updateLocation:", e);
@@ -387,7 +367,6 @@ export async function updatePhone(email: string, newPhone: string) {
             console.error("Error al actualizar el número de teléfono:", error);
             return null;
         }
-        console.log("Teléfono actualizado con éxito:", data);
         return data;
     } catch (e) {
         console.error("Error inesperado en updatePhone:", e);
@@ -423,7 +402,6 @@ export async function setExpoTokenNotification(email: string, token: string) {
             console.error("Error al actualizar el token: ", error);
             return null;
         }
-        console.log("Token actualizado: ", data);
         return data;
     } catch (e) {
         console.error("Error inesperado en setExpoTokenNotification:", e);
@@ -509,7 +487,6 @@ export const updatePassword = async (email: string, newPassword: string) => {
 
         socket.once("update_password_response", (response: any) => {
             if (response.success) {
-                console.log("Password actualizado con éxito:", response.data);
                 resolve(response.data);
             } else {
                 console.error(

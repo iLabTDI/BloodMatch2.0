@@ -35,7 +35,6 @@ const leafletHTML = `
     function handleMsg(e) {
       try {
         const msg = JSON.parse(e.data);
-        console.log('📨 recibí mensaje en WebView:', msg);
         if (msg.type === 'origin') {
           const o = msg.payload;
           map.setView([o.latitude, o.longitude], 13);

@@ -4,8 +4,6 @@ import Constants from 'expo-constants';
 const API_KEY =Constants.expoConfig.extra.google;
 
 const handleGenericAPIRequest = async (message) => {
-    console.log("El mensaje enviado es: " + message);
-
     if (!message.trim()) return null; 
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -26,7 +24,6 @@ const handleGenericAPIRequest = async (message) => {
         const result = await chat.sendMessage(message);
         const response = await result.response;
         const text = await response.text();
-        console.log("La respuesta es: " + text);
         return text;
     } catch (error) {
         console.error("Error sending chat request:", error);

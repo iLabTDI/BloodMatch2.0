@@ -20,7 +20,7 @@ const Modal = ({ onClose, userToReport }) => {
 
         const res = await addReport(user, reason, reportedBy);
         if(!res.success){
-            console.log("Ocurrio un error", e);
+            console.error("Ocurrio un error", res.error);
             alert(t("report_error"));
             return;
         }else{
